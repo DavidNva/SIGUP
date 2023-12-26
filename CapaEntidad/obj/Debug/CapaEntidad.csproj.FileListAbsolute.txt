@@ -1,0 +1,6 @@
+D:\SistemaUnidadPracticas\SistemaWeb_UnidadPracticas\CapaEntidad\bin\Debug\CapaEntidad.dll
+D:\SistemaUnidadPracticas\SistemaWeb_UnidadPracticas\CapaEntidad\bin\Debug\CapaEntidad.pdb
+D:\SistemaUnidadPracticas\SistemaWeb_UnidadPracticas\CapaEntidad\obj\Debug\CapaEntidad.csproj.AssemblyReference.cache
+D:\SistemaUnidadPracticas\SistemaWeb_UnidadPracticas\CapaEntidad\obj\Debug\CapaEntidad.csproj.CoreCompileInputs.cache
+D:\SistemaUnidadPracticas\SistemaWeb_UnidadPracticas\CapaEntidad\obj\Debug\CapaEntidad.dll
+D:\SistemaUnidadPracticas\SistemaWeb_UnidadPracticas\CapaEntidad\obj\Debug\CapaEntidad.pdb

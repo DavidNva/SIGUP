@@ -1,0 +1,351 @@
+﻿
+@{
+    ViewBag.Title = "Categoria";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="#">Administrador</a></li>
+    <li class="breadcrumb-item active">Categorias</li>
+</ol>
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>Lista de Categorias
+    </div>
+    <div class="card-body">
+        @*boostrap es como manejar una hoja en excel*@
+        <div class="row">
+            <div class="col-12  d-flex justify-content-between align-items-center">
+                @*numero de filas*@
+                <button type="button" class="btn btn-success" onclick="abrirModal()">Crear Nuevo</button>
+
+                <form action="@Url.Action("DescargarPDF_Categoria","Admin")" class="mt-0 ml-2">
+                    <button class="btn btn-danger" type="submit"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                </form>
+            </div>
+        </div>
+        <hr /> @*el id es para identificar la tabla*@
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripcion</th>
+                    <th>Activo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<!-- Modal, con el id FormModal vamos a llamarlo cuando deseamos que aparezca y cuando no
+    al momento de precionar el boton nuevo-->
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    @*Esto ultimo de data-bs-backdrop es para*@
+    <div class="modal-dialog">
+        @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Categoria</h5>
+                <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
+
+                <input id="txtId" type="hidden" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
+                    pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                <div class="row g-1">
+                    <!--Porque solamente esta formando una fila-->
+
+                    <div class="col-sm-6">
+                        <label for="txtDescripcion" class="form-label">Descripcion</label>
+                        <input type="text" class="form-control" id="txtDescripcion" autocomplete="off">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="cmbActivo" class="form-label">Activo</label>
+                        <select id="cmbActivo" class="form-select">
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                @*mensaje de alerta*@
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+
+
+        var tabladata;
+        var filaSeleccionada;/*Son variables globales para se usada por lo que este dentro */
+
+
+        jQuery.ajax({/*Llama al metodo de guardar usuario, que dependiendo de la accion va a crear nuevo
+             o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
+            url: '@Url.Action("ListarCategoria", "SIGUP")',
+            type: "GET",
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                console.log(data)
+            }
+        })
+
+        //el hastash significa que se refiere a un id, entonces llama o igual la variable a una tabla declarada
+        //anteriormente en el html de arriba con id que se llama tabla
+        tabladata = $("#tabla").DataTable({
+            responsive: true,/*Para que sea resposiva*/
+            ordering: false,
+            "ajax": {/*Como pinta la tabla, ajax solo trae todos los valores*/
+                url: '@Url.Action("ListarCategoria", "SIGUP")',
+                type: "GET",
+                dataType: "json"
+            },
+            "columns": [/*Todas las columnas que vamos a usar*/
+                /*El data s el origen que se esta llamando en su controlar Mantenedir cuando igualamos en el js un data
+                 y el seguno valor es como se llama la columna*/
+                { "data": "idCategoria" },
+                { "data": "descripcion" },/*El nombre del segundo identificador debe ser igual al de la tabla, la columna*/
+                {
+                    "data": "activo", "render": function (valor) {/*El render permite obtener el valor de la columna activo*/
+                        if (valor) {/*Si el valor es verdadero*/
+                            return '<span class="badge bg-success">Si</span>'
+                        } else {
+                            return '<span class="badge bg-danger">No</span>'
+                        }
+                    }
+
+                },
+                {
+                    "data": "idCategoria", "render": function (data, type, row, meta) {
+
+                        return $("<button>").addClass("btn btn-primary btn-editar btn-sm").append(
+                            $("<i>").addClass("fas fa-pen")
+                        ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
+                            +
+                            $("<button>").addClass("btn btn-danger btn-eliminar btn-sm ms-2").append(
+                                $("<i>").addClass("fas fa-trash")
+                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML;
+
+                    },
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                }
+            ],/*Propiedad o atributos van dentro de las comillas ""*/
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+            }
+
+        });
+
+        @*function abrirModal(json) /*json es el data del siguiente*/ {
+            $("#txtId").val("0"); /*Con el # llama con el id del elemento chtml*/
+            $("#txtDescripcion").val("");
+            $("#cmbActivo").val(1);
+
+
+            $("#mensajeError").hide();
+            /*Llamamos al form modal*/
+            if (json != null) {/*Porque el metodo abrir modal puede abrirse con crear nuevo o con editar,
+             * por eso esta linea*/
+                $("#txtId").val(json.IdCategoria);/*Traerá el codigo pero no lo mostrará al usuario*/
+                $("#txtDescripcion").val(json.Descripcion); /*El json o data, trae una propieadad llamada nombres*/
+                $("#cmbActivo").val(json.Activo == true ? 1 : 0);/*Si es igual a true de el valor de uno
+                 y si no es true de el valor de 0*/
+
+            }
+
+            $("#FormModal").modal("show");
+        }
+        /*--------------- Al dar clic en el boton de editar-------------------------------*/
+
+        /*Estamos llamando a la tabla especificamente al tbody, todo ira en relacion a esa tabla*/
+        $("#tabla tbody").on("click", '.btn-editar', function () {
+            /*This es la misma tabla, se llama
+             tr es el row o la fila seleccionado de la tabla */
+            filaSeleccionada = $(this).closest("tr");
+            var data = tabladata.row(filaSeleccionada).data();
+
+            //console.log(data);/*Para visualizar en consola*/
+            //abrirModal(data);
+            var json = $(this).data("informacion")
+            //console.log(json);
+            abrirModal(json)
+
+        })
+
+        $("#tabla tbody").on("click", '.btn-eliminar', function () {
+
+            //var categoriaSeleccionado = $(this).closest("tr");
+            //console.log(categoriaSeleccionado)
+
+            var json = $(this).data("informacion")
+            //var idcategoria = json.Idcategoria
+            //console.log(json.Idcategoria);
+            //console.log(data);
+            //if (typeof json !== "undefined" && json !== null) {
+            //    // Ahora puedes acceder a las propiedades de data de forma segura
+            //    var id = json.Idcategoria;
+            //    // resto del código aquí
+            //} else {
+            //    console.log("La variable data es undefined o null");
+            //}
+            swal({
+                title: "¿Esta Seguro?",
+                text: "¿Desea eliminar la categoria?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+            function () {
+                jQuery.ajax({
+                    url: '@Url.Action("EliminarCategoria", "Admin")',
+                    type: "POST",
+                    data: JSON.stringify({ id:json.IdCategoria }),/*Paso de valores*/
+                    /*el stringfy lo convierte a texto*/
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {/*Ese data esta almacenando la respuesta del metodo eliminar usuario
+                     * hecho en homeController*/
+                        //ELIMINAR CATEGORIA
+
+                        if (data.resultado) { /*si el resultado es verdadera)*/
+                            //tabladata.row(usuarioSeleccionado).remove().draw();
+                            tabladata.ajax.reload();
+                        }else {
+                            swal("No se pudo eliminar", data.mensaje, "error")
+                        }/*Primer parametro mensaje, luego el mensaje del data, y el tercero indica que es de tipo error*/
+
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+
+                });
+            });
+
+            //console.log(data);
+
+
+        })
+
+        function Guardar() {
+            var Categoria = {
+                IdCategoria: $("#txtId").val(), /*Los dos puntos de la condicion es "si es diferente es:"
+                 el signo de interrogacion es un entonces
+                 leyendo la sentencia de abajo seria, si el valor es igual a 1, entonces es true (verdadero)
+                 pero si es diferentes es falso*/
+                Descripcion: $("#txtDescripcion").val(),/*El punto val sirve para obtener un valor y para establecer un valor*/
+                Activo: $("#cmbActivo").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0)
+                 * o un no (No = 0*/
+            }
+            jQuery.ajax({/*Llama al metodo de guardar usuario, que dependiendo de la accion va a crear nuevo
+             o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
+                url: '@Url.Action("GuardarCategoria", "Admin")',
+                type: "POST",
+                data: JSON.stringify({ objeto: Categoria}),/*Paso de valores
+                 el stringfy lo convierte a texto*/
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    //CATEGORIA NUEVO
+                    if (Categoria.IdCategoria == "0") { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
+                        un usuario nuevo, por lo que se ha dado dando clic con el boton de crear*/
+                        /*alert("Crear usuario")*/
+
+                        if (data.resultado != "0") {
+                            Categoria.IdCategoria = data.resultado;
+                            tabladata.row.add(Categoria).draw(false);
+                            $("#FormModal").modal("hide");
+                            tabladata.ajax.reload();
+                        } else {
+
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                    //CATEGORIA Editar
+                    else {
+                        /*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando
+                         a un usuario, por lo que indica que se ha dado clic en el boton de editar, eso lo comprobamos
+                         con los alert comentados*/
+
+                        if (data.resultado) {
+                            tabladata.ajax.reload();
+                           /* tabladata.row(filaSeleccionada).data(Categoria).draw(false);*/
+                            filaSeleccionada = null;
+                            $("#FormModal").modal("hide");
+
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                },
+                error: function (error) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    $("#mensajeError").text("Error Ajax");
+                    $("#mensajeError").show();
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    });
+                }
+            });
+
+        }*@
+
+        //alert("hola");
+        //var text1 = "Hola soy un texto";
+        /*todo lo que escribamos aca, lo va a heredar la master page, el layout*/
+        /*jquery ya viene implementado con su libreria*/
+
+        @* ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler
+            por medio de ajax podemos obtener listas de usuarios por medio de dato (para este ejemplo)*@
+        @*jQuery.ajax({/*Necesira saber la url*/
+            /*Recordar que el url action, necesita de dos principales, el metodo de accion y el controlador de donde proviene
+             en este caso es un json result*/
+            url: '@Url.Action("ListarUsuarios","Home")', /*En lugar de escribir toda la ruta, podemos colocar esta linea*/
+            type:"GET",
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) { /*data almacena los datos y se imprime en consola*/
+                debugger;
+                var texto1 = "hola soy el texto 1";
+                console.log(data) /* imprime dicha data (puede llamarse data u otro identificador)*/
+            }
+        })*@
+    </script>
+}
+
