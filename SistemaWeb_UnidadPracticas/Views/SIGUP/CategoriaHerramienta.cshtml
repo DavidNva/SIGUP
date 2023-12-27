@@ -252,7 +252,7 @@
 
         function Guardar() {
             var Categoria = {
-                id: $("#txtId").val(), /*Los dos puntos de la condicion es "si es diferente es:"
+                idCategoria: $("#txtId").val(), /*Los dos puntos de la condicion es "si es diferente es:"
                  el signo de interrogacion es un entonces
                  leyendo la sentencia de abajo seria, si el valor es igual a 1, entonces es true (verdadero)
                  pero si es diferentes es falso*/
@@ -260,7 +260,6 @@
                 activo: $("#cmbActivo").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0)
                  * o un no (No = 0*/
             }
-            
             jQuery.ajax({/*Llama al metodo de guardar usuario, que dependiendo de la accion va a crear nuevo
              o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
                 url: '@Url.Action("GuardarCategoria", "SIGUP")',

@@ -68,14 +68,14 @@ create proc sp_EliminarCategoria( --Trabajo como un booleano
 as
 begin 
     SET @Resultado = 0 --false
-    IF NOT EXISTS (SELECT * FROM Libro p --validacion de que la categoria no este relacionada con un producto
+    IF NOT EXISTS (SELECT * FROM Herramienta p --validacion de que la categoria no este relacionada con un producto
     inner join Categoria_Herramienta c on c.IDCategoria = p.Id_Categoria WHERE p.Id_Categoria= @IdCategoria)
     begin 
         delete top(1) from Categoria_Herramienta where IDCategoria = @IdCategoria
         set @Resultado = 1 --true
     end 
     else 
-        set @Mensaje = 'La categoria se encuentra relacionada con un libro'
+        set @Mensaje = 'La categoria se encuentra relacionada con una herramienta'
 end
 GO
 
