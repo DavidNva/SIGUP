@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CapaEntidad
 {
-    class EN_MarcaHerramienta
+    public class EN_MarcaHerramienta
     {
         public int idMarca { get; set; }
         public string descripcion { get; set; }

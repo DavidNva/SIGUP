@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Marcas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mt-4">Prestamos</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Administra los elementos existentes del inventario</li>
+</ol>
+
+<button class="btn btn-success" style="margin-bottom:20px;"> Añadir nuevo </button>
+
+<table id="tabla" class="display cell-border" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Descripcion</th>
+            <th>Activo</th>
+            <th>Fecha de registro</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
+
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        tabladata = $("#tabla").DataTable({
+            responsive: true,/*Para que sea resposiva*/
+            ordering: false,
+            "ajax": {/*Como pinta la tabla, ajax solo trae todos los valores*/
+                url: '@Url.Action("ListarMarca", "SIGUP")',
+                type: "GET",
+                dataType: "json"
+            },
+            "columns": [/*Todas las columnas que vamos a usar*/
+                /*El data s el origen que se esta llamando en su controlar Mantenedir cuando igualamos en el js un data
+                 y el seguno valor es como se llama la columna*/
+                { "data": "idMarca" },
+                { "data": "descripcion" },/*El nombre del segundo identificador debe ser igual al de la tabla, la columna*/
+                {
+                    "data": "activo", "render": function (valor) {/*El render permite obtener el valor de la columna activo*/
+                        if (valor) {/*Si el valor es verdadero*/
+                            return '<span class="badge bg-success">Si</span>'
+                        } else {
+                            return '<span class="badge bg-danger">No</span>'
+                        }
+                    }
+
+                },
+                { "data": "fechaRegistro" },
+                {
+                    "data": "idMarca", "render": function (data, type, row, meta) {
+
+                        return $("<button>").addClass("btn btn-primary btn-editar btn-sm").append(
+                            $("<i>").addClass("fas fa-pen")
+                        ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
+                            +
+                            $("<button>").addClass("btn btn-danger btn-eliminar btn-sm ms-2").append(
+                                $("<i>").addClass("fas fa-trash")
+                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML;
+
+                    }
+                }
+            ]
+        });
+    </script>
+}
+

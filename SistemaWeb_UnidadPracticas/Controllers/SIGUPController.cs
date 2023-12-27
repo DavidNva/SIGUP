@@ -25,6 +25,11 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return View();
         }
 
+        public ActionResult MarcaHerramienta()
+        {
+            return View();
+        }
+
 
 
         /*--------------CATEGORIA---------------------*/
@@ -34,6 +39,19 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         {
             List<EN_CategoriaHerramienta> oLista = new List<EN_CategoriaHerramienta >();
             oLista = new RN_CategoriaHerramienta().Listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+            /*El json da los datos, jala los datos de esa lista, en data*/
+        }
+
+        #endregion
+
+        /*--------------MARCA HERRAMIENTA---------------------*/
+        #region MARCA HERRAMIENTA
+        [HttpGet] /*Una URL que devuelve datos, un httpost se le pasan los valores y despues devuelve los datos  */
+        public JsonResult ListarMarca() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            List<EN_MarcaHerramienta> oLista = new List<EN_MarcaHerramienta>();
+            oLista = new RN_MarcaHerramienta().Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
             /*El json da los datos, jala los datos de esa lista, en data*/
         }
