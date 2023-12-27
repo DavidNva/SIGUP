@@ -57,7 +57,7 @@
             <div class="modal-body">
                 @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
 
-                <input id="txtId" type="hidden" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
+                <input id="txtId" type="text" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
                     pero si es diferente a 0 significa que ya existe y vamos a editar*@
                 <div class="row g-1">
                     <!--Porque solamente esta formando una fila-->
@@ -252,30 +252,30 @@
 
         function Guardar() {
             var Categoria = {
-                IdCategoria: $("#txtId").val(), /*Los dos puntos de la condicion es "si es diferente es:"
+                idCategoria: $("#txtId").val(), /*Los dos puntos de la condicion es "si es diferente es:"
                  el signo de interrogacion es un entonces
                  leyendo la sentencia de abajo seria, si el valor es igual a 1, entonces es true (verdadero)
                  pero si es diferentes es falso*/
-                Descripcion: $("#txtDescripcion").val(),/*El punto val sirve para obtener un valor y para establecer un valor*/
-                Activo: $("#cmbActivo").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0)
+                descripcion: $("#txtDescripcion").val(),/*El punto val sirve para obtener un valor y para establecer un valor*/
+                activo: $("#cmbActivo").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0)
                  * o un no (No = 0*/
             }
             jQuery.ajax({/*Llama al metodo de guardar usuario, que dependiendo de la accion va a crear nuevo
              o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
-                url: '@Url.Action("GuardarCategoria", "Admin")',
+                url: '@Url.Action("GuardarCategoria", "SIGUP")',
                 type: "POST",
                 data: JSON.stringify({ objeto: Categoria}),/*Paso de valores
                  el stringfy lo convierte a texto*/
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    $(".modal-body").LoadingOverlay("hide");
+                   /* $(".modal-body").LoadingOverlay("hide");*/
                     //CATEGORIA NUEVO
                     if (Categoria.IdCategoria == "0") { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
                         un usuario nuevo, por lo que se ha dado dando clic con el boton de crear*/
                         /*alert("Crear usuario")*/
 
-                        if (data.resultado != "0") {
+                        if (data.resultado != 0) {
                             Categoria.IdCategoria = data.resultado;
                             tabladata.row.add(Categoria).draw(false);
                             $("#FormModal").modal("hide");
@@ -305,16 +305,16 @@
                     }
                 },
                 error: function (error) {
-                    $(".modal-body").LoadingOverlay("hide");
+                   /* $(".modal-body").LoadingOverlay("hide");*/
                     $("#mensajeError").text("Error Ajax");
                     $("#mensajeError").show();
                 },
                 beforeSend: function () {
-                    $(".modal-body").LoadingOverlay("show", {
-                        imageResizeFactor: 2,
-                        text: "Cargando...",
-                        size: 14
-                    });
+                    //$(".modal-body").LoadingOverlay("show", {
+                    //    imageResizeFactor: 2,
+                    //    text: "Cargando...",
+                    //    size: 14
+                    //});
                 }
             });
 
