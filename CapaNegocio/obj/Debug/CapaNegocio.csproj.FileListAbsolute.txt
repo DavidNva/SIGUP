@@ -20,3 +20,14 @@ C:\Users\eljho\source\repos\SIGUP\SIGUP\CapaNegocio\obj\Debug\CapaNegocio.csproj
 C:\Users\eljho\source\repos\SIGUP\SIGUP\CapaNegocio\obj\Debug\CapaNegocio.csproj.CopyComplete
 C:\Users\eljho\source\repos\SIGUP\SIGUP\CapaNegocio\obj\Debug\CapaNegocio.dll
 C:\Users\eljho\source\repos\SIGUP\SIGUP\CapaNegocio\obj\Debug\CapaNegocio.pdb
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\bin\Debug\CapaNegocio.dll
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\bin\Debug\CapaNegocio.pdb
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\bin\Debug\CapaDatos.dll
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\bin\Debug\CapaEntidad.dll
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\bin\Debug\CapaDatos.pdb
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\bin\Debug\CapaEntidad.pdb
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\obj\Debug\CapaNegocio.csproj.AssemblyReference.cache
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\obj\Debug\CapaNegocio.csproj.CoreCompileInputs.cache
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\obj\Debug\CapaNegocio.csproj.CopyComplete
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\obj\Debug\CapaNegocio.dll
+D:\SistemaUnidadPracticas - copia\SistemaWeb_UnidadPracticas\CapaNegocio\obj\Debug\CapaNegocio.pdb
