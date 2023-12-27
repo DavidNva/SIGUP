@@ -31,9 +31,11 @@ namespace SistemaWeb_UnidadPracticas
 
             bundles.Add(new Bundle("~/bundles/complementos").Include(
                        "~/Scripts/fontawesome/all.min.js",
-                       "~/Scripts/scripts.js",
+                       "~/Scripts/scripts.js", /*El nuevo archivo de JavaScript copiado*/
                        "~/Scripts/DataTables/jquery.dataTables.min.js",/*Para las tablas incluida nueva*/
-                       "~/Scripts/DataTables/dataTables.responsive.min.js"
+                       "~/Scripts/DataTables/dataTables.responsive.min.js",
+                       "~/Scripts/loadingoverlay/loadingoverlay.min.js",
+                       "~/Scripts/sweetalert.min.js"
                        ));
 
 
@@ -58,7 +60,8 @@ namespace SistemaWeb_UnidadPracticas
             bundles.Add(new StyleBundle("~/Content/css").Include(/*"~/Content/bootstrap.css",*/
                 "~/Content/site.css",
                 "~/Content/DataTables/css/jquery.dataTables.min.css",
-                "~/Content/DataTables/css/responsive.dataTables.min.css"
+                "~/Content/DataTables/css/responsive.dataTables.min.css",
+                "~/Content/sweetalert.css"
                 //,
                 //"~/Content/DataTables/css/jquery.dataTables.min.css",
                 //"~/Content/DataTables/css/responsive.dataTables.min.css",
