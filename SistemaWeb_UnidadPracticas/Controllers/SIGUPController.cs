@@ -25,12 +25,20 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return View();
         }
 
-        public ActionResult MarcaHerramienta()
+        public ActionResult Herramientas()
         {
             return View();
         }
 
+        public ActionResult Usuarios()
+        {
+            return View();
+        }
 
+        public ActionResult Prestamos()
+        {
+            return View();
+        }
 
         /*--------------CATEGORIA---------------------*/
         #region CATEGORIA

@@ -460,7 +460,9 @@
     <Content Include="webfonts\fa-brands-400.eot" />
     <Content Include="Views\SIGUP\Index.cshtml" />
     <Content Include="Views\SIGUP\CategoriaHerramienta.cshtml" />
-    <Content Include="Views\SIGUP\MarcaHerramienta.cshtml" />
+    <Content Include="Views\SIGUP\Herramientas.cshtml" />
+    <Content Include="Views\SIGUP\Usuarios.cshtml" />
+    <Content Include="Views\SIGUP\Prestamos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
