@@ -18,7 +18,7 @@
                 @*numero de filas*@
                 <button type="button" class="btn btn-success" onclick="abrirModal()">Crear Nuevo</button>
 
-                <form action="@Url.Action("DescargarPDF_Categoria","Admin")" class="mt-0 ml-2">
+                <form action="@Url.Action("DescargarPDF_Categoria","SIGUP")" class="mt-0 ml-2">
                     <button class="btn btn-danger" type="submit"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
                 </form>
             </div>
@@ -57,7 +57,7 @@
             <div class="modal-body">
                 @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
 
-                <input id="txtId" type="text" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
+                <input id="txtId" type="hidden" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
                     pero si es diferente a 0 significa que ya existe y vamos a editar*@
                 <div class="row g-1">
                     <!--Porque solamente esta formando una fila-->
@@ -96,7 +96,10 @@
     <script>
         var tabladata;
         var filaSeleccionada;/*Son variables globales para se usada por lo que este dentro */
-        jQuery.ajax({/*Llama al metodo de guardar usuario, que dependiendo de la accion va a crear nuevo
+
+        @*
+            Este solo se uso de ejemplo para ver los datos listados en consola
+            jQuery.ajax({/*Llama al metodo de guardar usuario, que dependiendo de la accion va a crear nuevo
              o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
             url: '@Url.Action("ListarCategoria", "SIGUP")',
             type: "GET",
@@ -106,7 +109,7 @@
 
                 console.log(data)
             }
-        })
+        })*@
 
         //el hastash significa que se refiere a un id, entonces llama o igual la variable a una tabla declarada
         //anteriormente en el html de arriba con id que se llama tabla
@@ -220,9 +223,9 @@
             },
             function () {
                 jQuery.ajax({
-                    url: '@Url.Action("EliminarCategoria", "Admin")',
+                    url: '@Url.Action("EliminarCategoria", "SIGUP")',
                     type: "POST",
-                    data: JSON.stringify({ id:json.IdCategoria }),/*Paso de valores*/
+                    data: JSON.stringify({ id:json.idCategoria }),/*Paso de valores*/
                     /*el stringfy lo convierte a texto*/
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
@@ -269,7 +272,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                   /* $(".modal-body").LoadingOverlay("hide");*/
+                    $(".modal-body").LoadingOverlay("hide");
                     //CATEGORIA NUEVO
                     if (Categoria.IdCategoria == "0") { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
                         un usuario nuevo, por lo que se ha dado dando clic con el boton de crear*/
@@ -305,16 +308,16 @@
                     }
                 },
                 error: function (error) {
-                   /* $(".modal-body").LoadingOverlay("hide");*/
+                    $(".modal-body").LoadingOverlay("hide");
                     $("#mensajeError").text("Error Ajax");
                     $("#mensajeError").show();
                 },
                 beforeSend: function () {
-                    //$(".modal-body").LoadingOverlay("show", {
-                    //    imageResizeFactor: 2,
-                    //    text: "Cargando...",
-                    //    size: 14
-                    //});
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 24
+                    });
                 }
             });
 

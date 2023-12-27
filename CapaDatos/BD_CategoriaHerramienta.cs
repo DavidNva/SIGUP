@@ -151,7 +151,7 @@ namespace CapaDatos
             return resultado;
         }
 
-        public bool Eliminar(string id, out string Mensaje)//out indica parametro de salida
+        public bool Eliminar(int id, out string Mensaje)//out indica parametro de salida
         {
             bool resultado = false;
 

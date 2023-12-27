@@ -75,7 +75,7 @@ namespace SistemaWeb_UnidadPracticas.Controllers
 
 
         [HttpPost]
-        public JsonResult EliminarCategoria(string id)
+        public JsonResult EliminarCategoria(int id)
         {
             bool respuesta = false;
             string mensaje = string.Empty;
