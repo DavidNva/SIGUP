@@ -21,8 +21,58 @@
     <div class="tab-pane fade show active" id="nav-herramientas" role="tabpanel" aria-labelledby="nav-herramientas-tab">
         <button class="btn btn-success" style="margin:20px 0;"> Añadir nuevo </button>
     </div>
+
     <div class="tab-pane fade" id="nav-marcas" role="tabpanel" aria-labelledby="nav-marcas-tab">
-        <button class="btn btn-success" style="margin:20px 0;"> Añadir nuevo </button>
+        <button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null, 'marcas')"> Añadir nuevo </button>
+
+        <!-- Modal, con el id FormModal vamos a llamarlo cuando deseamos que aparezca y cuando no
+        al momento de precionar el boton nuevo-->
+        <div class="modal fade" id="FormModal_Marcas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            @*Esto ultimo de data-bs-backdrop es para*@
+            <div class="modal-dialog">
+                @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="exampleModalLabel">Nueva marca</h5>
+                        <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
+
+                        <input id="txtIdMarca" type="hidden" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
+                            pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                        <div class="row g-1">
+                            <!--Porque solamente esta formando una fila-->
+
+                            <div class="col-sm-6">
+                                <label for="txtDescripcion" class="form-label">Descripcion</label>
+                                <input type="text" class="form-control" id="txtDescripcionMarca" autocomplete="off">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="cmbActivo" class="form-label">Activo</label>
+                                <select id="cmbActivoMarca" class="form-select">
+                                    <option value="1">Si</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        @*mensaje de alerta*@
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <div id="mensajeError" class="alert alert-danger" role="alert">
+                                    A simple danger alert—check it out!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="guardar('marcas')">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <table id="tablaMarcas" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
@@ -39,8 +89,59 @@
             </tbody>
         </table>
     </div>
+
     <div class="tab-pane fade" id="nav-categorias" role="tabpanel" aria-labelledby="nav-categorias-tab">
-        <button class="btn btn-success" style="margin:20px 0;"> Añadir nuevo </button>
+        <button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null, 'categorias')"> Añadir nuevo </button>
+
+        <!-- Modal, con el id FormModal vamos a llamarlo cuando deseamos que aparezca y cuando no
+        al momento de precionar el boton nuevo-->
+        <div class="modal fade" id="FormModal_Categorias" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            @*Esto ultimo de data-bs-backdrop es para*@
+            <div class="modal-dialog">
+                @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="exampleModalLabel">Categoria</h5>
+                        <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
+
+                        <input id="txtIdCatego" type="hidden" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
+                            pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                        <div class="row g-1">
+                            <!--Porque solamente esta formando una fila-->
+
+                            <div class="col-sm-6">
+                                <label for="txtDescripcion" class="form-label">Descripcion</label>
+                                <input type="text" class="form-control" id="txtDescripcionCatego" autocomplete="off">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="cmbActivo" class="form-label">Activo</label>
+                                <select id="cmbActivoCatego" class="form-select">
+                                    <option value="1">Si</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        @*mensaje de alerta*@
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <div id="mensajeError" class="alert alert-danger" role="alert">
+                                    A simple danger alert—check it out!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="guardar('categorias')">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <table id="tablaCategoria" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
@@ -72,9 +173,9 @@
         </tr>
     </thead>
     <tbody>-->
-        @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
+@*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
 
-    <!--</tbody>
+<!--</tbody>
 </table>-->
 
 @section scripts{
@@ -120,6 +221,169 @@
                 }
             ]
         });
+
+        function abrirModal(json, modal) {
+            switch (modal) {
+                case 'herramientas':
+
+                    break;
+                case 'marcas':
+                    $("#txtIdMarca").val(0); /*Con el # llama con el id del elemento chtml*/
+                    $("#txtDescripcionMarca").val("");
+                    $("#cmbActivoMarca").val(1);
+
+
+                    $("#mensajeError").hide();
+                    /*Llamamos al form modal*/
+                    if (json != null) {
+                        $("#txtId").val(json.idCategoria);
+                        $("#txtDescripcion").val(json.descripcion);
+                        $("#cmbActivo").val(json.activo == true ? 1 : 0);
+                    }
+
+                    $("#FormModal_Marcas").modal("show");
+                    break;
+                case 'categorias':
+                    $("#txtId").val(0); /*Con el # llama con el id del elemento chtml*/
+                    $("#txtDescripcion").val("");
+                    $("#cmbActivo").val(1);
+
+
+                    $("#mensajeError").hide();
+                    /*Llamamos al form modal*/
+                    if (json != null) {
+                        $("#txtId").val(json.idCategoria);
+                        $("#txtDescripcion").val(json.descripcion);
+                        $("#cmbActivo").val(json.activo == true ? 1 : 0);
+                    }
+
+                    $("#FormModal_Categorias").modal("show");
+                    break;
+
+                default:
+                    alert('No se ha seleccionado alguno');
+                    break;
+            }
+        }
+
+        function guardar(elemento) {
+            switch (elemento) {
+                case 'herramientas':
+                    break;
+
+                case 'marcas':
+                    console.log('En marcas');
+                    var marca = {
+                        idMarca: $("#txtIdMarca").val(),
+                        descripcion: $("#txtDescripcionMarca").val(),
+                        activo: $("#cmbActivoMarca").val() == 1 ? true : false
+                    }
+                    console.log(marca['descripcion']);
+
+                    jQuery.ajax({
+                        url: '@Url.Action("guardarMarca", "SIGUP")',
+                        type: "POST",
+                        data: JSON.stringify({ objeto: marca }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (marca.IdMarca == "0") {
+                                
+                                if (data.resultado != 0) {
+                                    marca.idMarca = data.resultado;
+                                    tablaMarcas.row.add(marca).draw(false);
+                                    $("formModal_Marcas").modal("hide");
+                                    tablaMarcas.ajax.reload();
+                                } else {
+                                    $("#mensajeError").text(data.mensaje);
+                                    $("#mensajeError").show();
+                                }
+                            }
+                        },
+
+                        error: function (error) {
+                            /* $(".modal-body").LoadingOverlay("hide");*/
+                            console.log("Error de no se que :V");
+                            $("#mensajeError").text("Error Ajax");
+                            $("#mensajeError").show();
+                        }
+                    })
+                    break;
+
+                case 'categorias':
+                    var Categoria = {
+                id: $("#txtIdCatego").val(), /*Los dos puntos de la condicion es "si es diferente es:"
+                 el signo de interrogacion es un entonces
+                 leyendo la sentencia de abajo seria, si el valor es igual a 1, entonces es true (verdadero)
+                 pero si es diferentes es falso*/
+                descripcion: $("#txtDescripcionCatego").val(),/*El punto val sirve para obtener un valor y para establecer un valor*/
+                activo: $("#cmbActivoCatego").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0)
+                 * o un no (No = 0*/
+            }
+            jQuery.ajax({/*Llama al metodo de guardar usuario, que dependiendo de la accion va a crear nuevo
+             o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
+                url: '@Url.Action("GuardarCategoria", "SIGUP")',
+                type: "POST",
+                data: JSON.stringify({ objeto: Categoria}),/*Paso de valores
+                 el stringfy lo convierte a texto*/
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                   /* $(".modal-body").LoadingOverlay("hide");*/
+                    //CATEGORIA NUEVO
+                    if (Categoria.IdCategoria == "0") { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
+                        un usuario nuevo, por lo que se ha dado dando clic con el boton de crear*/
+                        /*alert("Crear usuario")*/
+
+                        if (data.resultado != 0) {
+                            Categoria.IdCategoria = data.resultado;
+                            tablaCategorias.row.add(Categoria).draw(false);
+                            $("#FormModal").modal("hide");
+                            tabladataCategorias.ajax.reload();
+                        } else {
+
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                    //CATEGORIA Editar
+                    else {
+                        /*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando
+                         a un usuario, por lo que indica que se ha dado clic en el boton de editar, eso lo comprobamos
+                         con los alert comentados*/
+                        Console.log("En else");
+                        if (data.resultado) {
+                            tabladataCategorias.ajax.reload();
+                           /* tabladata.row(filaSeleccionada).data(Categoria).draw(false);*/
+                            filaSeleccionada = null;
+                            $("#FormModal_Categorias").modal("hide");
+
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                },
+                error: function (error) {
+                    /* $(".modal-body").LoadingOverlay("hide");*/
+                    console.log("Error de no se que :V");
+                    $("#mensajeError").text("Error Ajax");
+                    $("#mensajeError").show();
+                },
+                beforeSend: function () {
+                    //$(".modal-body").LoadingOverlay("show", {
+                    //    imageResizeFactor: 2,
+                    //    text: "Cargando...",
+                    //    size: 14
+                    //});
+                }
+            });
+                    break;
+                default:
+                    alert('No se ha seleccionado ningun case');
+                    break;
+            }
+        }
 
         tablaCategoria = $("#tablaCategoria").DataTable({
             responsive: true,/*Para que sea resposiva*/

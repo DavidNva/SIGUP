@@ -77,6 +77,31 @@ begin
     else 
         set @Mensaje = 'La categoria se encuentra relacionada con un libro'
 end
+GO
+
+create procedure sp_RegistrarMarca(--Hay un indice unico para el nombre completo del Categoria 
+    --@IDCategoria int,---El id es Identity
+    @Descripcion varchar(100),--Tiene indice compuesto con Apellidos
+    @Activo bit,
+    @Mensaje varchar(500) output,
+    @Resultado int output
+    --@ID_TipoPersona int --ESTARÁ COMO DEFAULT = 1, ES DECIR, COMO LECTOR
+    --FechaCreacion date --Esta como default DEFAULT GETDATE()
+    )
+as
+begin
+    SET @Resultado = 0 --No permite repetir un mismo correo, ni al insertar ni al actualizar
+    IF NOT EXISTS (SELECT * FROM marca_herramienta WHERE Descripcion = @Descripcion)
+    begin 
+        insert into marca_herramienta(Descripcion, Activo) values 
+        (@Descripcion, @Activo)
+        --La función SCOPE_IDENTITY() devuelve el último ID generado para cualquier tabla de la sesión activa y en el ámbito actual.
+        SET @Resultado = scope_identity()
+    end 
+    else 
+     SET @Mensaje = 'La categoria ya existe'
+end
+
 
 
 go

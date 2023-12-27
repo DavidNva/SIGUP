@@ -15,5 +15,28 @@ namespace CapaNegocio
         {
             return marcaHerramienta.Listar();
         }
+
+        public int registrar(EN_MarcaHerramienta marca, out string mensaje)
+        {
+            mensaje = string.Empty;
+            Console.WriteLine(marca.descripcion);
+
+            //if (string.IsNullOrEmpty(marca.descripcion) || string.IsNullOrWhiteSpace(marca.descripcion))
+            //{
+            //    mensaje = "La descripción es obligatoria";
+            //}
+
+            if (string.IsNullOrEmpty(mensaje))
+            {
+                Console.WriteLine(marca.descripcion);
+                return marcaHerramienta.añadir_marca(marca, out mensaje);
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        }
     }
 }

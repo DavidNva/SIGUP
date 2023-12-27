@@ -97,6 +97,24 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             /*El json da los datos, jala los datos de esa lista, en data*/
         }
 
+        [HttpPost]
+        public JsonResult guardarMarca(EN_MarcaHerramienta marca_entidad)
+        {
+            object resultado = null;
+            string mensaje = string.Empty;
+
+            if (marca_entidad.idMarca == 0)
+            {
+                resultado = new RN_MarcaHerramienta().registrar(marca_entidad, out mensaje);
+            }
+            else
+            {
+                Console.WriteLine("Se intentó editar");
+                //resultado = new RN_CategoriaHerramienta().Editar(marca_entidad, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
 

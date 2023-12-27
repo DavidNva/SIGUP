@@ -24,6 +24,8 @@ namespace CapaNegocio
 
         public int Registrar(EN_CategoriaHerramienta obj, out string Mensaje)
         {
+            Console.WriteLine(obj.descripcion);
+            Console.WriteLine(obj.activo);
             Mensaje = string.Empty;
             //Validaciones para que la caja de texto no este vacio o con espacios
             if (string.IsNullOrEmpty(obj.descripcion) || string.IsNullOrWhiteSpace(obj.descripcion))

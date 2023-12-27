@@ -11,18 +11,35 @@ namespace CapaDatos
 {
     public class BD_MarcaHerramienta
     {
-        public bool añadir_marca()
+        public int añadir_marca(EN_MarcaHerramienta marca, out string mensaje)
         {
+            int idAutogenerado = 0;
+            mensaje = string.Empty;
             try
             {
+                using (SqlConnection conexion = new SqlConnection(BD_Conexion.cn))
+                {
+                    SqlCommand sqlCommand = new SqlCommand("sp_RegistrarMarca", conexion);
+                    sqlCommand.Parameters.AddWithValue("@DescripcionMarca", marca.descripcion);
+                    sqlCommand.Parameters.AddWithValue("@Activo", marca.activo);
 
-                return true;
+                    sqlCommand.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    sqlCommand.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                    conexion.Open();
+                    sqlCommand.ExecuteNonQuery();
+                    idAutogenerado = Convert.ToInt32(sqlCommand.Parameters["Resultado"].Value);
+                    mensaje = sqlCommand.Parameters["Mensaje"].Value.ToString();
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return false;
+                idAutogenerado = 0;/*Regresa a 0*/
+                mensaje = ex.Message;
+                Console.WriteLine(ex.Message);
             }
+            return idAutogenerado;
         }
 
         public bool modificar_marca()
