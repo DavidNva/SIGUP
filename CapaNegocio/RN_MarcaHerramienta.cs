@@ -21,10 +21,10 @@ namespace CapaNegocio
             mensaje = string.Empty;
             Console.WriteLine(marca.descripcion);
 
-            //if (string.IsNullOrEmpty(marca.descripcion) || string.IsNullOrWhiteSpace(marca.descripcion))
-            //{
-            //    mensaje = "La descripción es obligatoria";
-            //}
+            if (string.IsNullOrEmpty(marca.descripcion) || string.IsNullOrWhiteSpace(marca.descripcion))
+            {
+                mensaje = "La descripción es obligatoria";
+            }
 
             if (string.IsNullOrEmpty(mensaje))
             {
@@ -37,6 +37,30 @@ namespace CapaNegocio
             }
 
 
+        }
+
+        public bool editarMarca(EN_MarcaHerramienta marca, out string mensaje)
+        {
+            mensaje = string.Empty;
+            if (string.IsNullOrEmpty(marca.descripcion) || string.IsNullOrWhiteSpace(marca.descripcion))
+            {
+                mensaje = "La descripción es obligatoria";
+            }
+
+            if (string.IsNullOrEmpty(mensaje))
+            {
+                return marcaHerramienta.modificar_marca(marca, out mensaje);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool eliminarMarca(int id, out string mensaje)
+        {
+            mensaje = string.Empty;
+            return marcaHerramienta.eliminar_marca(id, out mensaje);
         }
     }
 }

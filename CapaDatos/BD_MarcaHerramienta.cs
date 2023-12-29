@@ -42,30 +42,65 @@ namespace CapaDatos
             return idAutogenerado;
         }
 
-        public bool modificar_marca()
+        public bool modificar_marca(EN_MarcaHerramienta marca, out string mensaje)
         {
+            bool resultado;
+            mensaje = string.Empty;
             try
             {
+                using (SqlConnection sqlConnection = new SqlConnection(BD_Conexion.cn))
+                {
+                    SqlCommand sqlCommand = new SqlCommand("sp_editarMarca", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@IdMarca", marca.idMarca);
+                    sqlCommand.Parameters.AddWithValue("@Descripcion", marca.descripcion);
+                    sqlCommand.Parameters.AddWithValue("@Activo", marca.activo);
 
-                return true;
+                    sqlCommand.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    sqlCommand.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.ExecuteNonQuery();
+                    resultado = Convert.ToBoolean(sqlCommand.Parameters["Resultado"].Value);
+                    mensaje = sqlCommand.Parameters["Mensaje"].Value.ToString();
+                }
+                    
+                return resultado;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
                 return false;
             }
         }
 
-        public bool eliminar_marca()
+        public bool eliminar_marca(int id, out string mensaje)
         {
+            bool resultado;
+            mensaje = string.Empty;
             try
             {
+                using (SqlConnection sqlConnection = new SqlConnection(BD_Conexion.cn))
+                {
+                    SqlCommand sqlCommand = new SqlCommand("sp_eliminarMarca", sqlConnection);
+                    //sqlCommand.Parameters.AddWithValue("@IdMarca", id);
+                    sqlCommand.Parameters.Add("@IdMarca", SqlDbType.Int);
+                    sqlCommand.Parameters["@IdMarca"].Value = id;
 
-                return true;
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                    sqlCommand.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    sqlCommand.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+
+                    sqlConnection.Open();
+                    sqlCommand.ExecuteNonQuery();
+
+                    resultado = Convert.ToBoolean(sqlCommand.Parameters["Resultado"].Value);
+                    mensaje = sqlCommand.Parameters["Mensaje"].Value.ToString();
+                }
+                return resultado;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
                 return false;
             }
         }
@@ -77,7 +112,7 @@ namespace CapaDatos
             {
                 using (SqlConnection oConexion = new SqlConnection(BD_Conexion.cn))
                 {
-                    string query = "SELECT * FROM marca_herramienta";
+                    string query = "SELECT IdMarca, Descripcion, Activo FROM marca_herramienta";
                     SqlCommand cmd = new SqlCommand(query, oConexion);
                     cmd.CommandType = CommandType.Text;/*En este caso es de tipo Text (no usamos para este ejemplo, procedimientos almacenados*/
 
@@ -91,8 +126,7 @@ namespace CapaDatos
                                 {
                                     idMarca = Convert.ToInt32(dr["IdMarca"]),
                                     descripcion = dr["Descripcion"].ToString(),
-                                    activo = Convert.ToBoolean(dr["Activo"]),
-                                    fechaRegistro = dr["FechaRegistro"].ToString()
+                                    activo = Convert.ToBoolean(dr["Activo"])
                                 });
                         }
                         Console.WriteLine(lista.Count);

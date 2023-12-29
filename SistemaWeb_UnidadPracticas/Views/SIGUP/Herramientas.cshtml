@@ -19,7 +19,97 @@
 
 <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="nav-herramientas" role="tabpanel" aria-labelledby="nav-herramientas-tab">
-        <button class="btn btn-success" style="margin:20px 0;"> Añadir nuevo </button>
+        <button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null, 'herramientas')"> Añadir herramienta </button>
+
+        <!-- Modal, con el id FormModal vamos a llamarlo cuando deseamos que aparezca y cuando no
+    al momento de precionar el boton nuevo-->
+        <div class="modal fade" id="FormModal_Herramientas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            @*Esto ultimo de data-bs-backdrop es para*@
+            <div class="modal-dialog">
+                @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="exampleModalLabel">Nueva marca</h5>
+                        <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
+
+                        <input id="txtIdHerramienta" type="text" value="0" placeholder="Ingresa el identificador de tu herramienta" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
+                        pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                        <div class="row g-1">
+                            <!--Porque solamente esta formando una fila-->
+
+                            <div class="col-sm-6">
+                                <label for="txtDescripcionMarca" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="txtNombreHerramienta" autocomplete="off" placeholder="Ingresa el nombre de tu herramienta">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="txtDescripcionMarca" class="form-label">Stock</label>
+                                <input type="number" class="form-control" id="txtStockHerramienta" autocomplete="off">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="txtDescripcionMarca" class="form-label">Observaciones</label>
+                                <input type="text" class="form-control" id="txtObservacionesHerramienta" autocomplete="off" placeholder="Ingresa observaciones iniciales de la herramienta">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="cmbActivoHerramienta" class="form-label"> ¿Está disponible para prestamos? </label>
+                                <select id="cmbActivoHerramienta" class="form-select">
+                                    <option value="1">Si</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="cmbMarcaHerramienta" class="form-label"> Marca </label>
+                                <select id="cmbMarcaHerramienta" class="form-select">
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="cmbCategoriaHerramienta" class="form-label"> Categoría para la herramienta </label>
+                                <select id="cmbCategoriaHerramienta" class="form-select">
+                                </select>
+                            </div>
+                        </div>
+                        @*mensaje de alerta*@
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <div id="mensajeErrorHerramientas" class="alert alert-danger" role="alert">
+                                    ...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCerrar">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="guardar('marcas')">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="tablaHerramientas" class="display cell-border" style="width:100%">
+            <thead class="text-lg-center">
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Marca</th>
+                    <th>Categoría</th>
+                    <th>Observaciones</th>
+                    <th>Activo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="text-lg-center">
+                @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
+
+            </tbody>
+        </table>
     </div>
 
     <div class="tab-pane fade" id="nav-marcas" role="tabpanel" aria-labelledby="nav-marcas-tab">
@@ -67,7 +157,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCerrar">Cerrar</button>
                         <button type="button" class="btn btn-primary" onclick="guardar('marcas')">Guardar</button>
                     </div>
                 </div>
@@ -79,7 +169,6 @@
                     <th>#</th>
                     <th>Descripcion</th>
                     <th>Activo</th>
-                    <th>Fecha de registro</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -97,6 +186,7 @@
             <li class="breadcrumb-item"><a href="#">Administrador</a></li>
             <li class="breadcrumb-item active">Categorias</li>
         </ol>
+
         <div class="card">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>Lista de Categorias
@@ -246,6 +336,57 @@
     <script>
         var tablaMarcas;
         var tablaCategorias;
+        var tablaHerramientas;
+
+        tablaHerramientas = $("#tablaHerramientas").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("listarHerramientas", "SIGUP")',
+                type: 'GET',
+                dataType: 'json'
+            },
+            "columns": [
+                { "data": "idHerramienta" },
+                { "data": "nombre" },
+                { "data": "cantidad" },
+                {
+                    "data": "marca", "render": function (data) {
+                        return data.descripcion
+                    }
+                },
+                {
+                    "data": "categoHerramienta", "render": function (data) {
+                        return data.descripcion
+                    }
+                },
+                { "data": "observaciones" },
+                {
+                    "data": "activo", "render": function (valor) {
+                        if (valor) {/*Si el valor es verdadero*/
+                            return '<span class="badge bg-success">Si</span>'
+                        } else {
+                            return '<span class="badge bg-danger">No</span>'
+                        }
+                    }
+                },
+                {
+                    "data": "IdHerramienta", "render": function (data, type, row, meta) {
+
+                        return $("<button>").addClass("btn btn-primary btn-editarHerramienta btn-sm").append(
+                            $("<i>").addClass("fas fa-pen")
+                        ).attr({ "data-informacionherramienta": JSON.stringify(row) })[0].outerHTML
+                            +
+                            $("<button>").addClass("btn btn-danger btn-eliminarHerramienta btn-sm ms-2").append(
+                                $("<i>").addClass("fas fa-trash")
+                            ).attr({ "data-informacionherramienta": JSON.stringify(row) })[0].outerHTML;
+
+                    }
+                }
+
+            ]
+        })
+
         tablaMarcas = $("#tablaMarcas").DataTable({
             responsive: true,/*Para que sea resposiva*/
             ordering: false,
@@ -269,17 +410,16 @@
                     }
 
                 },
-                { "data": "fechaRegistro" },
                 {
                     "data": "idMarca", "render": function (data, type, row, meta) {
 
                         return $("<button>").addClass("btn btn-primary btn-editarMarca btn-sm").append(
                             $("<i>").addClass("fas fa-pen")
-                        ).attr({ "data-informacionMarca": JSON.stringify(row) })[0].outerHTML
+                        ).attr({ "data-informacionmarca": JSON.stringify(row) })[0].outerHTML
                             +
                             $("<button>").addClass("btn btn-danger btn-eliminarMarca btn-sm ms-2").append(
                                 $("<i>").addClass("fas fa-trash")
-                            ).attr({ "data-informacionMarca": JSON.stringify(row) })[0].outerHTML;
+                            ).attr({ "data-informacionmarca": JSON.stringify(row) })[0].outerHTML;
 
                     }
                 }
@@ -358,7 +498,21 @@
         function abrirModal(json, modal) {
             switch (modal) {
                 case 'herramientas':
+                    $("#txtIdHerramienta").val(0);
+                    $("#txtNombreHerramienta").val("");
+                    $("#txtStockHerramienta").val(0);
+                    $("#txtObservacionesHerramienta").val("");
+                    $("#cmbActivoHerramienta").val(1);
 
+                    $("#mensajeErrorHerramientas").hide();
+                    /*Llamamos al form modal*/
+                    if (json != null) {
+                        $("#txtIdMarca").val(json.idMarca);
+                        $("#txtDescripcionMarca").val(json.descripcion);
+                        $("#cmbActivoMarca").val(json.activo == true ? 1 : 0);
+                    }
+
+                    $("#FormModal_Herramientas").modal("show");
                     break;
                 case 'marcas':
                     $("#txtIdMarca").val(0); /*Con el # llama con el id del elemento chtml*/
@@ -369,7 +523,7 @@
                     $("#mensajeErrorMarca").hide();
                     /*Llamamos al form modal*/
                     if (json != null) {
-                        $("#txtIdMarca").val(json.idCategoria);
+                        $("#txtIdMarca").val(json.idMarca);
                         $("#txtDescripcionMarca").val(json.descripcion);
                         $("#cmbActivoMarca").val(json.activo == true ? 1 : 0);
                     }
@@ -440,20 +594,32 @@
                     jQuery.ajax({
                         url: '@Url.Action("guardarMarca", "SIGUP")',
                         type: "POST",
-                        data: JSON.stringify({ objeto: marca }),
+                        data: JSON.stringify({ marca: marca }),
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
-                            if (marca.IdMarca == "0") {
-
+                            if (marca.idMarca == "0") {
                                 if (data.resultado != 0) {
+                                    console.log("Entró");
                                     marca.idMarca = data.resultado;
                                     tablaMarcas.row.add(marca).draw(false);
-                                    $("formModal_Marcas").modal("hide");
+                                    //$("#btnEliminar").trigger('click');
+                                    $("#FormModal_Marcas").modal("hide");
                                     tablaMarcas.ajax.reload();
                                 } else {
                                     $("#mensajeErrorMarca").text(data.mensaje);
                                     $("#mensajeErrorMarca").show();
+                                }
+                            } else {
+                                if (data.resultado) {
+                                    tablaMarcas.ajax.reload();
+                                    /* tabladata.row(filaSeleccionada).data(Categoria).draw(false);*/
+                                    filaSeleccionada = null;
+                                    $("#FormModal_Marcas").modal("hide");
+
+                                } else {
+                                    $("#mensajeErrorCategoria").text(data.mensaje);
+                                    $("#mensajeErrorCategoria").show();
                                 }
                             }
                         },
@@ -621,11 +787,61 @@
 
                 });
             });
-
-            //console.log(data);
-
-
         })
+
+        $("#tablaMarcas tbody").on("click", '.btn-editarMarca', function () {
+            /*This es la misma tabla, se llama
+             tr es el row o la fila seleccionado de la tabla */
+            filaSeleccionada = $(this).closest("tr");
+            var data = tablaMarcas.row(filaSeleccionada).data();
+
+            //console.log(data);/*Para visualizar en consola*/
+            //abrirModal(data);
+            var json = $(this).data("informacionmarca")
+            //console.log(json);
+            abrirModal(json, 'marcas')
+        })
+
+        $("#tablaMarcas tbody").on("click", '.btn-eliminarMarca', function () {
+
+            var json = $(this).data("informacionmarca")
+            swal({
+                title: "¿Esta Seguro?",
+                text: "¿Desea eliminar la marca?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+                function () {
+                    jQuery.ajax({
+                        url: '@Url.Action("eliminarMarca", "SIGUP")',
+                        type: "POST",
+                        data: JSON.stringify({ id: json.idMarca }),/*Paso de valores*/
+                        /*el stringfy lo convierte a texto*/
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {/*Ese data esta almacenando la respuesta del metodo eliminar usuario
+                     * hecho en homeController*/
+                            //ELIMINAR CATEGORIA
+
+                            if (data.resultado) { /*si el resultado es verdadera)*/
+                                //tabladata.row(usuarioSeleccionado).remove().draw();
+                                tablaMarcas.ajax.reload();
+                            } else {
+                                swal("No se pudo eliminar", data.mensaje, "error")
+                            }/*Primer parametro mensaje, luego el mensaje del data, y el tercero indica que es de tipo error*/
+
+                        },
+                        error: function (error) {
+                            console.log(error)
+                        }
+
+                    });
+                });
+        });
 
 
     </script>

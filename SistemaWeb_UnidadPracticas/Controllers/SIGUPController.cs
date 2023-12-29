@@ -99,25 +99,75 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         }
 
         [HttpPost]
-        public JsonResult guardarMarca(EN_MarcaHerramienta marca_entidad)
+        public JsonResult guardarMarca(EN_MarcaHerramienta marca)
         {
             object resultado = null;
             string mensaje = string.Empty;
 
-            if (marca_entidad.idMarca == 0)
+            if (marca.idMarca == 0)
             {
-                resultado = new RN_MarcaHerramienta().registrar(marca_entidad, out mensaje);
+                resultado = new RN_MarcaHerramienta().registrar(marca, out mensaje);
             }
             else
             {
-                Console.WriteLine("Se intentó editar");
-                //resultado = new RN_CategoriaHerramienta().Editar(marca_entidad, out mensaje);
+                resultado = new RN_MarcaHerramienta().editarMarca(marca, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult eliminarMarca(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+            respuesta =  new RN_MarcaHerramienta().eliminarMarca(id, out mensaje);
+            if (respuesta)
+            {
+                return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { resultado = respuesta, mensaje = "Se intentó realizar la petición en la capa datos y falló" });
+            }
+        }
+
+        #endregion
+
+        /*--------------HERRAMIENTA---------------------*/
+        #region HERRAMIENTA
+        [HttpGet]
+        public JsonResult listarHerramientas()
+        {
+            try
+            {
+                List<EN_Herramienta> herramientas = new List<EN_Herramienta>();
+                RN_Herramienta herramienta = new RN_Herramienta();
+                herramientas = herramienta.listarHerramientas();
+                return Json(new { data = herramientas }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { mensaje = "Error al realizar la operacion" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult añadirHerramienta(EN_Herramienta herramienta)
+        {
+            object resultado = null;
+            string mensaje = string.Empty;
+
+            if (herramienta.idHerramienta == 0)
+            {
+                resultado = new RN_Herramienta().añadirHerramienta(herramienta, out mensaje);
+            }
+            else
+            {
+                resultado = new RN_Herramienta().editarHerramienta(herramienta, out mensaje);
             }
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
-
-
     }
 }
