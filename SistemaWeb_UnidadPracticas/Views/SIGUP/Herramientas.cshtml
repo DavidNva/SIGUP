@@ -25,11 +25,11 @@
     al momento de precionar el boton nuevo-->
         <div class="modal fade" id="FormModal_Herramientas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
             @*Esto ultimo de data-bs-backdrop es para*@
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
                 <div class="modal-content">
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title" id="exampleModalLabel">Nueva marca</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Herramientas</h5>
                         <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -37,44 +37,42 @@
 
                         <input id="txtIdHerramienta" type="text" value="0" placeholder="Ingresa el identificador de tu herramienta" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
                         pero si es diferente a 0 significa que ya existe y vamos a editar*@
-                        <div class="row g-1">
-                            <!--Porque solamente esta formando una fila-->
+                    <div class="row g-1">
+                        <!--Porque solamente esta formando una fila-->
 
-                            <div class="col-sm-6">
-                                <label for="txtDescripcionMarca" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="txtNombreHerramienta" autocomplete="off" placeholder="Ingresa el nombre de tu herramienta">
-                            </div>
-
-                            <div class="col-sm-6">
-                                <label for="txtDescripcionMarca" class="form-label">Stock</label>
-                                <input type="number" class="form-control" id="txtStockHerramienta" autocomplete="off">
-                            </div>
-
-                            <div class="col-sm-6">
-                                <label for="txtDescripcionMarca" class="form-label">Observaciones</label>
-                                <input type="text" class="form-control" id="txtObservacionesHerramienta" autocomplete="off" placeholder="Ingresa observaciones iniciales de la herramienta">
-                            </div>
-
-                            <div class="col-sm-6">
-                                <label for="cmbActivoHerramienta" class="form-label"> ¿Está disponible para prestamos? </label>
-                                <select id="cmbActivoHerramienta" class="form-select">
-                                    <option value="1">Si</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <label for="cmbMarcaHerramienta" class="form-label"> Marca </label>
-                                <select id="cmbMarcaHerramienta" class="form-select">
-                                </select>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <label for="cmbCategoriaHerramienta" class="form-label"> Categoría para la herramienta </label>
-                                <select id="cmbCategoriaHerramienta" class="form-select">
-                                </select>
-                            </div>
+                        <div class="col-sm-4">
+                            <label for="txtDescripcionMarca" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="txtNombreHerramienta" autocomplete="off" placeholder="Nombre la herramienta">
                         </div>
+
+                        <div class="col-sm-4">
+                            <label for="cmbMarcaHerramienta" class="form-label">Marca</label>
+                            <select id="cmbMarcaHerramienta" class="form-select">
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="cmbCategoriaHerramienta" class="form-label">Categoría</label>
+                            <select id="cmbCategoriaHerramienta" class="form-select">
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="txtStockHerramienta" class="form-label">Stock</label>
+                            <input type="number" class="form-control" id="txtStockHerramienta" autocomplete="off">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="txtObservacionesHerramienta" class="form-label">Observaciones</label>
+                            <input type="text" class="form-control" id="txtObservacionesHerramienta" autocomplete="off" placeholder="Ingresa observaciones iniciales de la herramienta">
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="cmbActivoHerramienta" class="form-label"> ¿Disponible para prestamos? </label>
+                            <select id="cmbActivoHerramienta" class="form-select">
+                                <option value="1">Si</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
                         @*mensaje de alerta*@
                         <div class="row mt-2">
                             <div class="col-12">
@@ -113,24 +111,24 @@
     </div>
 
     <div class="tab-pane fade" id="nav-marcas" role="tabpanel" aria-labelledby="nav-marcas-tab">
-        <button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null, 'marcas')"> Añadir nuevo </button>
+        @*<button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null, 'marcas')"> Añadir nuevo </button>*@
 
         <!-- Modal, con el id FormModal vamos a llamarlo cuando deseamos que aparezca y cuando no
-        al momento de precionar el boton nuevo-->
+    al momento de precionar el boton nuevo-->
         <div class="modal fade" id="FormModal_Marcas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
             @*Esto ultimo de data-bs-backdrop es para*@
             <div class="modal-dialog">
                 @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
                 <div class="modal-content">
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title" id="exampleModalLabel">Nueva marca</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Marcas</h5>
                         <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
 
                         <input id="txtIdMarca" type="hidden" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
-                            pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                        pero si es diferente a 0 significa que ya existe y vamos a editar*@
                         <div class="row g-1">
                             <!--Porque solamente esta formando una fila-->
 
@@ -163,31 +161,66 @@
                 </div>
             </div>
         </div>
-        <table id="tablaMarcas" class="display cell-border" style="width:100%">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Descripcion</th>
-                    <th>Activo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
+        <!--<table id="tablaMarcas" class="display cell-border" style="width:100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Descripcion</th>
+                <th>Activo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>-->
+        @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
 
-            </tbody>
-        </table>
+        <!--</tbody>
+    </table>-->
+        <div class="card mt-3">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>Lista de Marcas
+            </div>
+            <div class="card-body">
+                @*boostrap es como manejar una hoja en excel*@
+                <div class="row">
+                    <div class="col-12  d-flex justify-content-between align-items-center">
+                        @*numero de filas*@
+                        <button type="button" class="btn btn-success" onclick="abrirModal(null, 'marcas')">Crear Nuevo</button>
+                       
+                        <form action="@Url.Action("DescargarPDF_Marca","SIGUP")" class="mt-0 ml-2">
+                            <button class="btn btn-danger" type="submit"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                        </form>
+                    </div>
+                </div>
+                <hr /> @*el id es para identificar la tabla*@
+                <table id="tablaMarcas" class="display cell-border" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripcion</th>
+                            <th>Activo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
     </div>
 
 
     <div class="tab-pane fade" id="nav-categorias" role="tabpanel" aria-labelledby="nav-categorias-tab">
         @*<button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null, 'marcas')"> Añadir nuevo </button>*@
-        <ol class="breadcrumb mb-4 mt-4">
+        @*<ol class="breadcrumb mb-4 mt-4">
             <li class="breadcrumb-item"><a href="#">Administrador</a></li>
             <li class="breadcrumb-item active">Categorias</li>
-        </ol>
+        </ol>*@
 
-        <div class="card">
+        <div class="card mt-3">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>Lista de Categorias
             </div>
