@@ -49,6 +49,40 @@ namespace CapaDatos
             return lista;
         }
 
+        public List<EN_CategoriaHerramienta> ListarCategoriaEnHerramienta()
+        {
+            List<EN_CategoriaHerramienta> lista = new List<EN_CategoriaHerramienta>();
+            try
+            {
+                using (SqlConnection oConexion = new SqlConnection(BD_Conexion.cn))
+                {
+                    string query = "SELECT IdCategoria, Descripcion FROM Categoria_Herramienta";
+                    SqlCommand cmd = new SqlCommand(query, oConexion);
+                    cmd.CommandType = CommandType.Text;/*En este caso es de tipo Text (no usamos para este ejemplo, procedimientos almacenados*/
+
+                    oConexion.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())/*Lee todos los resultados que aparecen en la ejecucion del select anter ior*/
+                    {
+                        while (dr.Read())/*Mientras reader esta leyendo, ira agregando a la lista dicha lectura*/
+                        {
+                            lista.Add(/*Agrega una nueva categorias a la lista*/
+                                new EN_CategoriaHerramienta()
+                                {
+                                    idCategoria = Convert.ToInt32(dr["IdCategoria"]),
+                                    descripcion = dr["Descripcion"].ToString()
+                                });
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                lista = new List<EN_CategoriaHerramienta>();
+            }
+
+            return lista;
+        }
+
         //public List<EN_CategoriaHerramienta> ListarCategoriaEnLibro()
         //{
         //    List<EN_CategoriaHerramienta> lista = new List<EN_CategoriaHerramienta>();

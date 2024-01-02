@@ -15,6 +15,8 @@ namespace CapaNegocio
             return herramientaDatos.listarHerramientas();
         }
 
+        
+
         public int añadirHerramienta(EN_Herramienta herramienta, out string Mensaje)
         {
             Mensaje = string.Empty;

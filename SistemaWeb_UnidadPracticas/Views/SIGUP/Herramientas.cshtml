@@ -83,8 +83,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCerrar">Cerrar</button>
-                        <button type="button" class="btn btn-primary" onclick="guardar('marcas')">Guardar</button>
+                        <button type="button" class="btn btn-secondary btn-eliminarHerramienta" data-bs-dismiss="modal" id="btnCerrar">Cerrar</button>
+                        <button type="button" class="btn btn-primary btn-editarCategoria" onclick="guardar('herramientas')">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -347,30 +347,27 @@
 </div>
 
 
-<!--<button class="btn btn-success" style="margin-bottom:20px;"> Añadir nuevo </button>
-
-<table id="tabla" class="display cell-border" style="width:100%">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Descripcion</th>
-            <th>Activo</th>
-            <th>Fecha de registro</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>-->
-@*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
-
-<!--</tbody>
-</table>-->
-
 @section scripts{
     <script>
+        //Elementos seleccionados para usos posteriores
         var tablaMarcas;
         var tablaCategorias;
         var tablaHerramientas;
+        var tabladata;
+        var filaSeleccionada;
 
+        $(document).ready(function () {
+            
+
+            function actualizarDatos() {
+                setTimeout(function () {
+                    ocultarAdvertencia(elemento);
+                    //clearInterval(intervalo);
+                }, 5000);
+            }
+        });
+
+        //Asignación de las propiedades datatable a las tablas (Contienjen los datos desde una respuesta del servidor)
         tablaHerramientas = $("#tablaHerramientas").DataTable({
             responsive: true,
             ordering: false,
@@ -419,7 +416,6 @@
 
             ]
         })
-
         tablaMarcas = $("#tablaMarcas").DataTable({
             responsive: true,/*Para que sea resposiva*/
             ordering: false,
@@ -458,29 +454,6 @@
                 }
             ]
         });
-
-
-
-
-        var tabladata;
-        var filaSeleccionada;/*Son variables globales para se usada por lo que este dentro */
-
-        @*
-            Este solo se uso de ejemplo para ver los datos listados en consola
-            jQuery.ajax({/*Llama al metodo de guardar usuario, que dependiendo de la accion va a crear nuevo
-             o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
-            url: '@Url.Action("ListarCategoria", "SIGUP")',
-            type: "GET",
-            dataType:"json",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-
-                console.log(data)
-            }
-        })*@
-
-        //el hastash significa que se refiere a un id, entonces llama o igual la variable a una tabla declarada
-        //anteriormente en el html de arriba con id que se llama tabla
         tabladata = $("#tablaCategoria").DataTable({
             responsive: true,/*Para que sea resposiva*/
             ordering: false,
@@ -527,7 +500,7 @@
 
         });
 
-
+        //Función que muestra el modal dependiendo de cual modal se manda como argumento, json es el objeto json que se puede mandar para poder usarlo y llenar datos previos, el valor puede ser nulo.
         function abrirModal(json, modal) {
             switch (modal) {
                 case 'herramientas':
@@ -536,8 +509,10 @@
                     $("#txtStockHerramienta").val(0);
                     $("#txtObservacionesHerramienta").val("");
                     $("#cmbActivoHerramienta").val(1);
-
                     $("#mensajeErrorHerramientas").hide();
+
+                    cargarMarcas();
+                    cargarCategorias();
                     /*Llamamos al form modal*/
                     if (json != null) {
                         $("#txtIdMarca").val(json.idMarca);
@@ -564,20 +539,7 @@
                     $("#FormModal_Marcas").modal("show");
                     break;
                 case 'categorias':
-                    //$("#txtId").val(0); /*Con el # llama con el id del elemento chtml*/
-                    //$("#txtDescripcion").val("");
-                    //$("#cmbActivo").val(1);
 
-
-                    //$("#mensajeErrorMarca").hide();
-                    ///*Llamamos al form modal*/
-                    //if (json != null) {
-                    //    $("#txtId").val(json.idCategoria);
-                    //    $("#txtDescripcion").val(json.descripcion);
-                    //    $("#cmbActivo").val(json.activo == true ? 1 : 0);
-                    //}
-
-                    //$("#FormModal_Categorias").modal("show");
                     $("#txtIdCategoria").val(0); /*Con el # llama con el id del elemento chtml*/
                     $("#txtDescripcionCategoria").val("");
                     $("#cmbActivoCategoria").val(1);
@@ -610,9 +572,11 @@
             }
         }
 
+        //Función que ejecuta la petición POST para guardar nuevos registros en la base de datos, dentro de la misma función se evalúa si el elemento a guardar es una edición o es nuevo.
         function guardar(elemento) {
             switch (elemento) {
                 case 'herramientas':
+
                     break;
 
                 case 'marcas':
@@ -749,21 +713,81 @@
             }
         }
 
+        function crearOptionForSelect(id, nombre) {
+            var option = $("<option></option>");
+            option.text(nombre);
+            option.val(id);
+            return option;
+        }
 
-        /*Botones editar y eliminar de categoria */
-         /*--------------- Al dar clic en el boton de editar-------------------------------*/
+        function cargarSelectMarcas(arreglo) {
+            $('#cmbMarcaHerramienta').empty();
+            for (var clave in arreglo) {
+                if (arreglo.hasOwnProperty(clave)) {
+                    var objetoDato = arreglo[clave];
+                    var id = objetoDato['idMarca'];
+                    var nombre = objetoDato['descripcion'];
 
-        /*Estamos llamando a la tabla especificamente al tbody, todo ira en relacion a esa tabla*/
+                    //Añadimos al select los elementos
+                    $('#cmbMarcaHerramienta').append(crearOptionForSelect(id, nombre));
+                }
+            }
+        }
+
+        function cargarSelectCategorias(arreglo) {
+            $('#cmbCategoriaHerramienta').empty();
+            for (var clave in arreglo) {
+                if (arreglo.hasOwnProperty(clave)) {
+                    var objetoDato = arreglo[clave];
+                    console.log(objetoDato);
+                    var id = objetoDato['idCategoria'];
+                    var nombre = objetoDato['descripcion'];
+
+                    //Añadimos al select los elementos
+                    $('#cmbCategoriaHerramienta').append(crearOptionForSelect(id, nombre));
+                }
+            }
+        }
+
+        function cargarMarcas() {
+            $.ajax({
+                url: '@Url.Action("ListarMarcaEnHerramienta", "SIGUP")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    cargarSelectMarcas(response.data);
+                },
+                error: function (errror) {
+                    console.log("Error en la petición ajax");
+                }
+            });
+        }
+
+        function cargarCategorias() {
+            $.ajax({
+                url: '@Url.Action("ListarCategoriaEnHerramienta", "SIGUP")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    cargarSelectCategorias(response.data);
+                },
+                error: function (errror) {
+                    console.log("Error en la petición ajax");
+                }
+            });
+        }
+
+        //Eventos on click
+
+        //Eventos eliminar modificar, cada uno de estos eventos se selecciona a partir de el tbody de la tabla en cuestión
         $("#tablaCategoria tbody").on("click", '.btn-editarCategoria', function () {
-            /*This es la misma tabla, se llama
-             tr es el row o la fila seleccionado de la tabla */
+            //Obtenemos el elemento más cercano a la fila seleccionada como tr
             filaSeleccionada = $(this).closest("tr");
+            //Obtenemos como json los datos de esa fila
             var data = tabladata.row(filaSeleccionada).data();
-
-            //console.log(data);/*Para visualizar en consola*/
-            //abrirModal(data);
+            //Los almacenamos en un json
             var json = $(this).data("informacioncategoria")
-            //console.log(json);
+            //Se manda a llamar el modal.
             abrirModal(json, 'categorias')
 
         })
@@ -774,16 +798,7 @@
             //console.log(categoriaSeleccionado)
 
             var json = $(this).data("informacioncategoria")
-            //var idcategoria = json.Idcategoria
-            //console.log(json.Idcategoria);
-            //console.log(data);
-            //if (typeof json !== "undefined" && json !== null) {
-            //    // Ahora puedes acceder a las propiedades de data de forma segura
-            //    var id = json.Idcategoria;
-            //    // resto del código aquí
-            //} else {
-            //    console.log("La variable data es undefined o null");
-            //}
+
             swal({
                 title: "¿Esta Seguro?",
                 text: "¿Desea eliminar la categoria?",
@@ -798,21 +813,16 @@
                 jQuery.ajax({
                     url: '@Url.Action("EliminarCategoria", "SIGUP")',
                     type: "POST",
-                    data: JSON.stringify({ id:json.idCategoria }),/*Paso de valores*/
-                    /*el stringfy lo convierte a texto*/
+                    data: JSON.stringify({ id:json.idCategoria }),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
-                    success: function (data) {/*Ese data esta almacenando la respuesta del metodo eliminar usuario
-                     * hecho en homeController*/
-                        //ELIMINAR CATEGORIA
+                    success: function (data) {
 
-                        if (data.resultado) { /*si el resultado es verdadera)*/
-                            //tabladata.row(usuarioSeleccionado).remove().draw();
+                        if (data.resultado) {
                             tabladata.ajax.reload();
                         }else {
                             swal("No se pudo eliminar", data.mensaje, "error")
-                        }/*Primer parametro mensaje, luego el mensaje del data, y el tercero indica que es de tipo error*/
-
+                        }
                     },
                     error: function (error) {
                         console.log(error)
@@ -823,16 +833,11 @@
         })
 
         $("#tablaMarcas tbody").on("click", '.btn-editarMarca', function () {
-            /*This es la misma tabla, se llama
-             tr es el row o la fila seleccionado de la tabla */
+
             filaSeleccionada = $(this).closest("tr");
             var data = tablaMarcas.row(filaSeleccionada).data();
-
-            //console.log(data);/*Para visualizar en consola*/
-            //abrirModal(data);
-            var json = $(this).data("informacionmarca")
-            //console.log(json);
-            abrirModal(json, 'marcas')
+            var json = $(this).data("informacionmarca");
+            abrirModal(json, 'marcas');
         })
 
         $("#tablaMarcas tbody").on("click", '.btn-eliminarMarca', function () {
@@ -876,7 +881,9 @@
                 });
         });
 
+        $("#tablaHerramientas tbody").on('click', '.btn-eliminarHerramienta', function (evento) {
 
+        })
     </script>
 }
 

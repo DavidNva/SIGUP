@@ -51,6 +51,15 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
             /*El json da los datos, jala los datos de esa lista, en data*/
         }
+
+        [HttpGet]
+        public JsonResult ListarCategoriaEnHerramienta()
+        {
+            List<EN_CategoriaHerramienta> oLista = new List<EN_CategoriaHerramienta>();
+            oLista = new RN_CategoriaHerramienta().ListarCategoriaEnHerramienta();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult GuardarCategoria(EN_CategoriaHerramienta objeto) /*De este json se puede controlar que mas ver, igualar elementos, etc*/
         {
@@ -94,6 +103,15 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         {
             List<EN_MarcaHerramienta> oLista = new List<EN_MarcaHerramienta>();
             oLista = new RN_MarcaHerramienta().Listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+            /*El json da los datos, jala los datos de esa lista, en data*/
+        }
+
+        [HttpGet]
+        public JsonResult ListarMarcaEnHerramienta() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            List<EN_MarcaHerramienta> oLista = new List<EN_MarcaHerramienta>();
+            oLista = new RN_MarcaHerramienta().ListarMarcaEnHerramienta();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
             /*El json da los datos, jala los datos de esa lista, en data*/
         }

@@ -16,6 +16,11 @@ namespace CapaNegocio
             return marcaHerramienta.Listar();
         }
 
+        public List<EN_MarcaHerramienta> ListarMarcaEnHerramienta()
+        {
+            return marcaHerramienta.ListarMarcaEnHerramienta();
+        }
+
         public int registrar(EN_MarcaHerramienta marca, out string mensaje)
         {
             mensaje = string.Empty;

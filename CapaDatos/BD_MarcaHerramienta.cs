@@ -140,5 +140,39 @@ namespace CapaDatos
                 return null;
             }
         }
+
+        public List<EN_MarcaHerramienta> ListarMarcaEnHerramienta()
+        {
+            List<EN_MarcaHerramienta> lista = new List<EN_MarcaHerramienta>();
+            try
+            {
+                using (SqlConnection oConexion = new SqlConnection(BD_Conexion.cn))
+                {
+                    string query = "SELECT IdMarca, Descripcion FROM marca_herramienta";
+                    SqlCommand cmd = new SqlCommand(query, oConexion);
+                    cmd.CommandType = CommandType.Text;
+
+                    oConexion.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            lista.Add(
+                                new EN_MarcaHerramienta()
+                                {
+                                    idMarca = Convert.ToInt32(dr["IdMarca"]),
+                                    descripcion = dr["Descripcion"].ToString()
+                                });
+                        }
+                    }
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
     }
 }
