@@ -23,8 +23,8 @@ namespace CapaDatos
                     sqlCommand.Parameters.AddWithValue("@IdHerramienta", herramienta.idHerramienta);
                     sqlCommand.Parameters.AddWithValue("@Nombre", herramienta.nombre);
                     sqlCommand.Parameters.AddWithValue("@Cantidad", herramienta.cantidad);
-                    sqlCommand.Parameters.AddWithValue("@IDMarca", herramienta.marca);
-                    sqlCommand.Parameters.AddWithValue("@IDCategoria", herramienta.idHerramienta);
+                    sqlCommand.Parameters.AddWithValue("@IDMarca", herramienta.marca.idMarca);
+                    sqlCommand.Parameters.AddWithValue("@IDCategoria", herramienta.categoHerramienta.idCategoria);
                     sqlCommand.Parameters.AddWithValue("@Observaciones", herramienta.observaciones);
                     sqlCommand.Parameters.AddWithValue("@Activo", herramienta.activo);
 

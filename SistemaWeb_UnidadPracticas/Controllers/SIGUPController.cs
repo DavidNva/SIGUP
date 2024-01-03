@@ -187,5 +187,30 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         }
 
         #endregion
+
+        /*--------------TIPO USUARIO---------------------*/
+        #region TipoUsuario
+        public JsonResult ListarTipoUsuario()
+        {
+            List<EN_TipoUsuario> tipoUsuarios = new List<EN_TipoUsuario>();
+            RN_TipoUsuario tp_negocio = new RN_TipoUsuario();
+            try
+            {
+                tipoUsuarios = tp_negocio.ListarTiposUsuario();
+                if (tipoUsuarios != null)
+                {
+                    return Json(new { success = true,  data = tipoUsuarios }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, data = tipoUsuarios, message = "Se ha devuelto una lista vacía, no hay datos existentes en la base, o existe un error de código en la capa datos, depura y verifica" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
     }
 }

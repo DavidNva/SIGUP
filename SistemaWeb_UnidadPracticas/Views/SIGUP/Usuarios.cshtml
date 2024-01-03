@@ -4,7 +4,140 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="alert alert-danger mt-3" id="errorAlert" role="alert" style="display: none">
+    
+</div>
+
+
 <h1 class="mt-4">Usuarios</h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">Administra los usuarios de este software así como también los usuarios que piden prestamos</li>
 </ol>
+
+<button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null)"> Añadir usuario </button>
+
+@* Modal para usuarios nuevos *@
+<div class="modal fade" id="formModal_Usuarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Usuario nuevo</h5>
+                <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-wrap gap-4">
+
+                    <div class="col-sm-4 w-100">
+                        <label for="txtIdUsuario" class="form-label">Número de control</label>
+                        <input id="txtIdUsuario" class="form-control" type="text" value="" placeholder="Ingresa el número de control" />
+                    </div>
+
+                    <div class="col-sm-4 w-100">
+                        <label for="txtNombreUsuario" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="txtNombreUsuario" autocomplete="off" placeholder="Nombre del usuario">
+                    </div>
+
+                    <div class="col-sm-4 w-100">
+                        <label for="txtApellidosUsuario" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="txtApellidosUsuario" autocomplete="off" placeholder="Apellidos para el usuario">
+                    </div>
+
+                    <div class="col-sm-4 w-100">
+                        <label for="cmbTipoUsuario" class="form-label">Selecciona un rol para el usuario</label>
+                        <select id="cmbTipoUsuario" class="form-select">
+                        </select>
+                    </div>
+                </div>
+                @* Mensaje de alerta *@
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeErrorHerramientas" class="alert alert-danger" role="alert">
+                            ...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-eliminarHerramienta" data-bs-dismiss="modal" id="btnCerrar">Cerrar</button>
+                <button type="button" class="btn btn-primary btn-editarCategoria" onclick="guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="mt-4">Usuarios registrados en el sistema</h1>
+<table id="tablaUsuarios" class="display cell-border" style="width:100%">
+    <thead class="text-lg-center">
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Rol que desempeña</th>
+        </tr>
+    </thead>
+    <tbody class="text-lg-center">
+        @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
+
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        var alertaErrorCode = $('#errorAlert');
+        $(document).ready(function (evento) {
+            
+        });
+
+        function abrirModal(json) {
+            cargarTipoUsuarios();
+            if (json = ! null) {
+                $('#txtIdTipoUsu').val();
+                $('#txtNombreUsuario').val();
+                $('#txtApellidosUsuario').val();
+            }
+
+            $('#formModal_Usuarios').modal('show');
+        }
+        function crearOption(id, nombre) {
+            var option = $('<option></option>');
+            option.val(id);
+            option.text(nombre);
+            return option;
+        }
+
+        function cargarSelectTipoUsuarios(arreglo) {
+            $('#cmbTipoUsuario').empty();
+            for (var clave in arreglo) {
+                if (arreglo.hasOwnProperty(clave)) {
+
+                    var objetoDatos = arreglo[clave];
+                    var id = objetoDatos['idTipo'];
+                    var nombreTipo = objetoDatos['nombre']
+
+                    $('#cmbTipoUsuario').append(crearOption(id, nombreTipo));
+                }
+            }
+        }
+
+        function cargarTipoUsuarios() {
+            $.ajax({
+                url: '@Url.Action("ListarTipoUsuario", "SIGUP")',
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.success) {
+                        cargarSelectTipoUsuarios(response.data);
+                    } else {
+                        alertaErrorCode.show();
+                        alertaErrorCode.text("Error al listar tipos de usuario: " + response.message);
+                    }
+                },
+                error: function (error) {
+                    alertaErrorCode.show();
+                    alertaErrorCode.text("Ocurrió un error en la petición ajax, comunicate con los desarrolladores");
+                }
+            });
+        }
+    </script>
+}

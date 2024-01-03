@@ -35,44 +35,49 @@
                     <div class="modal-body">
                         @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
 
-                        <input id="txtIdHerramienta" type="text" value="0" placeholder="Ingresa el identificador de tu herramienta" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
-                        pero si es diferente a 0 significa que ya existe y vamos a editar*@
-                    <div class="row g-1">
-                        <!--Porque solamente esta formando una fila-->
+                        
+                        @*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
+        pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                        <div class="d-flex flex-wrap gap-4">
+                            <!--Porque solamente esta formando una fila-->
+                            <div class="col-sm-4">
+                                <label for="txtIdHerramienta" class="form-label">Número de ID</label>
+                                <input id="txtIdHerramienta" class="form-control" type="text" value="0" placeholder="Ingresa el identificador de tu herramienta" />
+                            </div>
 
-                        <div class="col-sm-4">
-                            <label for="txtDescripcionMarca" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="txtNombreHerramienta" autocomplete="off" placeholder="Nombre la herramienta">
-                        </div>
+                            <div class="col-sm-4">
+                                <label for="txtNombreHerramienta" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="txtNombreHerramienta" autocomplete="off" placeholder="Nombre la herramienta">
+                            </div>
 
-                        <div class="col-sm-4">
-                            <label for="cmbMarcaHerramienta" class="form-label">Marca</label>
-                            <select id="cmbMarcaHerramienta" class="form-select">
-                            </select>
-                        </div>
+                            <div class="col-sm-4">
+                                <label for="cmbMarcaHerramienta" class="form-label">Marca</label>
+                                <select id="cmbMarcaHerramienta" class="form-select">
+                                </select>
+                            </div>
 
-                        <div class="col-sm-4">
-                            <label for="cmbCategoriaHerramienta" class="form-label">Categoría</label>
-                            <select id="cmbCategoriaHerramienta" class="form-select">
-                            </select>
-                        </div>
-                        <div class="col-sm-2">
-                            <label for="txtStockHerramienta" class="form-label">Stock</label>
-                            <input type="number" class="form-control" id="txtStockHerramienta" autocomplete="off">
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="txtObservacionesHerramienta" class="form-label">Observaciones</label>
-                            <input type="text" class="form-control" id="txtObservacionesHerramienta" autocomplete="off" placeholder="Ingresa observaciones iniciales de la herramienta">
-                        </div>
+                            <div class="col-sm-4">
+                                <label for="cmbCategoriaHerramienta" class="form-label">Categoría</label>
+                                <select id="cmbCategoriaHerramienta" class="form-select">
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="txtStockHerramienta" class="form-label">Stock</label>
+                                <input type="number" class="form-control" id="txtStockHerramienta" autocomplete="off">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="txtObservacionesHerramienta" class="form-label">Observaciones</label>
+                                <input type="text" class="form-control" id="txtObservacionesHerramienta" autocomplete="off" placeholder="Ingresa observaciones iniciales de la herramienta">
+                            </div>
 
-                        <div class="col-sm-4">
-                            <label for="cmbActivoHerramienta" class="form-label"> ¿Disponible para prestamos? </label>
-                            <select id="cmbActivoHerramienta" class="form-select">
-                                <option value="1">Si</option>
-                                <option value="0">No</option>
-                            </select>
+                            <div class="col-sm-4">
+                                <label for="cmbActivoHerramienta" class="form-label"> ¿Disponible para prestamos? </label>
+                                <select id="cmbActivoHerramienta" class="form-select">
+                                    <option value="1">Si</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
                         @*mensaje de alerta*@
                         <div class="row mt-2">
                             <div class="col-12">
@@ -576,7 +581,35 @@
         function guardar(elemento) {
             switch (elemento) {
                 case 'herramientas':
+                    var herramienta = {
+                        idHerramienta: $('#txtIdHerramienta').val(),
+                        nombre: $('#txtNombreHerramienta').val(),
+                        cantidad: $('#txtStockHerramienta').val(),
+                        activo: $('#cmbActivoHerramienta').val(),
+                        observaciones: $('#txtObservacionesHerramienta').val(),
+                        marca: {
+                            idMarca: $('#cmbMarcaHerramienta').val()
+                        },
+                        categoHerramienta: {
+                            idCategoria: $('#cmbCategoriaHerramienta').val()
+                        }
+                    }
 
+                    $.ajax({
+                        url: '@Url.Action("añadirHerramienta", "SIGUP")',
+                        type: 'POST',
+                        data: JSON.stringify({ herramienta: herramienta }),
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        success: function (response) {
+                            console.log(response.mensaje + " " + response.resultado)
+                        },
+                        error: function (error) {
+                            console.log('Error en la petición ajax');
+                        }
+                    });
+
+                    console.log(herramienta);
                     break;
 
                 case 'marcas':

@@ -23,7 +23,7 @@ namespace CapaNegocio
             //Validaciones para que la caja de texto no este vacio o con espacios
             if (string.IsNullOrEmpty(herramienta.nombre) || string.IsNullOrWhiteSpace(herramienta.nombre))
             {
-                Mensaje = "La descripción de la categoria no puede ser vacio";
+                Mensaje = "El nombre no puede ser vacío";
             }
 
             if (string.IsNullOrEmpty(Mensaje))
