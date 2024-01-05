@@ -21,14 +21,14 @@ namespace CapaNegocio
             return bd_usuario.AñadirUsuario(usuario);
         }
 
-        public bool EditarUsuario()
+        public string EditarUsuario(EN_Usuario usuario)
         {
-            return true;
+            return bd_usuario.EditarUsuario(usuario);
         }
 
-        public bool EliminarUsuario()
+        public string EliminarUsuario(int idUsuario)
         {
-            return true;
+            return bd_usuario.EliminarUsuario(idUsuario);
         }
     }
 }

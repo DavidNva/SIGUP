@@ -72,7 +72,7 @@ namespace CapaDatos
             }
             catch (SqlException sqlex)
             {
-                return string.Format("Error de sql: {0} Código de error: {1}", sqlex.Message, sqlex.ErrorCode);
+                return string.Format("Error de sql: {0} Código de error: {1} SI HAS RECIBIDO ESTE ERROR COMUNICATE CON LOS DESARROLLADORES ENVIANDO CAPTURA DE EL MISMO", sqlex.Message, sqlex.ErrorCode);
             }
             catch (Exception ex)
             {
@@ -80,47 +80,58 @@ namespace CapaDatos
             }
         }
 
-        public bool EditarUsuario()
+        public string EditarUsuario(EN_Usuario usuario)
         {
+            string resultado;
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(BD_Conexion.cn))
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand("EditarUsuario", sqlConnection))
+                    using (SqlCommand sqlCommand = new SqlCommand("sp_EditarUsuario", sqlConnection))
                     {
+                        sqlCommand.Parameters.AddWithValue("@IdUsuario", usuario.idUsuario);
+                        sqlCommand.Parameters.AddWithValue("@Nombre", usuario.Nombre);
+                        sqlCommand.Parameters.AddWithValue("@Apellidos", usuario.Apellidos);
+                        sqlCommand.Parameters.AddWithValue("@TipoUsuario", usuario.tipoUsuario.idTipo);
                         sqlCommand.CommandType = CommandType.StoredProcedure;
                         sqlConnection.Open();
-                        sqlCommand.ExecuteNonQuery();
+                        resultado = sqlCommand.ExecuteNonQuery().ToString();
                     }
                 }
-                return true;
+                return resultado;
             }
-            catch (Exception)
+            catch (SqlException sqlex)
             {
-
-                return false;
+                return resultado = string.Format("Error de sql: {0} Código de error: {1} SI HAS RECIBIDO ESTE ERROR COMUNICATE CON LOS DESARROLLADORES ENVIANDO CAPTURA DE EL MISMO", sqlex.Message, sqlex.ErrorCode);
+            }catch(Exception ex)
+            {
+                return resultado = string.Format("Error no controlado: {0}", ex.Message);
             }
         }
 
-        public bool EliminarUsuario()
+        public string EliminarUsuario(int idUsuario)
         {
+            string resultado;
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(BD_Conexion.cn))
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand("EliminarUsuario", sqlConnection))
+                    using (SqlCommand sqlCommand = new SqlCommand("sp_EliminarUsuario", sqlConnection))
                     {
+                        sqlCommand.Parameters.AddWithValue("@idUsuario", idUsuario);
                         sqlCommand.CommandType = CommandType.StoredProcedure;
                         sqlConnection.Open();
-                        sqlCommand.ExecuteNonQuery();
+                        resultado = sqlCommand.ExecuteNonQuery().ToString();
                     }
                 }
-                return true;
+                return resultado;
             }
-            catch (Exception)
+            catch (SqlException sqlex)
             {
-
-                return false;
+                return resultado = string.Format("Error de sql: {0} Código de error: {1} SI HAS RECIBIDO ESTE ERROR COMUNICATE CON LOS DESARROLLADORES ENVIANDO CAPTURA DE EL MISMO", sqlex.Message, sqlex.ErrorCode);
+            }catch(Exception ex)
+            {
+                return resultado = string.Format("Error no controlado: {0}", ex.Message);
             }
         }
     }

@@ -180,6 +180,11 @@ DELETE usuario WHERE IdUsuario = @IdUsuario;
 GO
 
 --Inserts de los Tipos de usuarios
+INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Administrador');
+INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Usuario');
+INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Alumno');
+INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Docente');
+INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Visitante externo');
 
 use UDP_Control
 --inserciones prueba

@@ -197,20 +197,8 @@
 
         $("#tabla tbody").on("click", '.btn-eliminar', function () {
 
-            //var categoriaSeleccionado = $(this).closest("tr");
-            //console.log(categoriaSeleccionado)
-
             var json = $(this).data("informacion")
-            //var idcategoria = json.Idcategoria
-            //console.log(json.Idcategoria);
-            //console.log(data);
-            //if (typeof json !== "undefined" && json !== null) {
-            //    // Ahora puedes acceder a las propiedades de data de forma segura
-            //    var id = json.Idcategoria;
-            //    // resto del código aquí
-            //} else {
-            //    console.log("La variable data es undefined o null");
-            //}
+            
             swal({
                 title: "¿Esta Seguro?",
                 text: "¿Desea eliminar la categoria?",

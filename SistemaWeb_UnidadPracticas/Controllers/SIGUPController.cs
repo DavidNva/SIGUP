@@ -214,7 +214,7 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         #endregion
 
         /*--------------USUARIOS---------------------*/
-        #region TipoUsuario
+        #region Usuarios
         public JsonResult ListarUsuarios()
         {
             RN_Usuarios rn_usuarios = new RN_Usuarios();
@@ -256,7 +256,51 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Inserción con éxito" });
+                return Json(new { success = false, message = string.Format("Inserción de datos fallida {0}", ex.Message) });
+            }
+        }
+
+        public JsonResult EditarUsuario(EN_Usuario usuario)
+        {
+            string resultado;
+            try
+            {
+                RN_Usuarios rn_usuario = new RN_Usuarios();
+                resultado = rn_usuario.EditarUsuario(usuario);
+                if (int.TryParse(resultado, out int filasAfectadas) && filasAfectadas == 1)
+                {
+                    return Json(new { success = true, message = "Registro actualizado correctamente" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = resultado });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = string.Format("Ha ocurrido un error en el controlador, contacta con el desarrollador si recibes este error, mensaje de error: {0}", ex.Message) });
+            }
+        }
+
+        public JsonResult EliminarUsuario(int idUsuario)
+        {
+            string resultado;
+            try
+            {
+                RN_Usuarios rn_usuario = new RN_Usuarios();
+                resultado = rn_usuario.EliminarUsuario(idUsuario);
+                if (int.TryParse(resultado, out int filasAfectadas) && filasAfectadas == 1)
+                {
+                    return Json(new { success = true, message = "Se ha eliminado el registro correctamente" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = resultado });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = string.Format("Ha ocurrido un error en el controlador, contacta con el desarrollador si recibes este error, mensaje de error: {0}", ex.Message) });
             }
         }
         #endregion
