@@ -46,6 +46,7 @@
     <Compile Include="RN_Herramienta.cs" />
     <Compile Include="RN_MarcaHerramienta.cs" />
     <Compile Include="RN_TipoUsuario.cs" />
+    <Compile Include="RN_Usuarios.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CapaDatos\CapaDatos.csproj">

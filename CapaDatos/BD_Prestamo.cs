@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CapaDatos
 {
-    class BD_Prestamo
+    public class BD_Prestamo
     {
-        public bool añadir_prestamo()
+        public bool AñadirPrestamo()
         {
             try
             {
@@ -22,7 +22,7 @@ namespace CapaDatos
             }
         }
 
-        public bool modificar_prestamo()
+        public bool ModificarPrestamo()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace CapaDatos
             }
         }
 
-        public bool eliminar_prestamo()
+        public bool EliminarPrestamo()
         {
             try
             {

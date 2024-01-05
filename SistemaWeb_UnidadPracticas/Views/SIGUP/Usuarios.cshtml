@@ -25,6 +25,15 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                @* Mensaje de alerta *@
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert" style="display: none">
+                            ...
+                        </div>
+                    </div>
+                </div>
+
                 <div class="d-flex flex-wrap gap-4">
 
                     <div class="col-sm-4 w-100">
@@ -48,14 +57,6 @@
                         </select>
                     </div>
                 </div>
-                @* Mensaje de alerta *@
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <div id="mensajeErrorHerramientas" class="alert alert-danger" role="alert">
-                            ...
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="modal-footer">
@@ -74,6 +75,7 @@
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Rol que desempeña</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody class="text-lg-center">
@@ -85,8 +87,61 @@
 @section scripts{
     <script>
         var alertaErrorCode = $('#errorAlert');
+        var errorFormulario = $('#mensajeError');
+        var tablaUsuarios = $('#tablaUsuarios');
+        var btnCerrar = $('#btnCerrar');
+
+        //Seleccion de cajas de texto
+        var txtIdUsuario;
+        var txtNombreUsuario;
+        var txtApellidoUsuario;
+        var cmbIdTipo;
+
+
         $(document).ready(function (evento) {
-            
+
+            txtIdUsuario = $('#txtIdUsuario');
+            txtNombreUsuario = $('#txtNombreUsuario');
+            txtApellidoUsuario = $('#txtApellidosUsuario');
+            cmbIdTipo = $('#cmbTipoUsuario');
+
+            //Cargar datos
+            tablaUsuarios.DataTable({
+                responsive: 'true',
+                ordering: 'false',
+                "ajax": {
+                    url: '@Url.Action("ListarUsuarios", "SIGUP")',
+                    type: 'GET',
+                    dataType: 'json'
+                },
+                "columns": [
+                    {"data": "idUsuario"},
+                    {"data": "Nombre"},
+                    {"data": "Apellidos"},
+                    {
+                        "data": "tipoUsuario", "render": function (datos) {
+                            return datos.nombre;
+                        }
+                    },
+                    {
+                        "data": "idUsuario", "render": function (data, type, row, meta) {
+
+                            return $("<button>").addClass("btn btn-primary btn-editar btn-sm").append(
+                                $("<i>").addClass("fas fa-pen")
+                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
+                                +
+                                $("<button>").addClass("btn btn-danger btn-eliminar btn-sm ms-2").append(
+                                    $("<i>").addClass("fas fa-trash")
+                                ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML;
+
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "90px"
+                    }
+                ]
+            })
+
         });
 
         function abrirModal(json) {
@@ -138,6 +193,42 @@
                     alertaErrorCode.text("Ocurrió un error en la petición ajax, comunicate con los desarrolladores");
                 }
             });
+        }
+
+        function guardar() {
+
+            if (txtIdUsuario.val() == "" || txtNombreUsuario.val() == "" || txtApellidoUsuario.val() == "") {
+                errorFormulario.show().text("Parece que no has llenado todos los datos, son obligatorios para poder continuar");
+            } else {
+                var usuarioNuevo = {
+                    idUsuario: txtIdUsuario.val(),
+                    Nombre: txtNombreUsuario.val(),
+                    Apellidos: txtApellidoUsuario.val(),
+                    tipoUsuario: {
+                        idTipo: cmbIdTipo.val()
+                    }
+                }
+
+                $.ajax({
+                    url: '@Url.Action("AgregarUsuario", "SIGUP")',
+                    type: 'POST',
+                    data: JSON.stringify({ usuario: usuarioNuevo }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        if (response.success) {
+                            btnCerrar.trigger('click');
+                        } else {
+                            alertaErrorCode.show().text(response.message);
+                            btnCerrar.trigger('click');
+                        }
+                    },
+                    error: function (error) {
+                        alertaErrorCode.show().text("Error en la consulta AJAX verifica que parametros están en el código fuente");
+                    }
+                });
+            }
+
+
         }
     </script>
 }

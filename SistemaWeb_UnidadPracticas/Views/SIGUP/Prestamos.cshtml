@@ -8,3 +8,53 @@
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">Visualiza los prestamos activos y genera reportes de los mismos</li>
 </ol>
+
+<button type="button" class="btn btn-success mt-2 mb-2 p-3" onclick="abrirModal()">Generar nuevo prestamo <i class="fas fa-plus" style="font-size:20px; margin-left:5px;"></i></button>
+
+@* Formulario para la acción añadir *@
+<div class="modal fade" id="formAñadirPrestamo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Categoria</h5>
+                <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="txtId" type="hidden" value="0" />
+                <div class="row g-1">
+                    <div class="col-sm-6">
+                        <label for="cmbActivo" class="form-label">Persona que recibirá el prestamo</label>
+                        <select id="cmbActivo" class="form-select">
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="cmbActivo" class="form-label">¿Cuantos elementos vas a prestar?</label>
+                        <input type="number"/>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="cmbActivo" class="form-label">Activo</label>
+                        <select id="cmbActivo" class="form-select">
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                @*mensaje de alerta*@
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

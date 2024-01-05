@@ -13,6 +13,7 @@ Use UDP_CONTROL;
 -- go
 go
 
+--Procedimientos para categorias
 create procedure sp_RegistrarCategoria(--Hay un indice unico para el nombre completo del Categoria 
     --@IDCategoria int,---El id es Identity
     @Descripcion varchar(100),--Tiene indice compuesto con Apellidos
@@ -79,6 +80,7 @@ begin
 end
 GO
 
+--Procedimientos para las marcas
 create procedure sp_RegistrarMarca(--Hay un indice unico para el nombre completo del Categoria 
     --@IDCategoria int,---El id es Identity
     @DescripcionMarca varchar(100),--Tiene indice compuesto con Apellidos
@@ -101,10 +103,84 @@ begin
     else 
      SET @Mensaje = 'La marca ya existe'
 end
-
-
-
 go
+
+create procedure sp_EditarMarca(
+    @IdMarca int,
+    @Descripcion varchar(100),--Tiene indice compuesto con Apellidos
+    @Activo bit,
+    @Mensaje varchar(500) output,
+    @Resultado int output
+)
+as
+begin 
+    SET @Resultado = 0 --false
+    IF NOT EXISTS (SELECT * FROM marca_herramienta WHERE Descripcion = @Descripcion and IdMarca != @IdMarca)
+    begin 
+         update top(1) marca_herramienta set 
+        Descripcion = @Descripcion,
+        Activo = @Activo
+        where IdMarca = @IdMarca
+
+        set @Resultado = 1 --true
+    end 
+    else 
+       set @Mensaje = 'La marca ya existe'
+end
+GO
+
+create procedure sp_EliminarMarca(
+	@IdMarca int,
+    @Mensaje varchar(500) output,
+    @Resultado bit output
+)
+as
+begin 
+    SET @Resultado = 0 --false
+    IF NOT EXISTS (SELECT * FROM herramienta h --validacion de que la categoria no este relacionada con un producto
+    inner join marca_herramienta m on m.IdMarca = h.id_marca WHERE h.id_marca = @IdMarca)
+    begin 
+        delete top(1) from marca_herramienta where IdMarca = @IdMarca
+        set @Resultado = 1 --true
+    end 
+    else 
+        set @Mensaje = 'La categoria se encuentra relacionada con un libro'
+end
+GO
+
+-- Procedimientos para usuario
+CREATE PROC sp_RegistrarUsuario
+(
+@IdUsuario int,
+@Nombre varchar(50),
+@Apellidos varchar(50),
+@TipoUsuario int
+)
+AS
+INSERT INTO usuario VALUES (@IdUsuario, @Nombre, @Apellidos, @TipoUsuario);
+GO
+
+CREATE PROC sp_EditarUsuario
+(
+@IdUsuario int,
+@Nombre varchar(50),
+@Apellidos varchar(50),
+@TipoUsuario int
+)
+AS
+UPDATE usuario SET Nombre = @Nombre, Apellidos = @Apellidos, Tipo = @TipoUsuario WHERE IdUsuario = @IdUsuario
+GO
+
+CREATE PROC sp_EliminarUsuario
+(
+@IdUsuario int
+)
+AS
+DELETE usuario WHERE IdUsuario = @IdUsuario;
+GO
+
+--Inserts de los Tipos de usuarios
+
 use UDP_Control
 --inserciones prueba
 exec sp_RegistrarCategoria 'CONSULTA',1,'',1
@@ -133,6 +209,8 @@ go
 use UDP_CONTROL
 
 GO
+
+--Procedimientos para Herramienta
 create procedure sp_RegistrarHerramienta(--Nuevo sp que registra igual el Herramienta con su ejemplar  la vez
     @IdHerramienta int,--Es asignado por administrador al insertar
     @Nombre nvarchar(60),

@@ -50,13 +50,43 @@ namespace CapaDatos
                 return null;
             }
         }
-        public bool AñadirUsuario()
+        public string AñadirUsuario(EN_Usuario usuario)
+        {
+            string resultado;
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(BD_Conexion.cn))
+                {
+                    using (SqlCommand sqlCommand = new SqlCommand("sp_RegistrarUsuario", sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@IdUsuario", usuario.idUsuario);
+                        sqlCommand.Parameters.AddWithValue("@Nombre", usuario.Nombre);
+                        sqlCommand.Parameters.AddWithValue("@Apellidos", usuario.Apellidos);
+                        sqlCommand.Parameters.AddWithValue("@TipoUsuario", usuario.tipoUsuario.idTipo);
+                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                        sqlConnection.Open();
+                        resultado = sqlCommand.ExecuteNonQuery().ToString();
+                    }
+                }
+                return resultado;
+            }
+            catch (SqlException sqlex)
+            {
+                return string.Format("Error de sql: {0} Código de error: {1}", sqlex.Message, sqlex.ErrorCode);
+            }
+            catch (Exception ex)
+            {
+                return string.Format("Error aún no controlado {0}", ex.Message);
+            }
+        }
+
+        public bool EditarUsuario()
         {
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(BD_Conexion.cn))
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand("AgregarUsuario", sqlConnection))
+                    using (SqlCommand sqlCommand = new SqlCommand("EditarUsuario", sqlConnection))
                     {
                         sqlCommand.CommandType = CommandType.StoredProcedure;
                         sqlConnection.Open();
@@ -72,25 +102,19 @@ namespace CapaDatos
             }
         }
 
-        public bool EditarUsuario()
-        {
-            try
-            {
-
-                return true;
-            }
-            catch (Exception)
-            {
-
-                return false;
-            }
-        }
-
         public bool EliminarUsuario()
         {
             try
             {
-
+                using (SqlConnection sqlConnection = new SqlConnection(BD_Conexion.cn))
+                {
+                    using (SqlCommand sqlCommand = new SqlCommand("EliminarUsuario", sqlConnection))
+                    {
+                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                        sqlConnection.Open();
+                        sqlCommand.ExecuteNonQuery();
+                    }
+                }
                 return true;
             }
             catch (Exception)

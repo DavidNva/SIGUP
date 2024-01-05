@@ -212,5 +212,53 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             }
         }
         #endregion
+
+        /*--------------USUARIOS---------------------*/
+        #region TipoUsuario
+        public JsonResult ListarUsuarios()
+        {
+            RN_Usuarios rn_usuarios = new RN_Usuarios();
+            List<EN_Usuario> usuarios = new List<EN_Usuario>();
+            try
+            {
+                usuarios = rn_usuarios.ListarUsuarios();
+                if (usuarios != null)
+                {
+                    return Json( new { success = true, data = usuarios }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, data = usuarios }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, data = usuarios }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult AgregarUsuario(EN_Usuario usuario)
+        {
+            string resultado;
+            RN_Usuarios rn_usuarios = new RN_Usuarios();
+            try
+            {
+                resultado = rn_usuarios.AñadirUsuario(usuario);
+                if (int.TryParse(resultado, out int filasAfectadas) && filasAfectadas == 1)
+                {
+                    return Json(new { success = true, message = "Inserción con éxito" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = resultado });
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Inserción con éxito" });
+            }
+        }
+        #endregion
     }
 }
