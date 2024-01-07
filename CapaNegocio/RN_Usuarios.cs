@@ -30,5 +30,10 @@ namespace CapaNegocio
         {
             return bd_usuario.EliminarUsuario(idUsuario);
         }
+
+        public List<EN_Usuario> ListarUsuarioParaPrestamo()
+        {
+            return bd_usuario.ListarUsuarioParaPrestamo();
+        }
     }
 }

@@ -134,5 +134,42 @@ namespace CapaDatos
                 return resultado = string.Format("Error no controlado: {0}", ex.Message);
             }
         }
+
+        public List<EN_Usuario> ListarUsuarioParaPrestamo()
+        {
+            List<EN_Usuario> lista = new List<EN_Usuario>();
+            try
+            {
+                using (SqlConnection oConexion = new SqlConnection(BD_Conexion.cn))
+                {
+                    //string query = "select IDUsuario, CONCAT(Nombre,' ',Apellidos) [NombreUsuario],  Activo from Usuario where Activo  = 1";
+                    string query = "select IDUsuario, CONCAT(Nombre,' ',Apellidos) [NombreUsuario] from Usuario";
+                    SqlCommand cmd = new SqlCommand(query, oConexion);
+                    cmd.CommandType = CommandType.Text;/*En este caso es de tipo Text (no usamos para este ejemplo, procedimientos almacenados*/
+
+                    oConexion.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())/*Lee todos los resultados que aparecen en la ejecucion del select anter ior*/
+                    {
+                        while (dr.Read())/*Mientras reader esta leyendo, ira agregando a la lista dicha lectura*/
+                        {
+                            lista.Add(/*Agrega un nuevo Lector a la lista*/
+                                new EN_Usuario()
+                                {
+                                    idUsuario = Convert.ToInt32(dr["IdUsuario"]),
+                                    NombreCompletoUsuario = dr["NombreUsuario"].ToString()
+                                    //activo = Convert.ToBoolean(dr["Activo"])
+                                }
+                                );
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                lista = new List<EN_Usuario>();
+            }
+
+            return lista;
+        }
     }
 }

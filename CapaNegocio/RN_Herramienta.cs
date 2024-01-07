@@ -10,12 +10,16 @@ namespace CapaNegocio
     public class RN_Herramienta
     {
         BD_Herramienta herramientaDatos = new BD_Herramienta();
+
         public List<EN_Herramienta> listarHerramientas()
         {
             return herramientaDatos.listarHerramientas();
         }
 
-        
+        public List<EN_Herramienta> ListarHerramientaParaPrestamo()
+        {
+            return herramientaDatos.ListarHerramientaParaPrestamo();
+        }
 
         public int añadirHerramienta(EN_Herramienta herramienta, out string Mensaje)
         {

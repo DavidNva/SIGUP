@@ -10,6 +10,7 @@ namespace CapaEntidad
     {
         public int idUsuario { get; set; }
         public string Nombre { get; set; }
+        public string NombreCompletoUsuario { get; set; }
         public string Apellidos { get; set; }
         public EN_TipoUsuario tipoUsuario { get; set; }
     }
