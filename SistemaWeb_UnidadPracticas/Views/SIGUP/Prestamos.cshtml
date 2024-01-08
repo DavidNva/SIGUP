@@ -4,45 +4,149 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="mt-4">Prestamos</h1>
-<ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">Visualiza los prestamos activos y genera reportes de los mismos</li>
+@*<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/misestilos.css" rel="stylesheet" />*@
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="#">Administrador</a></li>
+    <li class="breadcrumb-item active">Prestamos</li>
 </ol>
+<div class="card">
+    <div class="card-header">
 
-<button type="button" class="btn btn-success mt-2 mb-2 p-3" onclick="abrirModal()">Generar nuevo prestamo <i class="fas fa-plus" style="font-size:20px; margin-left:5px;"></i></button>
+        <i class="fas fa-landmark me-1"></i>Lista de Prestamos
+    </div>
+    <div class="card-body">
+        @*boostrap es como manejar una hoja en excel*@
+        <div class="row">
+            <div class="col-12  d-flex justify-content-between align-items-center">
+                @*numero de filas*@
+                <button type="button" class="btn btn-success" onclick="abrirModal()">Crear Nuevo</button>
 
-@* Formulario para la acción añadir *@
-<div class="modal fade" id="formAñadirPrestamo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <form action="@Url.Action("DescargarPDF_Prestamos","SIGUP")" class="mt-0 ml-2">
+                    <button class="btn btn-danger" type="submit"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                </form>
+            </div>
+        </div>
+        <hr /> @*el id es para identificar la tabla*@
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th></th> @*Esta columna no será visible*@
+                    <th>Préstamo</th>
+                    <th>Herramienta</th>
+                    <th>Usuario</th> @*listaremos como tipo persona o como listabamos categoria*@
+                    @*<th>Herramientas Prestados</th>*@
+                    <th>Fecha Prestamo</th>
+                    <th>Fecha Devolucion</th>
+                    <th>Dias de Prestamo</th>
+                    <th>Observaciones</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarPrestamo llamada en el SIGUPControler*@
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- Modal, con el id FormModal vamos a llamarlo cuando deseamos que aparezca y cuando no
+    al momento de precionar el boton nuevo-->
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    @*Esto ultimo de data-bs-backdrop es para*@
     <div class="modal-dialog">
+        @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Categoria</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Prestamo</h5>
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <input id="txtId" type="hidden" value="0" />
-                <div class="row g-1">
+            <div class="modal-body" id="contenedor">
+                @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
+
+                <input id="txtId" type="hidden" value="0" />@*Con el valor 0 se identifica si es un Prestamo nuevo a ingresar o es valor ya existe
+                    pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                <div class="row g-2">
+
+                    @*<div class="col-sm-8">
+                            <label class="form-label">Herramienta</label>
+                            <select id="cmbHerramienta" class="form-select">
+                            </select>
+                        </div>*@
+                    <div class="col-sm-8" id="div-Herramienta">
+                        <label class="form-label">Herramienta</label>
+                        <select id="cmbHerramienta2" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+
+                        <label for="txtTotalHerramientas" class="form-label" id="lblTotalHerramientas">Cantidad</label>
+                        <input type="number" class="form-control" id="txtTotalHerramientas" maxlength="1" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6" id="div-Unidad">
+                        <label class="form-label" id="lblHerramienta">Unidad</label>
+                        <select id="cmbUnidad" class="form-select">
+                            <option class="form-label">Pieza</option>
+                            <option>Kit</option>
+                            <option>Juego</option>
+                        </select>
+                    </div>
                     <div class="col-sm-6">
-                        <label for="cmbActivo" class="form-label">Persona que recibirá el prestamo</label>
-                        <select id="cmbActivo" class="form-select">
+
+                        <label for="txtCantidadPU" class="form-label" id="lblCantidadPU">Cantidad por Unidad</label>
+                        <input type="number" class="form-control" id="txtCantidadPU" maxlength="1" autocomplete="off">
+                    </div>
+
+                    <div class="col-sm-4" id="div-SelectAreaDisponible">
+                        <label class="form-label" id="lblArea">Area</label>
+                        <select id="cmbArea" class="form-select">
+                        </select>
+                    </div>
+                    @*<div class="col-sm-4" id="div-HerramientaPrestado">
+
+                            <label for="txtHerramientaPrestado" class="form-label" id="lblHerramientaPrestado">Herramienta Prestado</label>
+                            <input type="number" class="form-control form-control-sm" id="txtHerramientaPrestado" disabled autocomplete="off">
+                        </div>*@
+                    <div class="col-sm-8" id="div-Usuario">
+                        <label class="form-label">Usuario</label>
+                        <select id="cmbUsuario" class="form-select">
                         </select>
                     </div>
 
+                    <div class="col-sm-12">
+                        <label for="txtAreaDeUso" class="form-label">Area de Uso</label>
+                        <input type="text" class="form-control" id="txtAreaDeUso" autocomplete="off" placeholder="Ejempo: Salon A, Campo, Exterior, etc.">
+                    </div>
                     <div class="col-sm-6">
-                        <label for="cmbActivo" class="form-label">¿Cuantos elementos vas a prestar?</label>
-                        <input type="number"/>
+                        <label for="txtFechaPrestamo" class="form-label">Fecha Prestamo</label>
+                        <input type="text" class="form-control" id="txtFechaPrestamo" autocomplete="off">
+                    </div>
+                    @*<div class="col-sm-6" id="div-fechaDevolucion">
+                            <label for="txtFechaDevolucion" class="form-label" id="lblFechaDevolucion">Fecha Devolución</label>
+                            <input type="text" class="form-control" id="txtFechaDevolucion" autocomplete="off">
+                        </div>*@
+                    <div class="col-sm-6">
+                        <label for="txtDiasPrestamo" class="form-label">Dias de Prestamo</label>
+                        <input type="number" class="form-control" id="txtDiasPrestamo" maxlength="2" autocomplete="off" placeholder="Ingresa los días de prestamo para el Herramienta">
                     </div>
 
-                    <div class="col-sm-6">
-                        <label for="cmbActivo" class="form-label">Activo</label>
-                        <select id="cmbActivo" class="form-select">
-                            <option value="1">Si</option>
-                            <option value="0">No</option>
-                        </select>
+                    @*<div class="col-sm-6">
+                            <label for="cmbActivo" class="form-label" id="lblActivo">Activo</label>
+                            <select id="cmbActivo" class="form-select">
+                                <option value="1">Si</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>*@
+                    <div class="col-sm-12">
+                        <label for="txtObservaciones" class="form-label">Observaciones</label>
+                        <input type="text" class="form-control" id="txtObservaciones" autocomplete="off" placeholder="Ejemplo: El Herramienta se entregó en perfecto estado ">
                     </div>
+
                 </div>
-
-                @*mensaje de alerta*@
+                <!--mensaje de alerta-->
                 <div class="row mt-2">
                     <div class="col-12">
                         <div id="mensajeError" class="alert alert-danger" role="alert">
@@ -51,10 +155,759 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" id="footer-modal">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
             </div>
         </div>
     </div>
 </div>
+
+<!------------------------------------------------Modal 2 ---------------------------------------------------->
+<!-- Modal, con el id FormModal vamos a llamarlo cuando deseamos que aparezca y cuando no
+    al momento de precionar el boton nuevo-->
+<div class="modal fade" id="FormModalNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    @*Esto ultimo de data-bs-backdrop es para*@
+    <div class="modal-dialog">
+        @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title fw-bold" id="exampleModalLabel2">Finalizar Préstamo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="contenedor2">
+                @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
+
+                <input id="txtId2" type="hidden" value="0" />@*Con el valor 0 se identifica si es un Prestamo nuevo a ingresar o es valor ya existe
+                    pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                <input type="hidden" class="form-control text-success" id="txtHerramientaId">
+                <input type="hidden" class="form-control text-success" id="txtHerramientaId">
+                <div class="row g-2">
+
+                    <div class="col-sm-12">
+                        <label for="txtHerramientaTitulo" class="form-label fw-bold">Herramienta en Préstamo</label>
+                        <input type="text" class="form-control text-success" id="txtHerramientaTitulo" autocomplete="off" placeholder="Ejemplo: El Herramienta se entregó en perfecto estado ">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="txtFechaPrestamo2" class="form-label fw-bold">Fecha Prestamo</label>
+                        <input type="text" class="form-control text-success" id="txtFechaPrestamo2" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6" id="div-fechaDevolucion2">
+                        <label for="txtFechaDevolucion2" class="form-label fw-bold" id="lblFechaDevolucion2">Fecha Devolución</label>
+                        <input type="text" class="form-control text-primary" id="txtFechaDevolucion2" autocomplete="off">
+                    </div>
+
+                    @*<div class="col-sm-6">
+                            <label for="cmbActivo2" class="form-label" id="lblActivo2">Activo</label>
+                            <select id="cmbActivo2" class="form-select">
+                                <option value="1">Si</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>*@
+                    <div class="col-sm-12">
+                        <label for="txtObservaciones2" class="form-label fw-bold">Observaciones</label>
+                        <input type="text" class="form-control text-success" id="txtObservaciones2" autocomplete="off" placeholder="Ejemplo: El Herramienta se entregó en perfecto estado ">
+                    </div>
+
+                </div>
+                <!--mensaje de alerta-->
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError2" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-white" id="footer-modal2">
+                <button type="button" class="btn btn-danger" id="btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="GuardarFinalizarPrestamo()" id="btnFinalizarPrestamo"><b>Finalizar Préstamo</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        //BIEN
+        var tabladata;
+        var filaSeleccionada;/*Son variables globales para se usada por lo que este dentro */
+
+        //el hastash significa que se refiere a un id, entonces llama o igual la variable a una tabla declarada
+        //anteriormente en el html de arriba con id que se llama tabla
+        tabladata = $("#tabla").DataTable({
+            responsive: true,/*Para que sea resposiva*/
+            ordering: false,
+            "ajax": {/*Como pinta la tabla, ajax solo trae todos los valores*/
+                url: '@Url.Action("ListarPrestamosCompleto", "SIGUP")',
+                type: "GET",
+                dataType: "json"
+            },
+            "columns": [/*Todas las columnas que vamos a usar*/
+                /*El data s el origen que se esta llamando en su controlar SIGUP cuando igualamos en el jsnundata
+                 y el seguno valor es como se llama la columna*/
+                {
+                    "data": "id_Herramienta", "render": function (data) {/*El render permite obtener el valor de la columna*/
+                        return data.idHerramienta
+                    },
+                    "visible": false
+                },
+                {
+                    "data": "activo", "render": function (valor) {/*El render permite obtener el valor de la columna activo*/
+                        if (valor) {/*Si el valor es verdadero*/
+                            return '<span class="badge bg-danger">Pendiente</span>' //Si Significa que esta pendiente = 1 = Activo
+                        } else {
+                            return '<span class="badge bg-success">Devuelto</span>' //No, Significa que el prestamo devuelto = 0 = Inactivo
+                        }
+                    }
+
+                },
+                {
+                    "data": "id_Herramienta", "render": function (data) {/*El render permite obtener el valor de la columna*/
+                        return data.nombre
+                    }
+                },
+
+
+                {
+                    "data": "id_Usuario", "render": function (data) {/*El render permite obtener el valor de la columna*/
+                        return data.NombreCompletoUsuario
+                    }
+                },
+               /* { "data": "TotalHerramienta" },*/
+                { "data": "fechaPrestamo" },
+                { "data": "fechaDevolucion" },
+                { "data": "diasPrestamo", "visible": false  },
+
+               /* { "data": "Tipo" },*/
+                { "data": "notas" },
+                {
+                    "data": "idPrestamo", "render": function (data, type, row, meta) {
+
+                        var btnClass = row.FechaDevolucion ? "btn btn-success btn-finalizarPrestamo btn-sm" : "btn btn-danger btn-finalizarPrestamo btn-sm";
+                        var iconClass = row.FechaDevolucion ? "fas fa-eye" : "fas fa-sync";
+                        var btnTitle = row.FechaDevolucion ? "Ver préstamo" : "Finalizar préstamo";
+                        var btnBgClass = row.FechaDevolucion ? "" : "btn-primary";
+                        return $("<button>").addClass(btnClass).addClass(btnBgClass).append(
+                            $("<i>").addClass(iconClass)
+                        ).attr({
+                            "title": btnTitle,
+                            "data-informacionprestamo": JSON.stringify(row)
+                        })[0].outerHTML;
+
+
+                    }
+                },
+                {
+                    "data": "idPrestamo", "render": function (data, type, row, meta) {
+
+                        return $("<button>").addClass("btn btn-primary btn-editar btn-sm").append(
+                            $("<i>").addClass("fas fa-pen")
+                        ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
+                            +
+                            $("<button>").addClass("btn btn-danger btn-eliminar btn-sm ms-2").append(
+                                $("<i>").addClass("fas fa-trash")
+                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML;
+
+
+                    },
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                }
+            ],/*Propiedad o atributos van dentro de las comillas ""*/
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+            }
+
+        });
+
+          jQuery.ajax({
+            url: '@Url.Action("ListarUsuarioParaPrestamo", "SIGUP")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+               //$("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocategoria");
+                $("#cmbUsuario").append($("<option selected>").val("").attr({ "value": "0", "disabled": "true" }).text("Seleccionar"));
+                $.each(data.data, function (index, item) {
+                    //El valor de item es el declarado en EN_Usuario, la capa Entidad
+                    $("<option>").attr({ "value": item.idUsuario }).text(item.NombreCompletoUsuario).appendTo("#cmbUsuario");
+                    console.log(item.idUsuario)
+                    console.log(item.NombreCompletoUsuario)
+                })
+               /* $("#cmbUsuario").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });*/
+                   /* .css("z-index", "1600");*/
+
+            },
+            error: function (error) {
+                console.log(error)
+              }
+          });
+
+          jQuery.ajax({
+            url: '@Url.Action("ListarHerramientaParaPrestamo", "SIGUP")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+               //$("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocategoria");
+               /* $("#cmbHerramienta2").append($("<option selected>").val(0).text("Seleccionar")).attr({ "disabled": "disabled" });*/
+                $("#cmbHerramienta2 option:first-child").attr({ "disabled": true });//Desabilita la primera opcion que se la de seleccionar
+                $.each(data.data, function (index, item) {
+                    //El valor de item es el declarado en EN_Usuario, la capa Entidad
+                    $("<option>").attr({ "value": item.idHerramienta }).text(item.nombre).appendTo("#cmbHerramienta2");
+                    console.log(item.idHerramienta)
+                    console.log(item.nombre)
+                    console.log(item.nombre)
+                })
+                /*$("#cmbHerramienta").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });*/
+                   /* .css("z-index", "1600");*/
+               /* ListarHerramienta();*/
+            },
+            error: function (error) {
+                console.log(error)
+              }
+          });
+
+           jQuery.ajax({
+            url: '@Url.Action("ListarAreaParaPrestamo", "SIGUP")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+               //$("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocategoria");
+                $("#cmbArea").append($("<option selected>").val("").attr({ "value": 0, "disabled": "true" }).text("Seleccionar"));
+                $.each(data.data, function (index, item) {
+                    //El valor de item es el declarado en EN_Usuario, la capa Entidad
+                    $("<option>").attr({ "value": item.idArea }).text(item.nombreArea).appendTo("#cmbArea");
+                    console.log(item.idArea)
+                    console.log(item.nombreArea)
+                })
+               /* $("#cmbUsuario").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });*/
+                   /* .css("z-index", "1600");*/
+
+            },
+            error: function (error) {
+                console.log(error)
+              }
+          });
+
+
+        $("#cmbHerramienta").on("change", function () {
+            if ($("#cmbHerramienta").val() == "0") {
+                //console.log("El value de cmbHerramienta es = nada");
+                $("#cmbHerramienta").val($("#cmbHerramienta option:first").val())//Selecciona el primer valor (Serie el de seleccionar)
+                $("#cmbHerramienta option:first-child").attr({ "disabled":true});//Desabilita la primera opcion que es seleccinoar
+                $("#cmbHerramienta").html("")//Limpia los Herramientaes
+                $("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cmbHerramienta")
+                $("#cmbHerramienta").val($("#cmbHerramienta option:first").val());//Vuelve a colocar el seleccionar y marcar la primera opcion
+
+            } else {
+               /* ListarHerramienta();*/
+
+                //Cada vez que cambia lista nuevamente las Herramientaas
+                //Si realmente se ha elegido un Herramienta, entonces si lista los Herramientaes, de esta forma se evita el error de referencia null
+            }
+            //if ($("#cmbHerramienta").text() == "") {
+            //    $("<option>").attr({ "value": "", "disabled": "disabled", "selected": "true" }).text("Seleccionar2").appendTo("#cmbHerramienta")
+            //    $("#cmbHerramienta").val($("#cmbHerramienta option:last").val()).prop("selected", true);
+
+            //}
+
+
+          })
+
+        function ListarHerramienta() {//Herramienta
+            $("#cmbHerramienta").html("")//Para poder iniciar desde 0 lo limpiamos de esta forma
+            //Aqui se colocan los atributos de html y opciones de valor, text, etc
+            //$("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cmbHerramienta")
+
+            jQuery.ajax({
+                url: '@Url.Action("ObtenerHerramientaPorHerramienta", "SIGUP")',
+                type: "POST",
+                data: JSON.stringify({ idHerramienta: $("#cmbHerramienta option:selected").val() }),//psasamos los parametros que necesita este metodo
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    if (data.lista != null) {
+                        $.each(data.lista, function (i, item) {
+                            $("<option>").attr({"value": item.IdHerramientaHerramienta }).text("Herramienta: " + item.IdHerramientaHerramienta).appendTo("#cmbHerramienta")
+                        })
+                    }
+
+                    var cmbHerramienta = $("#cmbHerramienta");
+                    var opcionSeleccionar = $("<option>").text("Sin Herramientaes").val(0);/*.attr("disabled","disabled");*/
+
+                    if (typeof cmbHerramienta.val() === "undefined" || cmbHerramienta.val() === null || cmbHerramienta.val() === "") {
+                        cmbHerramienta.empty().append(opcionSeleccionar);
+                    }
+                }
+            })
+        }
+        $(".btn-editar").on("click", function () {
+            $("#txtDiasPrestamo, #txtObservaciones").toggle();
+        });
+        function abrirModal(json) /*json es el data del siguiente*/ {
+            $("#txtId").val(0);
+            $("#txtTotalHerramientas").val(1);
+            $("#txtCantidadPU").val(1);
+            $("#txtTotalHerramientas").attr({ "disabled": "disabled" });
+            /*$("#lblTotalHerramientas").css("color", "transparent");*/
+
+            $("#txtFechaPrestamo").val("").attr({ "disabled": "disabled" }); 
+            /*Para que tome la fecha actual y no lo pueda cambiar. Esto como una forma de seguridad que no haga prestamos de fechas anteriores no correpondientes o logicas*/
+
+            //La clase hidden-elements viene de mis estilos, estilos css creados por mi
+            $("#div-fechaDevolucion").val("").addClass("hidden-elements");
+            $("#txtFechaDevolucion").val();//Este fecha devolucion no se utiliza para registrar, sino para editar
+
+            $("#txtDiasPrestamo").val(1);
+            $("#txtObservaciones").val("NINGUNA");
+            $("#cmbHerramienta").removeAttr("disabled");//Para poder elegir aun cuando ayamos dado clic antes en editar
+            $("#cmbHerramienta").append($("<option selected>").val("").text("Seleccionar"));
+
+           /* $("#cmbUsuario").append($("<option selected>").val("").text("Seleccionar"));*/
+
+            $("#cmbHerramienta").removeAttr("disabled");//Para poder elegir aun cuando ayamos dado clic antes en editar
+            $("#cmbHerramienta").html("")
+            $("<option>").attr({ "value": "", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cmbHerramienta")
+            $("#cmbHerramienta").val($("#cmbHerramienta option:first").val());
+
+            $("#div-HerramientaPrestado").val("").addClass("hidden-elements");
+            $("#div-SelectHerramientaDisponible").removeClass("hidden-elements");
+
+            $("#cmbActivo").val(1);
+            $("#cmbActivo").hide();
+            $("#lblActivo").hide();
+
+            $("#txtFechaPrestamo").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
+            //$("#txtFechaDevolucion").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
+            //$("#txtFechaDevolucion").val("").attr({ "disabled": "disabled" });
+            $("#mensajeError").hide();
+            /*Llamamos al form modal*/
+            if (json != null) {/*Porque el metodo abrir modal puede abrirse con crear nuevo o con editar,
+             * por eso esta linea*/
+                $("#txtId").val(json.IdPrestamo);/*Traerá el codigo pero no lo mostrará al Prestamo*/
+                $("#cmbHerramienta").val(json.oId_Herramienta.IdHerramienta).trigger('change');
+                $("#cmbHerramienta").attr({ "disabled": "disabled" });
+                $("#cmbHerramienta").attr({ "disabled": "disabled" });
+                //$("#cmbHerramienta").val(json.oId_Herramienta.IdHerramientaHerramienta);
+               // $("#lblHerramienta").hide();
+                //$("#cmbHerramienta").hide();
+                $("#div-HerramientaPrestado").removeClass("hidden-elements");
+                //$("#div-SelectHerramientaDisponible").removeClass("hidden-elements");
+                $("#div-SelectHerramientaDisponible").val("").addClass("hidden-elements");
+                $("#cmbUsuario").val(json.oId_Usuario.IdUsuario).trigger('change');
+                $("#txtTotalHerramientas").val(json.TotalHerramienta); /*El json o data, trae una propieadad llamada nombres*/
+                //$("#cmbHerramienta").val(json.oId_Herramienta.IdHerramientaHerramienta);
+                $("#txtHerramientaPrestado").val(json.oId_Herramienta.IdHerramientaHerramienta);
+                $("#cmbActivo").val(json.Activo == true ? 1 : 0);/*Si es igual a true de el valor de uno
+                 y si no es true de el valor de 0*/
+                $("#cmbActivo").show();
+                $("#lblActivo").show();
+                $("#txtFechaPrestamo").val(json.FechaPrestamo).attr({ "disabled": "disabled" });;//El dato despues de json. se refiere al identificador dado en Capa Entidad EN_Prestamo, tal cual se deben de escribirs
+                $("#div-fechaDevolucion").val(json.FechaDevolucion).removeClass("hidden-elements");
+
+
+                if (json.FechaDevolucion != "") {/*Si ya hay un valor agregado para fecha devolucion en la tabla */
+                    $("#txtFechaDevolucion").val(json.FechaDevolucion);
+                } else {//Si es = "", no han agregado nada para fecha devolucion, entonces:
+                    $("#txtFechaDevolucion").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
+                }
+
+
+                $("#txtFechaPrestamo").datepicker({ dateFormat: 'dd/mm/yy' })
+                $("#txtFechaDevolucion").datepicker({ dateFormat: 'dd/mm/yy' })
+
+                $("#txtDiasPrestamo").val(json.DiasDePrestamo);
+                $("#txtObservaciones").val(json.Observaciones);
+
+            }
+
+            $("#FormModal").modal("show");
+        }
+
+        /*--------------- Al dar clic en el boton de editar-------------------------------*/
+
+        /*Estamos llamando a la tabla especificamente al tbody, todo ira en relacion a esa tabla*/
+        $("#tabla tbody").on("click", '.btn-editar', function () {
+            /*This es la misma tabla, se llama
+             tr es el row o la fila seleccionado de la tabla */
+            filaSeleccionada = $(this).closest("tr");
+            var data = tabladata.row(filaSeleccionada).data();
+
+            //console.log(data);/*Para visualizar en consola*/
+            //abrirModal(data);
+            var json = $(this).data("informacion")
+            console.log(json);
+            abrirModal(json)
+
+        })
+
+        function abrirModal2(json) /*json es el data del siguiente*/ {
+
+            /*Llamamos al form modal*/
+            if (json != null) {/*Porque el metodo abrir modal puede abrirse con crear nuevo o con editar,
+             * por eso esta linea*/
+                $("#mensajeError2").hide();
+                $("#txtId2").val(json.IdPrestamo);/*Traerá el codigo pero no lo mostrará al Prestamo*/
+                $("#txtHerramientaId").val(json.oId_Herramienta.IdHerramienta).attr({ "disabled": "disabled" });
+                $("#txtHerramientaTitulo").val(json.oId_Herramienta.Titulo).attr({ "disabled": "disabled" });
+
+                $("#txtHerramientaId").val(json.oId_Herramienta.IdHerramientaHerramienta).attr({ "disabled": "disabled" });
+                ///$("#cmbHerramienta2").val(json.oId_Herramienta.IdHerramienta).trigger('change');
+                //$("#cmbHerramienta2").attr({ "disabled": "disabled" });
+                //$("#cmbHerramienta2").attr({ "disabled": "disabled" });
+                //$("#cmbHerramienta").val(json.oId_Herramienta.IdHerramientaHerramienta);
+                // $("#lblHerramienta").hide();
+                //$("#cmbHerramienta").hide();
+                //$("#div-HerramientaPrestado2").removeClass("hidden-elements");
+                //$("#div-SelectHerramientaDisponible").removeClass("hidden-elements");
+                //$("#div-SelectHerramientaDisponible2").val("").addClass("hidden-elements");
+
+                //$("#cmbHerramienta").val(json.oId_Herramienta.IdHerramientaHerramienta);
+                //$("#txtHerramientaPrestado2").val(json.oId_Herramienta.IdHerramientaHerramienta);
+                //$("#cmbActivo2").val(json.Activo == true ? 1 : 0);/*Si es igual a true de el valor de uno
+                // y si no es true de el valor de 0*/
+                //$("#cmbActivo2").show();
+                //$("#lblActivo2").show();
+                $("#txtFechaPrestamo2").val(json.FechaPrestamo).attr({ "disabled": "disabled" });;//El dato despues de json. se refiere al identificador dado en Capa Entidad EN_Prestamo, tal cual se deben de escribirs
+                $("#div-fechaDevolucion2").val(json.FechaDevolucion).removeClass("hidden-elements");
+
+
+                if (json.FechaDevolucion != "") {/*Si ya hay un valor agregado para fecha devolucion en la tabla */
+
+
+                    $("#exampleModalLabel2").text("Detalles del Préstamo Finalizado");
+                    $("#txtFechaDevolucion2").val("").attr({ "disabled": "disabled" });
+                    $("#txtFechaDevolucion2").val(json.FechaDevolucion);
+                    $("#btnFinalizarPrestamo").attr({ "disabled": "disabled" });
+                    $("#btnFinalizarPrestamo").addClass("hidden-elements");
+                    $("#txtObservaciones2").attr({ "disabled": "disabled" });
+
+                    //La clase hidden-elements viene de mis estilos, estilos css creados por mi
+                    //$("#div-fechaDevolucion").val("").addClass("hidden-elements");
+
+                    //$("#footer-modal2").val("").addClass("hidden-elements");**
+
+                    //$("#footer-modal2").removeClass("bg-warning");
+                    //$("#footer-modal2").val("").addClass("bg-white");
+
+                    //$("#btn-cancelar").addClass("col-12");
+
+
+                    //$(".btn-finalizarPrestamo").removeClass("fas fa-sync");
+                    //$(".btn-finalizarPrestamo").addClass("fas fa-book");
+                    //$("#footer-modal2").val("").addClass("hidden-elements");
+
+                } else {//Si es = "", no han agregado nada para fecha devolucion, entonces:
+                    $("#exampleModalLabel2").text("Finalizar Préstamo");
+                    //$("#btn-cancelar").removeClass("col-12");
+                    $("#txtFechaDevolucion2").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
+                    //$("#footer-modal2").removeClass("hidden-elements");**
+                    //$("#footer-modal2").removeClass("bg-warning");
+                    //$("#footer-modal2").val("").addClass("bg-white");
+                    $("#btnFinalizarPrestamo").attr({ "disabled": false });
+                    $("#btnFinalizarPrestamo").removeClass("hidden-elements");
+                    $("#txtObservaciones2").attr({ "disabled": false });
+                    $("#txtFechaDevolucion2").attr({ "disabled": false });
+
+                }
+
+
+                $("#txtFechaPrestamo2").datepicker({ dateFormat: 'dd/mm/yy' })
+                $("#txtFechaDevolucion2").datepicker({ dateFormat: 'dd/mm/yy' })
+
+                $("#txtDiasPrestamo2").val(json.DiasDePrestamo);
+                $("#txtObservaciones2").val(json.Observaciones);
+
+            }
+
+            $("#FormModalNew").modal("show");
+        }
+        /*--------------- Al dar clic en el boton de editar solo fecha prestamo y activo-------------------------------*/
+
+        /*Estamos llamando a la tabla especificamente al tbody, todo ira en relacion a esa tabla*/
+        $("#tabla tbody").on("click", '.btn-finalizarPrestamo', function () {
+            /*This es la misma tabla, se llama
+             tr es el row o la fila seleccionado de la tabla */
+            filaSeleccionada = $(this).closest("tr");
+            var data = tabladata.row(filaSeleccionada).data();
+            //$("#div-div-Usuario").val("").addClass("hidden-elements");
+            //console.log(data);/*Para visualizar en consola*/
+            //abrirModal(data);
+            var json = $(this).data("informacionprestamo")
+            console.log(json);
+
+
+
+            abrirModal2(json)
+            $("#txtFechaPrestamo2, #txtFechaDevolucion2").change(function () {
+                var fechaPrestamo = Date.parse($("#txtFechaPrestamo2").val());
+                var fechaDevolucion = Date.parse($("#txtFechaDevolucion2").val());
+
+                if (fechaDevolucion < fechaPrestamo) {
+                    //alert("");
+                    //swal("Error", "La fecha de devolución no puede ser menor que la fecha de préstamo", "error")
+
+                    //$("#txtFechaDevolucion2").val('');
+                    $("#mensajeError2").text("La fecha de devolución no puede ser menor que la fecha de préstamo");
+                    $("#mensajeError2").show();
+                    //$("#txtFechaDevolucion2").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
+                } else {
+                    $("#mensajeError2").hide();
+                }
+            });
+        })
+
+        //El boton aplica 3 acciones a la base de datos
+        //1. Elimina el prestamo con su id y a su vez los detallePrestamos que tenga
+        //2. Actualiza el Herramienta pasando a activo = 1, reactiva el Herramienta que estaba en prestamo
+        //3. Acutaliza: Aumentando 1 Herramienta a la cantidad de Herramientaes en la tabla Herramienta ya que se reactiva un
+        //Herramienta,entonces se suma de nuevo ese Herramienta al total de stock o cantidad de Herramientaes de Herramienta
+
+        $("#tabla tbody").on("click", '.btn-eliminar', function () {
+
+            var json = $(this).data("informacion")
+
+            swal({
+                title: "¿Esta Seguro?",
+                text: "¿Desea eliminar el Prestamo?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+            function () {
+                jQuery.ajax({
+                    url: '@Url.Action("EliminarPrestamo", "SIGUP")',
+                    type: "POST",
+                    data: JSON.stringify({ id: json.IdPrestamo, idHerramientaHerramienta: json.oId_Herramienta.IdHerramientaHerramienta, idHerramienta: json.oId_Herramienta.IdHerramienta }),/*Paso de valores*/
+                    /*el stringfy lo convierte a texto*/
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {/*Ese data esta almacenando la respuesta del metodo eliminar Prestamo
+                     * hecho en SIGUPController*/
+                        //ELIMINAR Prestamo
+                        if (data.resultado) { /*si el resultado es verdadera)*/
+                            //tabladata.row(Prestamoseleccionado).remove().draw();
+                            tabladata.ajax.reload();
+                        }else {
+                            swal("No se pudo eliminar", data.mensaje, "error")
+                        }/*Primer parametro mensaje, luego el mensaje del data, y el tercero indica que es de tipo error*/
+
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+
+                });
+            });
+            //console.log(data);
+        })
+
+        function Guardar() {
+
+            var Prestamo = {
+                idPrestamo: $("#txtId").val(), /*Los dos puntos de la condicion es "si es diferente es:"
+                 el signo de interrogacion es un entonces
+                 leyendo la sentencia de abajo seria, si el valor es igual a 1, entonces es true (verdadero)
+                 pero si es diferentes es falso*/
+                id_Usuario: {
+                    idUsuario: $("#cmbUsuario option:selected").val(),
+                    NombreCompletoUsuario: $("#cmbUsuario option:selected").text()
+                },
+                id_Herramienta: {
+                    idHerramienta: $("#cmbHerramienta2 option:selected").val(),
+                    nombre: $("#cmbHerramienta2 option:selected").text()
+
+                },
+
+                id_Area: {
+                    idArea: $("#cmbArea option:selected").val(),
+                    nombreArea: $("#cmbArea option:selected").text()
+                },
+                //oId_Herramienta: {
+                //    IdHerramientaHerramienta: $("#cmbHerramienta option:selected").val()
+                //    //Titulo: $("#cmbHerramienta option:selected").text()
+                //},
+                //oId_Herramienta.IdHerramientaHerramienta
+                cantidad: $("#txtTotalHerramientas").val(),
+                unidad:$("#cmbUnidad option:selected").text(),
+                cantidadPorUnidad: $("#txtCantidadPU").val(),
+                areaDeUso: $("#txtAreaDeUso").val(),
+                /*El punto val sirve para obtener un valor y para establecer un valor*/
+                fechaPrestamo: $("#txtFechaPrestamo").val(),
+                fechaDevolucion: $("#txtFechaDevolucion").val(),
+                diasPrestamo: $("#txtDiasPrestamo").val(),
+
+                notas: $("#txtObservaciones").val(),
+                activo: $("#cmbActivo").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0)
+                // * o un no (No = 0*/
+
+            }
+            var listaCarrito = [];
+            var Herramienta = Prestamo;
+            var Cantidad = Prestamo.cantidad;
+            listaCarrito.push({//para agregar elementos a esta lisra
+                id_Herramienta: Herramienta.id_Herramienta,//Aqui tengo que darle el idHerramienta
+
+                cantidad: Cantidad
+            })
+
+
+
+            console.log(Prestamo.id_Herramienta.idHerramienta)
+            console.log("Hola1")
+            console.log(listaCarrito)
+
+            jQuery.ajax({/*Llama al metodo de guardar Prestamo, que dependiendo de la accion va a crear nuevo
+             o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
+                url: '@Url.Action("GuardarPrestamo", "SIGUP")',
+                type: "POST",
+                data: JSON.stringify({ oListaPrestamo: listaCarrito, objeto: Prestamo}),/*Paso de valores
+                 el stringfy lo convierte a texto*/
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    //Prestamo NUEVO
+                    if (Prestamo.IdPrestamo == 0) { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
+                        un Prestamo nuevo, por lo que se ha dado dando clic con el boton de crear*/
+                        /*alert("Crear Prestamo")*/
+
+                        if (data.resultado != 0) {
+                            Prestamo.IdPrestamo = data.resultado;
+                            //tabladata.row.add(Prestamo).draw(false);
+                            //Generraba error con el id del prestamo colocando como true al registrar
+                            //si despues de registrar editabamos ese registro entonces volvia a registrar en lugar de solo editar
+                            //por lo que conviene mejor recargar la tabla con la siguiente line de codigo
+                            //para asi tener el id correspondi
+                            tabladata.ajax.reload();
+                            $("#FormModal").modal("hide");
+                        } else {
+
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                    //Prestamo Editar
+                    else {
+                        /* alert("Editar Prestamo")*/
+                        /*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando
+                         a un Prestamo, por lo que indica que se ha dado clic en el boton de editar, eso lo comprobamos
+                         con los alert comentados*/
+
+                        if (data.resultado) {
+                            tabladata.ajax.reload();
+                            /*tabladata.row(filaSeleccionada).data(Prestamo).draw(false);*/
+                            filaSeleccionada = null;
+                            $("#FormModal").modal("hide");
+
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                },
+                error: function (error) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    $("#mensajeError").text("Error Ajax");
+                    $("#mensajeError").show();
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    });
+                }
+            });
+
+        }
+        //-----------------------Guardar finalizar PRESTAMO ---------------------------------------
+        function GuardarFinalizarPrestamo() {
+
+
+            var Prestamoconcluido = {
+                IdPrestamo: $("#txtId2").val(), /*Los dos puntos de la condicion es "si es diferente es:"
+                 el signo de interrogacion es un entonces
+                 leyendo la sentencia de abajo seria, si el valor es igual a 1, entonces es true (verdadero)
+                 pero si es diferentes es falso*/
+                oId_Usuario: {
+                    IdUsuario: $("#cmbUsuario2 option:selected").val(),
+                    NombreCompletoUsuario: $("#cmbUsuario option:selected").text()
+                },
+                oId_Herramienta: {
+                    IdHerramienta: $("#txtHerramientaId").val(),
+                    Titulo: $("#txtHerramientaTitulo").val()//Se hicieron dos, el id es hidden para no tener problemas
+                },
+                oId_Herramienta: {
+                    IdHerramientaHerramienta: $("#txtHerramientaId").val()
+                    //Titulo: $("#cmbHerramienta option:selected").text()
+                },
+                //oId_Herramienta.IdHerramientaHerramienta
+                TotalHerramienta: $("#txtTotalHerramientas2").val(),
+                /*El punto val sirve para obtener un valor y para establecer un valor*/
+                FechaPrestamo: $("#txtFechaPrestamo2").val(),
+                FechaDevolucion: $("#txtFechaDevolucion2").val(),
+                DiasDePrestamo: $("#txtDiasPrestamo2").val(),
+
+
+                Observaciones: $("#txtObservaciones2").val(),
+                Activo: $("#cmbActivo2").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0)
+                // * o un no (No = 0*/
+
+            }
+            console.log(Prestamoconcluido)
+            jQuery.ajax({
+                    url: '@Url.Action("FinalizarPrestamo", "SIGUP")',
+                    type: "POST",
+                data: JSON.stringify({ objeto: Prestamoconcluido }),/*Paso de valores*/
+                    /*el stringfy lo convierte a texto*/
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {/*Ese data esta almacenando la respuesta del metodo eliminar Prestamo
+                     * hecho en SIGUPController*/
+                        //ELIMINAR Prestamo
+                        if (data.resultado) { /*si el resultado es verdadera)*/
+                            //tabladata.row(Prestamoseleccionado).remove().draw();
+                            tabladata.ajax.reload();
+                            $("#FormModalNew").modal("hide");
+                        }else {
+                            $("#mensajeError2").text(data.mensaje);
+                            $("#mensajeError2").show();
+                            //swal("No se pudo finalizar el préstamo", data.mensaje, "error")
+                        }/*Primer parametro mensaje, luego el mensaje del data, y el tercero indica que es de tipo error*/
+
+                    },
+                error: function (error) {
+                   // $("#contenedor2").LoadingOverlay("hide");
+                    $("#mensajeError2").text("Error Ajax");
+                    $("#mensajeError2").show();
+                },
+                beforeSend: function () {
+                    //$("#contenedor2").LoadingOverlay("show", {
+                    //    imageResizeFactor: 2,
+                    //    text: "Cargando...",
+                    //    size: 14
+                    //});
+                }
+
+            });
+
+        }
+    </script>
+}

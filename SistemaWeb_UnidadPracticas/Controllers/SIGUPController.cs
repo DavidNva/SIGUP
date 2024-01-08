@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -302,6 +304,102 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             {
                 return Json(new { success = false, message = string.Format("Ha ocurrido un error en el controlador, contacta con el desarrollador si recibes este error, mensaje de error: {0}", ex.Message) });
             }
+        }
+        #endregion
+
+
+        /*--------------PRESTAMOS--------------------*/
+        #region PRESTAMOS
+        [HttpGet] /*Una URL que devuelve datos, un httpost se le pasan los valores y despues devuelve los datos  */
+        public JsonResult ListarPrestamosCompleto() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            List<EN_Prestamo> oLista = new List<EN_Prestamo>();
+            oLista = new RN_Prestamo().ListarPrestamosCompleto();/*Esta declarado en RN_Prestamos, capa negocio*/
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+            /*El json da los datos, jala los datos de esa lista, en data*/
+
+        }
+
+        [HttpGet] /*Una URL que devuelve datos, un httpost se le pasan los valores y despues devuelve los datos  */
+        public JsonResult ListarUsuarioParaPrestamo() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            List<EN_Usuario> oLista = new List<EN_Usuario>();
+            oLista = new RN_Usuarios().ListarUsuarioParaPrestamo();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+            /*El json da los datos, jala los datos de esa lista, en data*/
+        }
+
+        [HttpGet] /*Una URL que devuelve datos, un httpost se le pasan los valores y despues devuelve los datos  */
+        public JsonResult ListarHerramientaParaPrestamo() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            List<EN_Herramienta> oLista = new List<EN_Herramienta>();
+            oLista = new RN_Herramienta().ListarHerramientaParaPrestamo();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+            /*El json da los datos, jala los datos de esa lista, en data*/
+        }
+
+        [HttpGet] /*Una URL que devuelve datos, un httpost se le pasan los valores y despues devuelve los datos  */
+        public JsonResult ListarAreaParaPrestamo() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            List<EN_Area> oLista = new List<EN_Area>();
+            oLista = new RN_Area().ListarAreaParaPrestamo();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+            /*El json da los datos, jala los datos de esa lista, en data*/
+        }
+
+        [HttpPost]
+        public JsonResult GuardarPrestamo(List<EN_Prestamo> oListaPrestamo, EN_Prestamo objeto) /*De este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            DataTable detallePrestamo = new DataTable();
+            detallePrestamo.Locale = new CultureInfo("es-MX"); //Comenzamos a crear las columnas que necesita esta table
+            detallePrestamo.Columns.Add("IdHerramienta", typeof(int));//antes era IdLibro
+            detallePrestamo.Columns.Add("Cantidad", typeof(int));
+            object resultado;/*Va a permitir almacenar cualquier tipo de resultado (en este caso int o booelan, dependiendi si es creacion o edicion)*/
+            string mensaje = string.Empty;
+
+            foreach (EN_Prestamo oEjemplar in oListaPrestamo)//por cada carrito en la lista carrito
+            {
+                decimal subTotal = Convert.ToDecimal(objeto.cantidad) /** oCarrito.oId_Libro.Precio*/;
+                //        //Antes se multiplicaaba por el precio, ahoa simplemente pasamos la cantidad directamente
+
+                //total += subTotal;//Va aumentando el valor de total con cada iteracion
+                //Dar una condicionar que si el oEjemplar es diferente de null
+                if (oListaPrestamo == null || oEjemplar == null || oEjemplar.id_Herramienta == null)
+                {
+                    mensaje = "No hay un ejemplar disponible para la herramienta seleccionada";
+                }
+                else
+                {
+                    detallePrestamo.Rows.Add(new object[]
+                    {
+                        //oCarrito.oId_Ejemplar.IdEjemplarLibro,//Estamos trabajando con ejemplar, pero en este caso solo es una lista entonces no hay problema
+                        //oCarrito.oId_Libro.oId_Ejemplar.IdEjemplarLibro,//Estamos trabajando con ejemplar, pero en este caso solo es una lista entonces no hay problema
+                        //oCarrito.Cantidad,
+                        oEjemplar.id_Herramienta.idHerramienta,
+                        oEjemplar.cantidad
+                        //subTotal
+
+                    });
+                }
+
+            }
+
+            if (objeto.idPrestamo == 0)/*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
+             un Prestamo nuevo, por lo que se ha dado dando clic con el boton de crear*/
+            {
+                resultado = new RN_Prestamo().Registrar(objeto, detallePrestamo, out mensaje);/*El metodo registrar
+                 de tipo int, devuelve el id registrado*/
+            }
+            else
+            {/*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando
+                 a un Prestamo, por lo que indica que se ha dado clic en el boton de editar, eso lo comprobamos
+                 con los alert comentados*/
+                //resultado = new RN_Prestamo().Editar(objeto, out mensaje);
+                resultado = null;
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
         }
         #endregion
     }

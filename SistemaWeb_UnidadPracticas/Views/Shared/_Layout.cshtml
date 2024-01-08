@@ -43,23 +43,30 @@
                             Dashboard
                         </a>
                         @*primero es el nombre de la accion, el segundo es el nombre del controlador*@
-                        <a class="nav-link" href="@Url.Action("Prestamos", "SIGUP")">
+                        <a class="nav-link" href="@Url.Action("HistorialPrestamos", "SIGUP")">
                             <div class="sb-nav-link-icon"><i class="fas fa-landmark"></i></div>
-                            Administrar historial
-                        </a>
-                        <a class="nav-link" href="@Url.Action("Usuarios", "SIGUP")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
-                            Alumnos
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Administrador</div>
-                        <a class="nav-link" href="@Url.Action("Herramientas", "SIGUP")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
-                            Herramientas
+                            Historial de Préstamos
                         </a>
                         <a class="nav-link" href="@Url.Action("Usuarios", "SIGUP")">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Usuarios
                         </a>
+
+                        <div class="sb-sidenav-menu-heading">Administrador</div>
+                        <a class="nav-link" href="@Url.Action("Prestamos", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-landmark"></i></div>
+                            Préstamos
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Herramientas", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
+                            Herramientas
+                        </a>
+
+                        <a class="nav-link" href="@Url.Action("Administradores", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                            Administradores
+                        </a>
+
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAdmines" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
                             Unidad Practicas

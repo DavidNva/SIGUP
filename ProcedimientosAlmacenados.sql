@@ -323,3 +323,81 @@ begin
 end 
 go
 select * from herramienta
+
+
+--------------------------------- PRESTAMOS -------------------------------------------------------
+create procedure usp_RegistrarPrestamo(
+    @Id_Usuario int,
+    --@IdHerramienta int, /*Por ejemplar*/
+    @CantidadTotal int, 
+	@Unidad varchar(50),
+	@CantidadPU int,
+	@AreaDeUso varchar(50),
+	@Id_Area int, 
+    --@MontoTotal decimal(18,2),
+    @DiasDePrestamo int, 
+    --@Estado bit,--Es como si dijeramos activo(El 0 significa no Prestamo activo o "DEVUELTO" y
+    -- el 1 significa prestamo activo o "No devuelto")
+    @Observaciones nvarchar(500),
+    @Id_Herramienta int,--SE AGREGO ESTA COLUMNA PARA PLICAR LA ELIMINACION EN CASCADA EN CASO DE QUE SE ELIMINE EL LIBRO
+	--@CalificacionEntrega varchar(50),
+    @DetallePrestamo [EDetalle_Prestamo] READONLY,--SE USA LA ESTRUCTURA CREADA ANTERIORMENTE
+	--@EjemplarActivo [Ejemplar_Activo] READONLY,
+    @Resultado bit output,
+    @Mensaje varchar(500) output
+)
+as 
+begin 
+    begin try 
+        declare @idPrestamo int = 0
+		declare @cantidadInicial int =  (select cantidad from herramienta where IdHerramienta = @Id_Herramienta)
+        set @Resultado = 1
+        set @Mensaje = ''
+		IF  @cantidadInicial - @CantidadTotal < 0
+		begin
+		    set @Resultado = 0
+			--set @Mensaje = 'Error: La cantidad ingresada es mayor al stock disponible de esa herramienta, intente con una cantidad menor.'
+			set @Mensaje = CONCAT('Error: La cantidad ingresada (', @CantidadTotal, ') es mayor al stock disponible (', @cantidadInicial, ') de esa herramienta, intente con una cantidad menor.')
+		end
+		else
+		begin
+			begin transaction registro
+			insert into Prestamo(IdUsuario, Cantidad,Unidad, CantidadPU, AreaDeUso, Area, DiasDePrestamo, Notas,IdHerramienta )--COLUMNA NUEVA PARA PLICAR EL DELETE CASCADE EN CASO DE QUE SE ELIMINE UN LIBRO
+			values(@Id_Usuario, @CantidadTotal,@Unidad, @CantidadPU,@AreaDeUso, @Id_Area, @DiasDePrestamo, @Observaciones,@Id_Herramienta)
+
+			set @idPrestamo = SCOPE_IDENTITY()--obtiene el ultimo id que se esta registrando
+		
+			insert into Detalle_Prestamo(IdPrestamo, IdHerramienta, Cantidad)
+			select @idPrestamo, IdHerramienta, Cantidad from @DetallePrestamo
+			--update Ejemplar set Activo = 0 where IDEjemplarLibro = (select IdEjemplar from @EjemplarActivo)
+			--update herramienta set Activo = 0 where IDEjemplarLibro = (select IdEjemplar from @DetallePrestamo)
+			--update herramienta set cantidad = cantidad - @CantidadTotal where IdHerramienta = @Id_Herramienta
+			update herramienta set cantidad = cantidad - 1 where IdHerramienta = @Id_Herramienta
+        --DELETE FROM CARRITO WHERE IdLector = @Id_Lector
+			commit transaction registro 
+		end
+		end try 
+    begin catch --en el caso de algun error, reestablece todo
+        set @Resultado = 0
+        set @Mensaje = ERROR_MESSAGE()
+        rollback transaction registro 
+    end catch 
+end
+
+
+/*Inserciones prueba para prestamos*/
+insert into Edificio (NombreEdificio)
+values
+	  ('Edificio E'),
+	  ('Centro de Computo'),
+	  ('Unidad de Practicas');
+go
+select * from Edificio
+go
+
+Insert Into Areas(IdArea,NombreArea, IdEdificio)
+values(1,'LESO',1),
+	  (2,'LABORATORIO A',3),
+	  (3,'LABORATORIO B',3);
+GO
+SELECT * FROM Areas

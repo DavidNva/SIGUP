@@ -35,7 +35,8 @@ namespace SistemaWeb_UnidadPracticas
                        "~/Scripts/DataTables/jquery.dataTables.min.js",/*Para las tablas incluida nueva*/
                        "~/Scripts/DataTables/dataTables.responsive.min.js",
                        "~/Scripts/loadingoverlay/loadingoverlay.min.js",
-                       "~/Scripts/sweetalert.min.js"
+                       "~/Scripts/sweetalert.min.js",
+                       "~/Scripts/jquery-ui.js" /*Para el calendario*/
                        ));
 
 
@@ -61,12 +62,13 @@ namespace SistemaWeb_UnidadPracticas
                 "~/Content/site.css",
                 "~/Content/DataTables/css/jquery.dataTables.min.css",
                 "~/Content/DataTables/css/responsive.dataTables.min.css",
-                "~/Content/sweetalert.css"
-                //,
-                //"~/Content/DataTables/css/jquery.dataTables.min.css",
-                //"~/Content/DataTables/css/responsive.dataTables.min.css",
-                //"~/Content/sweetalert.css",
-                //"~/Content/jquery-ui.css" /*Para el calendario*/
+                "~/Content/sweetalert.css",
+                 "~/Content/jquery-ui.css" /*Para el calendario*/
+                 //,
+                 //"~/Content/DataTables/css/jquery.dataTables.min.css",
+                 //"~/Content/DataTables/css/responsive.dataTables.min.css",
+                 //"~/Content/sweetalert.css",
+                 //"~/Content/jquery-ui.css" /*Para el calendario*/
                 ));
         }
     }
