@@ -276,10 +276,23 @@
                         return data.NombreCompletoUsuario
                     }
                 },
-               /* { "data": "TotalHerramienta" },*/
+                //{
+                //    "data": "id_Area", "render": function (data) {/*El render permite obtener el valor de la columna*/
+                //        return data.nombreArea
+                //    },
+                //    "visible": false
+                //},
+                /* { "data": "TotalHerramienta" },*/
+                
                 { "data": "fechaPrestamo" },
                 { "data": "fechaDevolucion" },
-                { "data": "diasPrestamo", "visible": false  },
+                { "data": "diasPrestamo", "visible": false },
+
+               
+                //{ "data": "unidad", "visible": false },
+               /* { "data": "cantidad", "visible": false },*/
+                //{ "data": "cantidadPorUnidad", "visible": false },
+                //{ "data": "areaDeUso", "visible": false },
 
                /* { "data": "Tipo" },*/
                 { "data": "notas" },
@@ -359,13 +372,18 @@
 
                //$("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocategoria");
                /* $("#cmbHerramienta2").append($("<option selected>").val(0).text("Seleccionar")).attr({ "disabled": "disabled" });*/
-                $("#cmbHerramienta2 option:first-child").attr({ "disabled": true });//Desabilita la primera opcion que se la de seleccionar
+
+                /* $("#cmbHerramienta2 option:first-child").attr({ "disabled": true });*/
+               //Desabilita la primera opcion que se la de seleccionar
+
+                $("#cmbHerramienta2").append($("<option selected>").val("").attr({ "value": 0, "disabled": "true" }).text("Seleccionar"));
                 $.each(data.data, function (index, item) {
                     //El valor de item es el declarado en EN_Usuario, la capa Entidad
                     $("<option>").attr({ "value": item.idHerramienta }).text(item.nombre).appendTo("#cmbHerramienta2");
-                    console.log(item.idHerramienta)
-                    console.log(item.nombre)
-                    console.log(item.nombre)
+                    //console.log("Cubo rubik")
+                    //console.log(item.idHerramienta)
+                    //console.log(item.nombre)
+                    //console.log(item.nombre)
                 })
                 /*$("#cmbHerramienta").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });*/
                    /* .css("z-index", "1600");*/
@@ -389,8 +407,8 @@
                 $.each(data.data, function (index, item) {
                     //El valor de item es el declarado en EN_Usuario, la capa Entidad
                     $("<option>").attr({ "value": item.idArea }).text(item.nombreArea).appendTo("#cmbArea");
-                    console.log(item.idArea)
-                    console.log(item.nombreArea)
+                    //console.log(item.idArea)
+                    //console.log(item.nombreArea)
                 })
                /* $("#cmbUsuario").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });*/
                    /* .css("z-index", "1600");*/
@@ -461,6 +479,7 @@
             $("#txtId").val(0);
             $("#txtTotalHerramientas").val(1);
             $("#txtCantidadPU").val(1);
+            $("#txtAreaDeUso").val("");
             $("#txtTotalHerramientas").attr({ "disabled": "disabled" });
             /*$("#lblTotalHerramientas").css("color", "transparent");*/
 
@@ -473,15 +492,19 @@
 
             $("#txtDiasPrestamo").val(1);
             $("#txtObservaciones").val("NINGUNA");
-            $("#cmbHerramienta").removeAttr("disabled");//Para poder elegir aun cuando ayamos dado clic antes en editar
-            $("#cmbHerramienta").append($("<option selected>").val("").text("Seleccionar"));
+            //$("#cmbHerramienta2").removeAttr("disabled");//Para poder elegir aun cuando ayamos dado clic antes en editar
+            //$("#cmbHerramienta2").append($("<option selected>").val("").text("Seleccionar"));
 
            /* $("#cmbUsuario").append($("<option selected>").val("").text("Seleccionar"));*/
 
-            $("#cmbHerramienta").removeAttr("disabled");//Para poder elegir aun cuando ayamos dado clic antes en editar
-            $("#cmbHerramienta").html("")
-            $("<option>").attr({ "value": "", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cmbHerramienta")
-            $("#cmbHerramienta").val($("#cmbHerramienta option:first").val());
+            $("#cmbHerramienta2").removeAttr("disabled");
+            //Para poder elegir aun cuando ayamos dado clic antes en editar
+            /*$("#cmbHerramienta").html("")*/
+            //$("<option>").attr({ "value": "", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cmbHerramienta2")
+            $("#cmbHerramienta2").val($("#cmbHerramienta2 option:first").val());
+            $("#cmbArea").val($("#cmbArea option:first").val());
+            $("#cmbUsuario").val($("#cmbUsuario option:first").val());
+            $("#cmbUnidad").val($("#cmbUnidad option:first").val());
 
             $("#div-HerramientaPrestado").val("").addClass("hidden-elements");
             $("#div-SelectHerramientaDisponible").removeClass("hidden-elements");
@@ -497,30 +520,34 @@
             /*Llamamos al form modal*/
             if (json != null) {/*Porque el metodo abrir modal puede abrirse con crear nuevo o con editar,
              * por eso esta linea*/
-                $("#txtId").val(json.IdPrestamo);/*Traerá el codigo pero no lo mostrará al Prestamo*/
-                $("#cmbHerramienta").val(json.oId_Herramienta.IdHerramienta).trigger('change');
-                $("#cmbHerramienta").attr({ "disabled": "disabled" });
-                $("#cmbHerramienta").attr({ "disabled": "disabled" });
+                $("#txtId").val(json.idPrestamo);/*Traerá el codigo pero no lo mostrará al Prestamo*/
+                $("#cmbHerramienta2").val(json.id_Herramienta.idHerramienta).trigger('change');
+                $("#cmbHerramienta2").attr({ "disabled": "disabled" });
+                $("#cmbHerramienta2").attr({ "disabled": "disabled" });
                 //$("#cmbHerramienta").val(json.oId_Herramienta.IdHerramientaHerramienta);
                // $("#lblHerramienta").hide();
                 //$("#cmbHerramienta").hide();
                 $("#div-HerramientaPrestado").removeClass("hidden-elements");
                 //$("#div-SelectHerramientaDisponible").removeClass("hidden-elements");
                 $("#div-SelectHerramientaDisponible").val("").addClass("hidden-elements");
-                $("#cmbUsuario").val(json.oId_Usuario.IdUsuario).trigger('change');
-                $("#txtTotalHerramientas").val(json.TotalHerramienta); /*El json o data, trae una propieadad llamada nombres*/
+                $("#cmbUsuario").val(json.id_Usuario.idUsuario).trigger('change');
+                $("#cmbUnidad").val(json.unidad).trigger('change');
+                $("#txtTotalHerramientas").val(json.cantidad); /*El json o data, trae una propieadad llamada nombres*/
+                $("#txtCantidadPU").val(json.cantidadPorUnidad);
+                $("#txtAreaDeUso").val(json.areaDeUso);
                 //$("#cmbHerramienta").val(json.oId_Herramienta.IdHerramientaHerramienta);
-                $("#txtHerramientaPrestado").val(json.oId_Herramienta.IdHerramientaHerramienta);
-                $("#cmbActivo").val(json.Activo == true ? 1 : 0);/*Si es igual a true de el valor de uno
+                $("#txtHerramientaPrestado").val(json.id_Herramienta.idHerramienta);
+                $("#cmbArea").val(json.id_Area.idArea);
+                $("#cmbActivo").val(json.activo == true ? 1 : 0);/*Si es igual a true de el valor de uno
                  y si no es true de el valor de 0*/
                 $("#cmbActivo").show();
                 $("#lblActivo").show();
-                $("#txtFechaPrestamo").val(json.FechaPrestamo).attr({ "disabled": "disabled" });;//El dato despues de json. se refiere al identificador dado en Capa Entidad EN_Prestamo, tal cual se deben de escribirs
-                $("#div-fechaDevolucion").val(json.FechaDevolucion).removeClass("hidden-elements");
+                $("#txtFechaPrestamo").val(json.fechaPrestamo).attr({ "disabled": "disabled" });;//El dato despues de json. se refiere al identificador dado en Capa Entidad EN_Prestamo, tal cual se deben de escribirs
+                $("#div-fechaDevolucion").val(json.fechaDevolucion).removeClass("hidden-elements");
 
 
-                if (json.FechaDevolucion != "") {/*Si ya hay un valor agregado para fecha devolucion en la tabla */
-                    $("#txtFechaDevolucion").val(json.FechaDevolucion);
+                if (json.fechaDevolucion != "") {/*Si ya hay un valor agregado para fecha devolucion en la tabla */
+                    $("#txtFechaDevolucion").val(json.fechaDevolucion);
                 } else {//Si es = "", no han agregado nada para fecha devolucion, entonces:
                     $("#txtFechaDevolucion").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
                 }
@@ -529,8 +556,8 @@
                 $("#txtFechaPrestamo").datepicker({ dateFormat: 'dd/mm/yy' })
                 $("#txtFechaDevolucion").datepicker({ dateFormat: 'dd/mm/yy' })
 
-                $("#txtDiasPrestamo").val(json.DiasDePrestamo);
-                $("#txtObservaciones").val(json.Observaciones);
+                $("#txtDiasPrestamo").val(json.diasPrestamo);
+                $("#txtObservaciones").val(json.notas);
 
             }
 
@@ -549,7 +576,9 @@
             //console.log(data);/*Para visualizar en consola*/
             //abrirModal(data);
             var json = $(this).data("informacion")
+            console.log("Edicion prueba boton")
             console.log(json);
+            
             abrirModal(json)
 
         })

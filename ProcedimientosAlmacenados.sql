@@ -401,3 +401,61 @@ values(1,'LESO',1),
 	  (3,'LABORATORIO B',3);
 GO
 SELECT * FROM Areas
+
+use UDP_CONTROL
+
+select * from prestamo
+go
+create procedure sp_EditarPrestamo
+(
+    @IdPrestamo int,
+    @Id_Usuario int,
+    @CantidadTotal int,
+	@Unidad varchar(50),
+	@CantidadPU int,
+	@AreaDeUso varchar(100),
+	@Id_Area int,
+    --@Activo bit,
+    @FechaPrestamo date,
+    --@FechaDevolucion date,
+    @DiasDePrestamo int,
+    @Observaciones varchar(500),--notas
+    --@DetallePrestamo [EDetalle_Prestamo] READONLY,--SE USA LA ESTRUCTURA CREADA ANTERIORMENTE
+	--@EjemplarActivo [Ejemplar_Activo] READONLY,
+    @Mensaje varchar(500) output,
+    @Resultado bit output
+)
+as
+begin
+    SET @Resultado = 1 --No permite repetir un mismo prestamo, ni al insertar ni al actualizar
+    SET @Mensaje = '' -- Asignar un valor vacío a la variable @Mensaje
+
+    IF EXISTS (SELECT * FROM Prestamo WHERE IdPrestamo = @IdPrestamo)
+    begin 
+
+        -- Convert the input date string to datetime
+        DECLARE @FechaPrestamoDatetime datetime
+        SET @FechaPrestamoDatetime = CONVERT(datetime, @FechaPrestamo, 3)
+
+        -- DECLARE @FechaDevolucionDatetime datetime
+        -- SET @FechaDevolucionDatetime = CONVERT(datetime, @FechaDevolucion, 3)
+		
+        update Prestamo set
+        IdUsuario = @Id_Usuario,
+        Cantidad = @CantidadTotal,
+		Unidad = @Unidad,
+		CantidadPU = @CantidadPU,
+		AreaDeUso = @AreaDeUso,
+		Area = @Id_Area,
+        --Activo = @Activo, 
+        FechaPrestamo = @FechaPrestamoDatetime,
+        --FechaDevolucion = @FechaDevolucionDatetime,
+        DiasDePrestamo = @DiasDePrestamo, 
+        Notas = @Observaciones
+        where IdPrestamo = @IdPrestamo
+        --La función SCOPE_IDENTITY() devuelve el último ID generado para cualquier tabla de la sesión activa y en el ámbito actual.
+        SET @Resultado = 1 --true
+    end 
+    else 
+        SET @Mensaje = 'Error: El préstamo no pudo ser actualizado' + ERROR_MESSAGE() 
+end 

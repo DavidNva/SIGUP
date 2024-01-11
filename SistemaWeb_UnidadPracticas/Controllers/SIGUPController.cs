@@ -395,8 +395,8 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             {/*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando
                  a un Prestamo, por lo que indica que se ha dado clic en el boton de editar, eso lo comprobamos
                  con los alert comentados*/
-                //resultado = new RN_Prestamo().Editar(objeto, out mensaje);
-                resultado = null;
+                resultado = new RN_Prestamo().Editar(objeto, out mensaje);
+                
             }
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 

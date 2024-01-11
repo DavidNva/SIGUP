@@ -59,9 +59,20 @@ namespace CapaNegocio
             }
             else if (obj.cantidad == 0)
             {
-                Mensaje = "Debes ingresar la cantidad de libros a prestar -> El valor debe ser mayor a 0";
+                Mensaje = "Debes ingresar la cantidad de herramientas a prestar -> El valor debe ser mayor a 0";
             }
-
+            else if (string.IsNullOrEmpty(obj.unidad) || string.IsNullOrWhiteSpace(obj.unidad))
+            {
+                Mensaje = "El campo unidad no puede ser vacio. Seleccione una";
+            }
+            else if (obj.cantidadPorUnidad <= 0)
+            {
+                Mensaje = "La cantidad por unidad debe ser mayor a 0";
+            }
+            else if (string.IsNullOrEmpty(obj.areaDeUso) || string.IsNullOrWhiteSpace(obj.areaDeUso))
+            {
+                Mensaje = "El campo 'area de uso' no puede ser vacia.";
+            }
 
             //else if (cantidadInicial - cantidadIngresada <0)
             //{
@@ -86,6 +97,73 @@ namespace CapaNegocio
                 return false;/*No se ha creado la Libro*/
             }
             //return objCapaDato.Registrar(obj, DetallePrestamo, /*EjemplarActivo, */ out Mensaje);
+        }
+
+        public bool Editar(EN_Prestamo obj, out string Mensaje)
+        {
+            Mensaje = string.Empty;
+            //Validaciones para que la caja de texto no este vacio o con espacios
+            if (string.IsNullOrEmpty(obj.fechaPrestamo) || string.IsNullOrWhiteSpace(obj.fechaPrestamo))
+            {
+                Mensaje = "La fecha del préstamo no puede ser vacio";
+            }
+            //if (string.IsNullOrEmpty(obj.FechaDevolucion) || string.IsNullOrWhiteSpace(obj.FechaDevolucion))
+            //{
+            //    Mensaje = "La fecha de devolucion del préstamo no puede ser vacio";
+            //}
+            else if (obj.diasPrestamo <= 0)
+            {
+                Mensaje = "Debe ingresar los dias de préstamo del libro -> El valor debe ser mayor a 0";
+            }
+
+            else if (obj.id_Herramienta.idHerramienta == 0)/*Si no ha seleccionado ninguna marca*/
+            {
+                Mensaje = "Debes seleccionar una herramienta";
+            }
+            else if (obj.id_Area.idArea == 0)/*Si no ha seleccionado ninguna marca*/
+            {
+                Mensaje = "Debes seleccionar una area";
+            }
+            //else if (obj.oId_Ejemplar.IdEjemplarLibro == 0)/*Si no ha seleccionado ninguna marca*/
+            //{
+            //    Mensaje = "Debes seleccionar un ejemplar disponible para el libro seleccionado. Verifica que el libro cuente con al menos un ejemplar disponible.";
+            //}
+            else if (obj.id_Usuario.idUsuario == 0)/*Si no ha seleccionado ningun lector*/
+            {
+                Mensaje = "Debes seleccionar un usuario";
+            }
+            else if (obj.cantidad <= 0)
+            {
+                Mensaje = "Debes ingresar la cantidad de herramientas a prestar -> El valor debe ser mayor a 0";
+            }
+
+            else if (string.IsNullOrEmpty(obj.unidad) || string.IsNullOrWhiteSpace(obj.unidad))
+            {
+                Mensaje = "El campo unidad no puede ser vacio. Seleccione una";
+            }
+            else if (obj.cantidadPorUnidad <= 0 )
+            {
+                Mensaje = "La cantidad por unidad debe ser mayor a 0";
+            }
+            else if (string.IsNullOrEmpty(obj.areaDeUso) || string.IsNullOrWhiteSpace(obj.areaDeUso))
+            {
+                Mensaje = "El campo 'area de uso' no puede ser vacia.";
+            }
+            else if (string.IsNullOrEmpty(obj.notas) || string.IsNullOrWhiteSpace(obj.notas))
+            {
+                Mensaje = "El campo observaciones no puede ser vacio";
+
+            }
+
+            if (string.IsNullOrEmpty(Mensaje))
+            {/*Si no hay ningun mensaje, significa que no ha habido ningun error*/
+                return objCapaDato.Editar(obj, out Mensaje);
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
 }
