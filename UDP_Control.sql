@@ -1,7 +1,19 @@
-USE master;
-CREATE DATABASE UDP_CONTROL;
+﻿USE master;
+CREATE  DATABASE UDP_CONTROL;
 GO
 USE UDP_CONTROL;
+go
+CREATE TABLE Administrador(
+  IdAdministrador varchar(30) not null CONSTRAINT PK_Administrador PRIMARY KEY,
+  Nombres nvarchar(100) not null,
+  Apellidos varchar(100) not null,
+  Telefono varchar(20) not null, 
+  Correo nvarchar(100) not null,
+  Clave nvarchar(100) not null, --Contrase�as encriptadas
+  Reestablecer bit default 1 not null, -- Por default 1
+  Activo bit default 1 not null,
+  FechaRegistro datetime default getdate()
+)
 
 CREATE TABLE tipo_usuario(
 IdTipo int IDENTITY(1,1) PRIMARY KEY not null,
@@ -53,7 +65,7 @@ FechaRegistro datetime default getdate()
 );
 
 CREATE TABLE herramienta(
-IdHerramienta int PRIMARY KEY not null,
+IdHerramienta varchar(50) PRIMARY KEY not null,
 nombre varchar(25) not null,
 cantidad int not null,
 activo bit default 1 not null,
@@ -77,7 +89,7 @@ FechaPrestamo datetime default getdate(),
 FechaDevolucion date null,
 DiasDePrestamo int not null default 1,
 Notas varchar(500) not null,
-IdHerramienta int not null CONSTRAINT FK_HerramientaP foreign key (IdHerramienta) references herramienta(IdHerramienta) ON DELETE CASCADE,
+IdHerramienta varchar(50) not null CONSTRAINT FK_HerramientaP foreign key (IdHerramienta) references herramienta(IdHerramienta) ON DELETE CASCADE,
 CalificacionEntrega int DEFAULT 0 -- Nivel de evaluacion para mostrar historial 0 standy 1 Malo 2 Regular 3 Bueno
 );
 
@@ -85,7 +97,7 @@ CalificacionEntrega int DEFAULT 0 -- Nivel de evaluacion para mostrar historial 
 CREATE TABLE detalle_prestamo(
 IdDetallePrestamo int identity(1,1)  not null  CONSTRAINT PK_DetallePrestamo primary key,
 IdPrestamo int not null constraint FK_PrestamoDP foreign key (IdPrestamo) references prestamo(IdPrestamo) ON DELETE CASCADE ON UPDATE CASCADE,
-IdHerramienta int constraint FK_HerramientaDP foreign key (IdHerramienta) references herramienta(IdHerramienta) not null,
+IdHerramienta varchar(50) constraint FK_HerramientaDP foreign key (IdHerramienta) references herramienta(IdHerramienta) not null,
 Cantidad decimal not null
 );
 

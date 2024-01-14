@@ -41,7 +41,7 @@ namespace CapaNegocio
                 Mensaje = "Debe ingresar los dias de préstamo del libro -> El valor debe ser mayor a 0";
             }
 
-            else if (obj.id_Herramienta.idHerramienta == 0)/*Si no ha seleccionado ninguna marca*/
+            else if (obj.id_Herramienta.idHerramienta == "0")/*Si no ha seleccionado ninguna marca*/
             {
                 Mensaje = "Debes seleccionar una herramienta";
             }
@@ -116,7 +116,7 @@ namespace CapaNegocio
                 Mensaje = "Debe ingresar los dias de préstamo del libro -> El valor debe ser mayor a 0";
             }
 
-            else if (obj.id_Herramienta.idHerramienta == 0)/*Si no ha seleccionado ninguna marca*/
+            else if (obj.id_Herramienta.idHerramienta == "0")/*Si no ha seleccionado ninguna marca*/
             {
                 Mensaje = "Debes seleccionar una herramienta";
             }

@@ -147,7 +147,14 @@ begin
         set @Mensaje = 'La categoria se encuentra relacionada con un libro'
 end
 GO
+--inserciones prueba categorias
+exec sp_RegistrarMarca 'TRUPER',1,'',1
+exec sp_RegistrarMarca 'PRETUL',1,'',1
+exec sp_RegistrarMarca 'HYUNDAI',1,'',1
+exec sp_RegistrarMarca 'HUSKY',1,'',1
+exec sp_RegistrarMarca 'STIHL',1,'',1
 
+go
 -- Procedimientos para usuario
 CREATE PROC sp_RegistrarUsuario
 (
@@ -180,32 +187,17 @@ DELETE usuario WHERE IdUsuario = @IdUsuario;
 GO
 
 --Inserts de los Tipos de usuarios
-INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Administrador');
-INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Usuario');
 INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Alumno');
 INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Docente');
 INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Visitante externo');
 
 use UDP_Control
---inserciones prueba
-exec sp_RegistrarCategoria 'CONSULTA',1,'',1
-exec sp_RegistrarCategoria 'GENERALIDADES',1,'',1
-exec sp_RegistrarCategoria 'LITERATURA',1,'',1
-exec sp_RegistrarCategoria 'FILOSOFÍA Y PSICOLOGÍA',1,'',1
-exec sp_RegistrarCategoria 'RELIGIONES',1,'',1
-exec sp_RegistrarCategoria 'CIENCIAS SOCIALES',1,'',1
-exec sp_RegistrarCategoria 'CIENCIAS PURAS',1,'',1
-exec sp_RegistrarCategoria 'CIENCIAS APLICADAS',1,'',1
-exec sp_RegistrarCategoria 'BELLAS ARTES',1,'',1
-exec sp_RegistrarCategoria 'GEOGRAFÍA E HISTORIA',1,'',1
-exec sp_RegistrarCategoria 'NOVELAS',1,'',1
-exec sp_RegistrarCategoria 'POESÍA',1,'',1
-exec sp_RegistrarCategoria 'CUENTOS',1,'',1
-exec sp_RegistrarCategoria 'BIOGRAFÍAS',1,'',1
-exec sp_RegistrarCategoria 'MÉXICO',1,'',1
-exec sp_RegistrarCategoria 'PUEBLA',1,'',1
-exec sp_RegistrarCategoria 'LIBROS DONADOS',1,'',1
-exec sp_RegistrarCategoria 'LIBROS INFANTILES',1,'',1
+go
+--inserciones prueba categorias
+exec sp_RegistrarCategoria 'HERRAMIENTAS DE MEDICIÓN',1,'',1
+exec sp_RegistrarCategoria 'HERRAMIENTAS DE ELECTRICIDAD',1,'',1
+exec sp_RegistrarCategoria 'HERRAMIENTAS DE CORTE',1,'',1
+exec sp_RegistrarCategoria 'HERRAMIENTAS DE FIJACIÓN',1,'',1
 
 select * from Categoria_Herramienta
 
@@ -214,10 +206,10 @@ go
 use UDP_CONTROL
 
 GO
-
 --Procedimientos para Herramienta
-create procedure sp_RegistrarHerramienta(--Nuevo sp que registra igual el Herramienta con su ejemplar  la vez
-    @IdHerramienta int,--Es asignado por administrador al insertar
+create procedure sp_RegistrarHerramienta(--Hay un indice unico para el nombre completo del usuario 
+    --@IDUsuario int,---El id es Identity
+	 @IdHerramienta varchar(50),--Es asignado por administrador al insertar
     @Nombre nvarchar(60),
     @Cantidad int,
     --Llaves foraneas
@@ -227,38 +219,28 @@ create procedure sp_RegistrarHerramienta(--Nuevo sp que registra igual el Herram
     @Activo bit,--Mejor al registrarlo darlo por default como 1, no tiene sentido regitrar y darlo como inactivo
     @Mensaje varchar(500) output,
     @Resultado int output
+    --@ID_TipoPersona int --ESTARÁ COMO DEFAULT = 1, ES DECIR, COMO LECTOR
+    --FechaCreacion date --Esta como default DEFAULT GETDATE()
     )
 as
 begin
-    begin try 
-        declare @idCodigoHerramienta int = 0
-        SET @Resultado = 0 --No permite repetir un mismo correo, ni al insertar ni al actualizar
-        IF NOT EXISTS (SELECT * FROM Herramienta WHERE IdHerramienta = @IdHerramienta)
-        begin
-            begin transaction registroHerramienta
-            insert into Herramienta(IdHerramienta, Nombre, Cantidad,  id_marca, id_categoria,Observaciones, Activo) values 
+    SET @Resultado = 0 --No permite repetir un mismo correo, ni al insertar ni al actualizar
+    IF NOT EXISTS (SELECT * FROM Herramienta WHERE IdHerramienta = @IdHerramienta)
+    begin 
+        insert into Herramienta(IdHerramienta, Nombre, Cantidad,  id_marca, id_categoria,Observaciones, Activo) values 
             (@IdHerramienta, @Nombre, @Cantidad, @IDMarca, @IDCategoria,  @Observaciones, 1)
-            --La función SCOPE_IDENTITY() devuelve el último ID generado para cualquier tabla de la sesión activa y en el ámbito actual.
-            SET @Resultado = scope_identity() 
-            set @idCodigoHerramienta = SCOPE_IDENTITY()--obtiene el ultimo id que se esta registrando
-            
-            --insert into Ejemplar(ID_Herramienta, Activo)
-            --values(@@idCodigoHerramienta,1)
-            commit transaction registroHerramienta
-        end
-        else 
-        SET @Mensaje = 'El código de la Herramienta ya existe*'
-    end try
-    begin catch
-        set @Resultado = 0
-        set @Mensaje = ERROR_MESSAGE()
-        rollback transaction registroHerramienta 
-    end catch
-    
-end 
+        --La función SCOPE_IDENTITY() devuelve el último ID generado para cualquier tabla de la
+        SET @Resultado = scope_identity()
+    end 
+    else 
+     SET @Mensaje = 'El código de la herramienta ya existe'
+end
+
 go
-create procedure sp_EditarHerramienta(
-    @IdHerramienta int,--Es asignado por administrador al insertar
+sp_RegistrarHerramienta 'Mart73r','Martillo',5,1,1,'NINGUNA',1,'',1
+GO
+create  procedure sp_EditarHerramienta(
+    @IdHerramienta varchar(50),--Es asignado por administrador al insertar
     @Nombre nvarchar(60),
     @Cantidad int,
     --Llaves foraneas
@@ -297,8 +279,8 @@ go
     --A UN DETALLEPRESTAMO CUYO A SU VEZ ESTA RELACIONADO CON PRESTAMO Y ESTE ACTIVO DICHO PRESTAMO. ENTONCES PARA PODER ELMINAR
     --NO DEBE ESTAR UN ID CON UN EJEMPLAR EN DETALLE PRESTAMO QUE AUN ESTE ACTIVO.
 go
-create procedure sp_EliminarHerramienta(
-    @IdHerramienta int,
+create  procedure sp_EliminarHerramienta(
+    @IdHerramienta varchar(50),
     @Mensaje varchar(500) output,
     @Resultado int output
     )
@@ -326,6 +308,11 @@ select * from herramienta
 
 
 --------------------------------- PRESTAMOS -------------------------------------------------------
+CREATE TYPE [dbo].[EDetalle_Prestamo] AS TABLE(
+	[IdHerramienta] varchar(50) null,
+	[Cantidad] int null
+)
+GO
 create procedure usp_RegistrarPrestamo(
     @Id_Usuario int,
     --@IdHerramienta int, /*Por ejemplar*/
@@ -339,7 +326,7 @@ create procedure usp_RegistrarPrestamo(
     --@Estado bit,--Es como si dijeramos activo(El 0 significa no Prestamo activo o "DEVUELTO" y
     -- el 1 significa prestamo activo o "No devuelto")
     @Observaciones nvarchar(500),
-    @Id_Herramienta int,--SE AGREGO ESTA COLUMNA PARA PLICAR LA ELIMINACION EN CASCADA EN CASO DE QUE SE ELIMINE EL LIBRO
+    @Id_Herramienta varchar(50),--SE AGREGO ESTA COLUMNA PARA PLICAR LA ELIMINACION EN CASCADA EN CASO DE QUE SE ELIMINE EL LIBRO
 	--@CalificacionEntrega varchar(50),
     @DetallePrestamo [EDetalle_Prestamo] READONLY,--SE USA LA ESTRUCTURA CREADA ANTERIORMENTE
 	--@EjemplarActivo [Ejemplar_Activo] READONLY,
@@ -459,3 +446,86 @@ begin
     else 
         SET @Mensaje = 'Error: El préstamo no pudo ser actualizado' + ERROR_MESSAGE() 
 end 
+
+go
+
+---------------------------------------------ADMINISTRADOR ------------------------------------------
+go
+create procedure sp_RegistrarAdministrador(--Hay un indice unico para el nombre completo del usuario 
+    --@IDUsuario int,---El id es Identity
+	@IdAdministrador varchar(30),
+    @Nombres varchar(100),--Tiene indice compuesto con Apellidos
+    @Apellidos varchar(100),--Tiene indice compuesto con Nombre
+    @Telefono varchar(20),
+    @Correo varchar(100),--Puede ser null
+    @Clave varchar(150),
+    @Activo bit,
+    @Mensaje varchar(500) output,
+    @Resultado int output
+    --@ID_TipoPersona int --ESTARÁ COMO DEFAULT = 1, ES DECIR, COMO LECTOR
+    --FechaCreacion date --Esta como default DEFAULT GETDATE()
+    )
+as
+begin
+    SET @Resultado = 0 --No permite repetir un mismo correo, ni al insertar ni al actualizar
+    IF NOT EXISTS (SELECT * FROM Administrador WHERE Correo = @Correo)
+    begin 
+        insert into Administrador(IdAdministrador,Nombres, Apellidos, Telefono, Correo, Clave, Activo)
+        values (@IdAdministrador,@Nombres, @Apellidos,@Telefono, @Correo, @Clave, @Activo)
+        --La función SCOPE_IDENTITY() devuelve el último ID generado para cualquier tabla de la
+        SET @Resultado = scope_identity()
+    end 
+    else 
+     SET @Mensaje = 'El correo del usuario ya existe'
+end
+
+GO
+sp_RegistrarAdministrador 'info2024','djhon','David Jhon ','1345678765','davidjhon@gmail.com','test123',1,'',1
+go
+create proc sp_EditarAdministrador(
+    @IdAdministrador varchar(30),
+    @Nombres varchar(100),--Tiene indice compuesto con Apellidos
+    @Apellidos varchar(100),--Tiene indice compuesto con Nombre
+    @Telefono varchar(20),
+    @Correo varchar(100),--Puede ser null
+    @Activo bit,
+    @Mensaje varchar(500) output,
+    @Resultado int output
+)
+as
+begin 
+    SET @Resultado = 0
+    IF NOT EXISTS (SELECT * FROM Administrador WHERE Correo = @Correo and IdAdministrador != @IdAdministrador)
+    begin 
+        update top(1) Administrador set 
+        Nombres = @Nombres,
+        Apellidos  = @Apellidos,
+        Telefono = @Telefono,
+        Correo = @Correo,
+        Activo = @Activo
+        where IdAdministrador = @IdAdministrador
+        set @Resultado = 1
+    end 
+    else 
+        set @Mensaje = 'El correo del administrador ya existe'
+end
+
+go
+create proc sp_EliminarAdministrador( --Trabajo como un booleano
+    @IdAdministrador varchar(30),
+    @Mensaje varchar(500) output,
+    @Resultado bit output
+)
+as
+begin 
+    SET @Resultado = 0 --false
+    begin
+        delete top(1) from Administrador where IDAdministrador = @IdAdministrador
+        set @Resultado = 1 --true
+    end 
+    if(@Resultado != 1)
+        set @Mensaje = 'Error: No se pudo eliminar el administrador. Intentelo de nuevo'
+end
+
+
+select * from Administrador

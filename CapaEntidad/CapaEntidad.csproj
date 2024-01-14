@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EN_Administrador.cs" />
     <Compile Include="EN_Area.cs" />
     <Compile Include="EN_Bitacora.cs" />
     <Compile Include="EN_Carrera.cs" />

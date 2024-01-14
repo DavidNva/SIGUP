@@ -37,6 +37,11 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return View();
         }
 
+        public ActionResult Administradores()
+        {
+            return View();
+        }
+
         public ActionResult Prestamos()
         {
             return View();
@@ -171,23 +176,56 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             }
         }
 
+        //[HttpPost]
+        //public JsonResult guardarHerramienta(EN_Herramienta herramienta)
+        //{
+        //    object resultado;
+        //    string mensaje = string.Empty;
+
+        //    if (herramienta.idValidacionHerramienta == "0")
+        //    {
+        //        resultado = new RN_Herramienta().añadirHerramienta(herramienta, out mensaje);
+        //    }
+        //    else
+        //    {
+        //        resultado = new RN_Herramienta().editarHerramienta(herramienta, out mensaje);
+        //    }
+        //    return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        //}
         [HttpPost]
-        public JsonResult añadirHerramienta(EN_Herramienta herramienta)
+        public JsonResult GuardarHerramienta(EN_Herramienta objeto) /*De este json se puede controlar que mas ver, igualar elementos, etc*/
         {
-            object resultado = null;
+            object resultado;/*Va a permitir almacenar cualquier tipo de resultado (en este caso int o booelan, dependiendi si es creacion o edicion)*/
             string mensaje = string.Empty;
 
-            if (herramienta.idHerramienta == 0)
+            if (objeto.idValidacionHerramienta == "0")/*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
+             una Administrador nueva, por lo que se ha dado dando clic con el boton de crear*/
             {
-                resultado = new RN_Herramienta().añadirHerramienta(herramienta, out mensaje);
+                resultado = new RN_Herramienta().Registrar(objeto, out mensaje);/*El metodo registrar
+                 de tipo int, devuelve el id registrado*/
             }
             else
-            {
-                resultado = new RN_Herramienta().editarHerramienta(herramienta, out mensaje);
+            {/*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando
+                 a una Administrador, por lo que indica que se ha dado clic en el boton de editar, eso lo comprobamos
+                 con los alert comentados*/
+                //resultado = new RN_Administrador().Editar(objeto, out mensaje);}
+                //resultado = null;
+                resultado = new RN_Herramienta().editarHerramienta(objeto, out mensaje);
             }
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
         }
 
+        [HttpPost]
+        public JsonResult EliminarHerramienta(string id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new RN_Herramienta().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         /*--------------TIPO USUARIO---------------------*/
@@ -353,7 +391,7 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         {
             DataTable detallePrestamo = new DataTable();
             detallePrestamo.Locale = new CultureInfo("es-MX"); //Comenzamos a crear las columnas que necesita esta table
-            detallePrestamo.Columns.Add("IdHerramienta", typeof(int));//antes era IdLibro
+            detallePrestamo.Columns.Add("IdHerramienta");//antes era IdLibro
             detallePrestamo.Columns.Add("Cantidad", typeof(int));
             object resultado;/*Va a permitir almacenar cualquier tipo de resultado (en este caso int o booelan, dependiendi si es creacion o edicion)*/
             string mensaje = string.Empty;
@@ -401,6 +439,56 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
         }
+        #endregion
+
+        /*--------------Administrador---------------------*/
+        #region Administradores
+        [HttpGet] /*Una URL que devuelve datos, un httpost se le pasan los valores y despues devuelve los datos  */
+        public JsonResult ListarAdministradores() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            List<EN_Administrador> oLista = new List<EN_Administrador>();
+            oLista = new RN_Administrador().ListarAdministrador();/*Esta declarado en RN_Usuarios, capa negocio*/
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+            /*El json da los datos, jala los datos de esa lista, en data*/
+
+        }
+
+        [HttpPost]
+        public JsonResult GuardarAdministrador(EN_Administrador objeto) /*De este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            object resultado;/*Va a permitir almacenar cualquier tipo de resultado (en este caso int o booelan, dependiendi si es creacion o edicion)*/
+            string mensaje = string.Empty;
+
+            if (objeto.idValidacionAdmin == "0")/*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
+             una Administrador nueva, por lo que se ha dado dando clic con el boton de crear*/
+            {
+                resultado = new RN_Administrador().Registrar(objeto, out mensaje);/*El metodo registrar
+                 de tipo int, devuelve el id registrado*/
+            }
+            else
+            {/*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando
+                 a una Administrador, por lo que indica que se ha dado clic en el boton de editar, eso lo comprobamos
+                 con los alert comentados*/
+                //resultado = new RN_Administrador().Editar(objeto, out mensaje);}
+                //resultado = null;
+                resultado = new RN_Administrador().Editar(objeto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult EliminarAdministrador(string id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new RN_Administrador().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

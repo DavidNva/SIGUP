@@ -4,11 +4,17 @@
 }
 
 <h1 class="mt-4">Herramientas</h1>
-<ol class="breadcrumb mb-4">
+@*<ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">Administra los elementos existentes del inventario</li>
+</ol>*@
+
+<ol class="breadcrumb mb-4 mt-4">
+    @*<li class="breadcrumb-item"><a href="#">Administrador</a></li>
+
+    <li class="breadcrumb-item active">Herramientas</li>*@
+    <li class="breadcrumb-item active">Administrador</li>
+    <li class="breadcrumb-item"><a href="/SIGUP/Herramientas">Herramientas</a></li>
 </ol>
-
-
 <nav class="sticky-top bg-light">
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <button class="nav-link active" id="nav-herramientas-tab" data-bs-toggle="tab" data-bs-target="#nav-herramientas" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Herramientas</button>
@@ -19,64 +25,67 @@
 
 <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="nav-herramientas" role="tabpanel" aria-labelledby="nav-herramientas-tab">
-        <button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null, 'herramientas')"> Añadir herramienta </button>
+        @*<button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null, 'herramientas')"> Añadir herramienta </button>*@
 
         <!-- Modal, con el id FormModal vamos a llamarlo cuando deseamos que aparezca y cuando no
     al momento de precionar el boton nuevo-->
         <div class="modal fade" id="FormModal_Herramientas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
             @*Esto ultimo de data-bs-backdrop es para*@
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog ">
                 @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
                 <div class="modal-content">
                     <div class="modal-header bg-success text-white">
                         <h5 class="modal-title" id="exampleModalLabel">Herramientas</h5>
                         <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body modal-bodyHerramientas">
                         @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
 
-                        
+                        <input id="txtIdValidacionH" type="hidden" value="0" />@*Con el valor 0 se identifica si es un Administrador nuevo a ingresar o es valor ya existe
+                        pero si es diferente a 0 significa que ya existe y vamos a editar*@
                         @*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
-        pero si es diferente a 0 significa que ya existe y vamos a editar*@
-                        <div class="d-flex flex-wrap gap-4">
+                        pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                        <div class="row g-1">
                             <!--Porque solamente esta formando una fila-->
-                            <div class="col-sm-4">
-                                <label for="txtIdHerramienta" class="form-label">Número de ID</label>
-                                <input id="txtIdHerramienta" class="form-control" type="text" value="0" placeholder="Ingresa el identificador de tu herramienta" />
+                            <div class="col-sm-5">
+                                <label for="txtIdHerramienta" class="form-label">ID de Herramienta</label>
+                                <input id="txtIdHerramienta"  class="form-control" type="text" autocomplete="off" placeholder="Ingresa el id de tu herramienta" />
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-7">
                                 <label for="txtNombreHerramienta" class="form-label">Nombre:</label>
                                 <input type="text" class="form-control" id="txtNombreHerramienta" autocomplete="off" placeholder="Nombre la herramienta">
                             </div>
-
-                            <div class="col-sm-4">
-                                <label for="cmbMarcaHerramienta" class="form-label">Marca</label>
-                                <select id="cmbMarcaHerramienta" class="form-select">
-                                </select>
+                            <div class="col-sm-5">
+                                <label for="txtStockHerramienta" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="txtStockHerramienta" autocomplete="off" value="1">
                             </div>
-
-                            <div class="col-sm-4">
-                                <label for="cmbCategoriaHerramienta" class="form-label">Categoría</label>
-                                <select id="cmbCategoriaHerramienta" class="form-select">
-                                </select>
-                            </div>
-                            <div class="col-sm-2">
-                                <label for="txtStockHerramienta" class="form-label">Stock</label>
-                                <input type="number" class="form-control" id="txtStockHerramienta" autocomplete="off">
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="txtObservacionesHerramienta" class="form-label">Observaciones</label>
-                                <input type="text" class="form-control" id="txtObservacionesHerramienta" autocomplete="off" placeholder="Ingresa observaciones iniciales de la herramienta">
-                            </div>
-
-                            <div class="col-sm-4">
+                            <div class="col-sm-7">
                                 <label for="cmbActivoHerramienta" class="form-label"> ¿Disponible para prestamos? </label>
                                 <select id="cmbActivoHerramienta" class="form-select">
                                     <option value="1">Si</option>
                                     <option value="0">No</option>
                                 </select>
                             </div>
+                            <div class="col-sm-6">
+                                <label for="cmbMarcaHerramienta" class="form-label">Marca</label>
+                                <select id="cmbMarcaHerramienta" class="form-select">
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="cmbCategoriaHerramienta" class="form-label">Categoría</label>
+                                <select id="cmbCategoriaHerramienta" class="form-select">
+                                </select>
+                            </div>
+
+
+                            <div class="col-sm-12">
+                                <label for="txtObservacionesHerramienta" class="form-label">Observaciones</label>
+                                <input type="text" class="form-control" id="txtObservacionesHerramienta" autocomplete="off" placeholder="Ingresa observaciones iniciales de la herramienta">
+                            </div>
+
+
                         </div>
                         @*mensaje de alerta*@
                         <div class="row mt-2">
@@ -94,25 +103,47 @@
                 </div>
             </div>
         </div>
+        
+        <div class="card mt-3">
+            @*<div class="card-header">
+                <i class="fas fa-table me-1"></i>Lista de Herramientas
+            </div>*@
+            <div class="card-body">
+                @*boostrap es como manejar una hoja en excel*@
+                <div class="row">
+                    <div class="col-12  d-flex justify-content-between align-items-center">
+                        @*numero de filas*@
+                        <button type="button" class="btn btn-success" onclick="abrirModal(null, 'herramientas')">Añadir herramienta</button>
+                        @*<button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null, 'herramientas')"> Añadir herramienta </button>*@
+                        <form action="@Url.Action(" DescargarPDF_Herramienta","SIGUP")" class="mt-0 ml-2">
+                            <button class="btn btn-danger" type="submit"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                        </form>
+                    </div>
+                </div>
+                <hr /> @*el id es para identificar la tabla*@
+                <table id="tablaHerramientas" class="display cell-border" style="width:100%">
+                    <thead class="text-lg-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Marca</th>
+                            <th>Categoría</th>
+                            <th>Observaciones</th>
+                            <th>Activo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-lg-center">
+                        @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
 
-        <table id="tablaHerramientas" class="display cell-border" style="width:100%">
-            <thead class="text-lg-center">
-                <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Cantidad</th>
-                    <th>Marca</th>
-                    <th>Categoría</th>
-                    <th>Observaciones</th>
-                    <th>Activo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody class="text-lg-center">
-                @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
+                    </tbody>
+                </table>
 
-            </tbody>
-        </table>
+            </div>
+
+        </div>
+       
     </div>
 
     <div class="tab-pane fade" id="nav-marcas" role="tabpanel" aria-labelledby="nav-marcas-tab">
@@ -129,7 +160,7 @@
                         <h5 class="modal-title" id="exampleModalLabel">Marcas</h5>
                         <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body modal-bodyMarcas">
                         @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
 
                         <input id="txtIdMarca" type="hidden" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
@@ -272,7 +303,7 @@
                         <h5 class="modal-title" id="exampleModalLabel">Categoria</h5>
                         <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body modal-bodyCategorias">
                         @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
 
                         <input id="txtIdCategoria" type="hidden" value="0" />@*Con el valor 0 se identifica si es un usuario nuevo a ingresar o es valor ya existe
@@ -362,7 +393,7 @@
         var filaSeleccionada;
 
         $(document).ready(function () {
-            
+
 
             function actualizarDatos() {
                 setTimeout(function () {
@@ -386,12 +417,12 @@
                 { "data": "nombre" },
                 { "data": "cantidad" },
                 {
-                    "data": "marca", "render": function (data) {
+                    "data": "id_marcaHerramienta", "render": function (data) {
                         return data.descripcion
                     }
                 },
                 {
-                    "data": "categoHerramienta", "render": function (data) {
+                    "data": "id_categoHerramienta", "render": function (data) {
                         return data.descripcion
                     }
                 },
@@ -406,7 +437,7 @@
                     }
                 },
                 {
-                    "data": "IdHerramienta", "render": function (data, type, row, meta) {
+                    "data": "idHerramienta", "render": function (data, type, row, meta) {
 
                         return $("<button>").addClass("btn btn-primary btn-editarHerramienta btn-sm").append(
                             $("<i>").addClass("fas fa-pen")
@@ -504,25 +535,39 @@
             }
 
         });
-
+        cargarMarcas();
+        cargarCategorias();
         //Función que muestra el modal dependiendo de cual modal se manda como argumento, json es el objeto json que se puede mandar para poder usarlo y llenar datos previos, el valor puede ser nulo.
         function abrirModal(json, modal) {
             switch (modal) {
                 case 'herramientas':
-                    $("#txtIdHerramienta").val(0);
+                    $("#txtIdValidacionH").val(0);
+                    $("#txtIdHerramienta").val("");
+                    $("#txtIdHerramienta").removeAttr("disabled");
                     $("#txtNombreHerramienta").val("");
-                    $("#txtStockHerramienta").val(0);
-                    $("#txtObservacionesHerramienta").val("");
+                    $("#txtStockHerramienta").val(1);
+                    $("#txtObservacionesHerramienta").val("NINGUNA");
                     $("#cmbActivoHerramienta").val(1);
                     $("#mensajeErrorHerramientas").hide();
-
-                    cargarMarcas();
-                    cargarCategorias();
+                    $("#cmbMarcaHerramienta").val($("#cmbMarcaHerramienta option:first").val());
+                    $("#cmbCategoriaHerramienta").val($("#cmbCategoriaHerramienta option:first").val());
+                    //cargarMarcas();
+                    //cargarCategorias();
                     /*Llamamos al form modal*/
                     if (json != null) {
-                        $("#txtIdMarca").val(json.idMarca);
-                        $("#txtDescripcionMarca").val(json.descripcion);
-                        $("#cmbActivoMarca").val(json.activo == true ? 1 : 0);
+
+                        $("#txtIdValidacionH").val(json.idHerramienta);
+                        $("#txtIdHerramienta").val(json.idHerramienta);
+     
+                        $("#txtIdHerramienta").attr({ "disabled": "disabled" });
+                        $("#txtNombreHerramienta").val(json.nombre);
+                        $("#txtStockHerramienta").val(json.cantidad);
+                        $("#cmbMarcaHerramienta").val(json.id_marcaHerramienta.idMarca).trigger('change');
+                        $("#cmbCategoriaHerramienta").val(json.id_categoHerramienta.idCategoria).trigger('change');
+                      /*  $("#cmbUsuario").val(json.id_Usuario.idUsuario).trigger('change');*/
+                        $("#txtObservacionesHerramienta").val(json.observaciones);
+                        $("#cmbActivoHerramienta").val(json.activo == true ? 1 : 0);
+
                     }
 
                     $("#FormModal_Herramientas").modal("show");
@@ -579,37 +624,100 @@
 
         //Función que ejecuta la petición POST para guardar nuevos registros en la base de datos, dentro de la misma función se evalúa si el elemento a guardar es una edición o es nuevo.
         function guardar(elemento) {
+
             switch (elemento) {
                 case 'herramientas':
-                    var herramienta = {
-                        idHerramienta: $('#txtIdHerramienta').val(),
-                        nombre: $('#txtNombreHerramienta').val(),
+                    console.log('En herramientas')
+                    var Herramienta = {
+                        idValidacionHerramienta: $("#txtIdValidacionH").val(),
+                        idHerramienta: $("#txtIdHerramienta").val(),
+                        nombre: $("#txtNombreHerramienta").val(),
                         cantidad: $('#txtStockHerramienta').val(),
-                        activo: $('#cmbActivoHerramienta').val(),
-                        observaciones: $('#txtObservacionesHerramienta').val(),
-                        marca: {
+
+                        id_marcaHerramienta: {
                             idMarca: $('#cmbMarcaHerramienta').val()
                         },
-                        categoHerramienta: {
+                        id_categoHerramienta: {
                             idCategoria: $('#cmbCategoriaHerramienta').val()
-                        }
-                    }
-
-                    $.ajax({
-                        url: '@Url.Action("añadirHerramienta", "SIGUP")',
-                        type: 'POST',
-                        data: JSON.stringify({ herramienta: herramienta }),
-                        contentType: 'application/json',
-                        dataType: 'json',
-                        success: function (response) {
-                            console.log(response.mensaje + " " + response.resultado)
                         },
-                        error: function (error) {
-                            console.log('Error en la petición ajax');
-                        }
-                    });
+                        observaciones: $('#txtObservacionesHerramienta').val(),
+                        activo: $("#cmbActivoHerramienta").val() == 1 ? true : false /*Para saber si se esta seleccionado un Si (Si = 0)
+     * o un no (No = 0*/
+                    }
+                    console.log(Herramienta)
+                    jQuery.ajax({/*Llama al metodo de guardar Administrador, que dependiendo de la accion va a crear nuevo
+ o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
+    url: '@Url.Action("GuardarHerramienta", "SIGUP")',
+    type: "POST",
+    data: JSON.stringify({ objeto: Herramienta }),/*Paso de valores
+     el stringfy lo convierte a texto*/
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+    success: function (data) {
+        $(".modal-bodyHerramientas").LoadingOverlay("hide");
+        //Administrador NUEVO
+        if (Herramienta.idValidacionHerramienta == "0") { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
+            un Administrador nuevo, por lo que se ha dado dando clic con el boton de crear*/
+            /*alert("Crear Administrador")*/
 
-                    console.log(herramienta);
+            if (data.resultado != "0") {
+             //   Herramienta.idHerramienta = data.resultado;
+             ///*   tabladata.row.add(Administrador).draw(false);*/
+
+             //   $("#FormModal_Herramientas").modal("hide");
+             //  /* $("#mensajeErrorHerramientas").hide();*/
+             //   tablaHerramientas.ajax.reload();
+
+
+                console.log("Entró");
+                Herramienta.idHerramienta = data.resultado;
+               /* tablaHerramientas.row.add(Herramienta).draw(false);*/
+                //$("#btnEliminar").trigger('click');
+                $("#FormModal_Herramientas").modal("hide");
+                tablaHerramientas.ajax.reload();
+
+
+            } else {
+
+                $("#mensajeErrorHerramientas").text(data.mensaje);
+                $("#mensajeErrorHerramientas").show();
+            }
+        }
+        //Administrador Editar
+        else {
+            /* alert("Editar Administrador")*/
+            /*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando
+             a un Administrador, por lo que indica que se ha dado clic en el boton de editar, eso lo comprobamos
+             con los alert comentados*/
+
+            if (data.resultado) {
+                tablaHerramientas.ajax.reload();
+                /*tabladata.row(filaSeleccionada).data(Administrador).draw(false);*/
+                /*filaSeleccionada = null;*/
+                $("#FormModal_Herramientas").modal("hide");
+
+            } else {
+                $("#mensajeErrorHerramientas").text(data.mensaje);
+                $("#mensajeErrorHerramientas").show();
+            }
+        }
+    },
+    error: function (error) {
+        $(".modal-bodyHerramientas").LoadingOverlay("hide");
+        $("#mensajeErrorHerramientas").text("Error Ajax");
+        $("#mensajeErrorHerramientas").show();
+    },
+    beforeSend: function () {
+        $(".modal-bodyHerramientas").LoadingOverlay("show", {
+            imageResizeFactor: 2,
+            text: "Cargando...",
+            size: 14
+        });
+    }
+});
+                    console.log("hola");
+                    console.log(Herramienta);
+
                     break;
 
                 case 'marcas':
@@ -655,7 +763,7 @@
                         },
 
                         error: function (error) {
-                            /* $(".modal-body").LoadingOverlay("hide");*/
+                            /* $(".modal-bodyMarcas").LoadingOverlay("hide");*/
                             console.log("Error de no se que :V");
                             $("#mensajeErrorMarca").text("Error Ajax");
                             $("#mensajeErrorMarca").show();
@@ -683,7 +791,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
-                                $(".modal-body").LoadingOverlay("hide");
+                                $(".modal-bodyCategorias").LoadingOverlay("hide");
                                 //CATEGORIA NUEVO
                                 if (Categoria.IdCategoria == "0") { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
                                     un usuario nuevo, por lo que se ha dado dando clic con el boton de crear*/
@@ -719,12 +827,12 @@
                                 }
                             },
                                 error: function (error) {
-                                    $(".modal-body").LoadingOverlay("hide");
+                                    $(".modal-bodyCategorias").LoadingOverlay("hide");
                                     $("#mensajeErrorCategoria").text("Error Ajax");
                                     $("#mensajeErrorCategoria").show();
                                 },
                                 beforeSend: function () {
-                                    $(".modal-body").LoadingOverlay("show", {
+                                    $(".modal-bodyCategorias").LoadingOverlay("show", {
                                         imageResizeFactor: 2,
                                         text: "Cargando...",
                                         size: 24
@@ -755,6 +863,7 @@
 
         function cargarSelectMarcas(arreglo) {
             $('#cmbMarcaHerramienta').empty();
+            $("#cmbMarcaHerramienta").append($("<option selected>").val("").attr({ "value": "0", "disabled": "true" }).text("Seleccionar"));
             for (var clave in arreglo) {
                 if (arreglo.hasOwnProperty(clave)) {
                     var objetoDato = arreglo[clave];
@@ -769,6 +878,7 @@
 
         function cargarSelectCategorias(arreglo) {
             $('#cmbCategoriaHerramienta').empty();
+            $("#cmbCategoriaHerramienta").append($("<option selected>").val("").attr({ "value": "0", "disabled": "true" }).text("Seleccionar"));
             for (var clave in arreglo) {
                 if (arreglo.hasOwnProperty(clave)) {
                     var objetoDato = arreglo[clave];
@@ -914,9 +1024,61 @@
                 });
         });
 
-        $("#tablaHerramientas tbody").on('click', '.btn-eliminarHerramienta', function (evento) {
+        $("#tablaHerramientas tbody").on("click", '.btn-editarHerramienta', function () {
+            //Obtenemos el elemento más cercano a la fila seleccionada como tr
+            filaSeleccionada = $(this).closest("tr");
+            //Obtenemos como json los datos de esa fila
+            var data = tablaHerramientas.row(filaSeleccionada).data();
+            //Los almacenamos en un json
+            var json = $(this).data("informacionherramienta")
+            //Se manda a llamar el modal.
+            abrirModal(json, 'herramientas')
 
         })
+
+        $("#tablaHerramientas tbody").on("click", '.btn-eliminarHerramienta', function () {
+
+            var json = $(this).data("informacionherramienta")
+        swal({
+            title: "¿Esta Seguro?",
+            text: "¿Desea eliminar la herramienta?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-primary",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            closeOnConfirm: true
+        },
+            function () {
+                jQuery.ajax({
+                    url: '@Url.Action("EliminarHerramienta", "SIGUP")',
+                    type: "POST",
+                    data: JSON.stringify({ id: json.idHerramienta }),/*Paso de valores*/
+                    /*el stringfy lo convierte a texto*/
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {/*Ese data esta almacenando la respuesta del metodo eliminar usuario
+                 * hecho en homeController*/
+                        //ELIMINAR CATEGORIA
+
+                        if (data.resultado) { /*si el resultado es verdadera)*/
+                            //tabladata.row(usuarioSeleccionado).remove().draw();
+                            tablaHerramientas.ajax.reload();
+                        } else {
+                            swal("No se pudo eliminar", data.mensaje, "error")
+                        }/*Primer parametro mensaje, luego el mensaje del data, y el tercero indica que es de tipo error*/
+
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+
+                });
+            });
+    });
+        //$("#tablaHerramientas tbody").on('click', '.btn-eliminarHerramienta', function (evento) {
+
+        //})
     </script>
 }
 

@@ -68,7 +68,7 @@ namespace CapaDatos
                                     //Tipo = Convert.ToInt32(dr["Tipo"]),   
                                     activo = Convert.ToBoolean(dr["Activo"]),
                                     calificacionEntrega = Convert.ToInt32(dr["CalificacionEntrega"]),
-                                    id_Herramienta = new EN_Herramienta() { idHerramienta = Convert.ToInt32(dr["IdHerramienta"]), nombre = dr["NombreHerramienta"].ToString() },
+                                    id_Herramienta = new EN_Herramienta() { idHerramienta = dr["IdHerramienta"].ToString(), nombre = dr["NombreHerramienta"].ToString() },
                                     id_Area = new EN_Area() { idArea = Convert.ToInt32(dr["Id_Area"]), nombreArea = dr["NombreArea"].ToString() },
                                     //oDetallePrestamo = new EN_DetallePrestamo() { IdDetallePrestamo = Convert.ToInt32(dr["IdDetallePrestamo"]), Total = dr["NombreLector"].ToString() },
                                 });

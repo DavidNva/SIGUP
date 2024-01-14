@@ -476,6 +476,7 @@
     <Content Include="Views\SIGUP\Herramientas.cshtml" />
     <Content Include="Views\SIGUP\Usuarios.cshtml" />
     <Content Include="Views\SIGUP\Prestamos.cshtml" />
+    <Content Include="Views\SIGUP\Administradores.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

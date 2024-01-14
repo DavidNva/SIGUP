@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BD_Administrador.cs" />
     <Compile Include="BD_Area.cs" />
     <Compile Include="BD_Bitacora.cs" />
     <Compile Include="BD_Carrera.cs" />
