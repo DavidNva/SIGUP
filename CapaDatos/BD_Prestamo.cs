@@ -133,10 +133,13 @@ namespace CapaDatos
         public bool Editar(EN_Prestamo obj, out string Mensaje)//out indica parametro de salida
         {
             bool resultado = false;
+            //DateTime FechaPrestamo = Convert.ToDateTime(obj.fechaPrestamo);
+            string fechaPrestamo = obj.fechaPrestamo;
+            DateTime FechaPrestamo = DateTime.ParseExact(fechaPrestamo, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-            DateTime fechaPrestamo = Convert.ToDateTime(obj.fechaPrestamo);
+            //DateTime fechaPrestamo = Convert.ToDateTime(obj.fechaPrestamo);
 
-            DateTime fechaDevolucion = Convert.ToDateTime(obj.fechaDevolucion);
+            //DateTime fechaDevolucion = Convert.ToDateTime(obj.fechaDevolucion);
 
 
             Mensaje = string.Empty;
@@ -156,7 +159,8 @@ namespace CapaDatos
                     //cmd.Parameters.AddWithValue("FechaPrestamo", obj.FechaPrestamo);
                     //cmd.Parameters.AddWithValue("FechaDevolucion", obj.FechaDevolucion);
 
-                    cmd.Parameters.AddWithValue("FechaPrestamo", fechaPrestamo.ToString("MM-dd-yyyy"));
+                    cmd.Parameters.AddWithValue("FechaPrestamo", FechaPrestamo);
+                    //cmd.Parameters.AddWithValue("FechaPrestamo", obj.fechaPrestamo);
                     //cmd.Parameters.AddWithValue("FechaDevolucion", fechaDevolucion.ToString("MM-dd-yyyy"));
 
                     cmd.Parameters.AddWithValue("DiasDePrestamo", obj.diasPrestamo);
@@ -182,34 +186,92 @@ namespace CapaDatos
             return resultado;
         }
 
-
-        public bool AñadirPrestamo()
+        //sp_FinalizarPrestamo
+        public bool FinalizarPrestamo(EN_Prestamo obj, out string Mensaje)//out indica parametro de salida
         {
+            bool resultado = false;
+
+            DateTime fechaPrestamo = Convert.ToDateTime(obj.fechaPrestamo);
+
+            DateTime fechaDevolucion = Convert.ToDateTime(obj.fechaDevolucion);
+
+
+            Mensaje = string.Empty;
             try
             {
+                using (SqlConnection oConexion = new SqlConnection(BD_Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_FinalizarPrestamo", oConexion);
+                    cmd.Parameters.AddWithValue("IdPrestamo", obj.idPrestamo);
+                    //cmd.Parameters.AddWithValue("Id_Lector", obj.oId_Lector.IdLector);
+                    //cmd.Parameters.AddWithValue("TotalLibro", obj.TotalLibro);
+                    //cmd.Parameters.AddWithValue("Activo", obj.Activo);
+                    //cmd.Parameters.AddWithValue("FechaPrestamo", obj.FechaPrestamo);
+                    //cmd.Parameters.AddWithValue("FechaDevolucion", obj.FechaDevolucion);
 
-                return true;
+                    //cmd.Parameters.AddWithValue("FechaPrestamo", fechaPrestamo.ToString("MM-dd-yyyy"));
+                    cmd.Parameters.AddWithValue("FechaDevolucion", fechaDevolucion.ToString("MM-dd-yyyy"));
+
+                    //cmd.Parameters.AddWithValue("DiasDePrestamo", obj.DiasDePrestamo);
+                    cmd.Parameters.AddWithValue("Observaciones", obj.notas);
+                   
+                    cmd.Parameters.AddWithValue("IdLibro", obj.id_Herramienta.idHerramienta);
+
+                    //Dos parametros de salida, un entero de resultaado y un string de mensaje
+                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    oConexion.Open();
+                    cmd.ExecuteNonQuery();
+                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                resultado = false;
+                Mensaje = ex.Message;
 
-                return false;
             }
+            return resultado;
         }
 
-        public bool ModificarPrestamo()
+        public bool Eliminar(int id, string idHerramienta, out string Mensaje)//out indica parametro de salida
         {
+            bool resultado = false;
+
+            Mensaje = string.Empty;
             try
             {
+                using (SqlConnection oConexion = new SqlConnection(BD_Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_EliminarPrestamo", oConexion);
+                    cmd.Parameters.AddWithValue("IdPrestamo", id);
+                    cmd.Parameters.AddWithValue("IdHerramienta", idHerramienta);
+                    //Dos parametros de salida, un entero de resultaado y un string de mensaje
+                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                return true;
+                    oConexion.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                resultado = false;
+                Mensaje = ex.Message;
 
-                return false;
             }
+            return resultado;
         }
+
 
         public bool EliminarPrestamo()
         {

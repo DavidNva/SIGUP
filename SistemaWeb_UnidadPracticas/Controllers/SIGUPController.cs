@@ -439,6 +439,30 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
         }
+
+        [HttpPost]
+        public JsonResult FinalizarPrestamo(/*int id, int idEjemplarLibro, int idLibro */EN_Prestamo objeto)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new RN_Prestamo().FinalizarPrestamo(objeto, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult EliminarPrestamo(int id, string idHerramienta)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new RN_Prestamo().Eliminar(id, idHerramienta, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
+        }
         #endregion
 
         /*--------------Administrador---------------------*/

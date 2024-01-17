@@ -286,7 +286,7 @@
                 
                 { "data": "fechaPrestamo" },
                 { "data": "fechaDevolucion" },
-                { "data": "diasPrestamo", "visible": false },
+                { "data": "diasPrestamo", "visible": true },
 
                
                 //{ "data": "unidad", "visible": false },
@@ -723,7 +723,7 @@
                 jQuery.ajax({
                     url: '@Url.Action("EliminarPrestamo", "SIGUP")',
                     type: "POST",
-                    data: JSON.stringify({ id: json.IdPrestamo, idHerramientaHerramienta: json.oId_Herramienta.IdHerramientaHerramienta, idHerramienta: json.oId_Herramienta.IdHerramienta }),/*Paso de valores*/
+                    data: JSON.stringify({ id: json.idPrestamo, idHerramienta: json.id_Herramienta.idHerramienta }),/*Paso de valores*/
                     /*el stringfy lo convierte a texto*/
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
@@ -813,12 +813,12 @@
                 success: function (data) {
                     $(".modal-body").LoadingOverlay("hide");
                     //Prestamo NUEVO
-                    if (Prestamo.IdPrestamo == 0) { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
+                    if (Prestamo.idPrestamo == 0) { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
                         un Prestamo nuevo, por lo que se ha dado dando clic con el boton de crear*/
                         /*alert("Crear Prestamo")*/
 
                         if (data.resultado != 0) {
-                            Prestamo.IdPrestamo = data.resultado;
+                            Prestamo.idPrestamo = data.resultado;
                             //tabladata.row.add(Prestamo).draw(false);
                             //Generraba error con el id del prestamo colocando como true al registrar
                             //si despues de registrar editabamos ese registro entonces volvia a registrar en lugar de solo editar
