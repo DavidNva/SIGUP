@@ -3,6 +3,7 @@ using CapaEntidad;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -170,24 +171,48 @@ namespace CapaNegocio
         {
             Mensaje = string.Empty;
             //Validaciones para que la caja de texto no este vacio o con espacios
+            if (string.IsNullOrEmpty(obj.fechaDevolucion) || string.IsNullOrWhiteSpace(obj.fechaDevolucion))
+            {
+                Mensaje = "La fecha devolución no puede ser vacio";
+                return false;
+
+            }
+            else if (string.IsNullOrEmpty(obj.fechaPrestamo) || string.IsNullOrWhiteSpace(obj.fechaPrestamo))
+            {
+                Mensaje = "La fecha del prestamo no puede ser vacio";
+                return false;
+
+            }
+            string fechaPrestamo = obj.fechaPrestamo;
+            DateTime FechaPrestamo = DateTime.ParseExact(fechaPrestamo, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+            string fechaDevolucion = obj.fechaDevolucion;
+            DateTime FechaDevolucion = DateTime.ParseExact(fechaDevolucion, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            //else if (Convert.ToDateTime(obj.fechaDevolucion.ToString()) < Convert.ToDateTime(obj.fechaPrestamo.ToString()))
+            //{
+            //    Mensaje = "La fecha de devolución no puede ser menor que la fecha de préstamo";
+            //}
 
             if (string.IsNullOrEmpty(obj.fechaDevolucion) || string.IsNullOrWhiteSpace(obj.fechaDevolucion))
             {
                 Mensaje = "La fecha de devolucion del préstamo no puede ser vacio";
             }
-            else if (Convert.ToDateTime(obj.fechaDevolucion) < Convert.ToDateTime(obj.fechaPrestamo))
+
+            else if (FechaDevolucion < FechaPrestamo)
             {
                 Mensaje = "La fecha de devolución no puede ser menor que la fecha de préstamo";
             }
+
             else if (obj.id_Herramienta.idHerramienta == "0")/*Si no ha seleccionado ninguna marca*/
             {
-                Mensaje = "Debes seleccionar un Libro";
+                Mensaje = "Debes seleccionar una Herramienta";
             }
             else if (string.IsNullOrEmpty(obj.notas) || string.IsNullOrWhiteSpace(obj.notas))
             {
                 Mensaje = "El campo observaciones no puede ser vacio";
 
             }
+
 
             if (string.IsNullOrEmpty(Mensaje))
             {/*Si no hay ningun mensaje, significa que no ha habido ningun error*/

@@ -181,12 +181,12 @@
                 <input id="txtId2" type="hidden" value="0" />@*Con el valor 0 se identifica si es un Prestamo nuevo a ingresar o es valor ya existe
                     pero si es diferente a 0 significa que ya existe y vamos a editar*@
                 <input type="hidden" class="form-control text-success" id="txtHerramientaId">
-                <input type="hidden" class="form-control text-success" id="txtHerramientaId">
+               
                 <div class="row g-2">
 
                     <div class="col-sm-12">
-                        <label for="txtHerramientaTitulo" class="form-label fw-bold">Herramienta en Préstamo</label>
-                        <input type="text" class="form-control text-success" id="txtHerramientaTitulo" autocomplete="off" placeholder="Ejemplo: El Herramienta se entregó en perfecto estado ">
+                        <label for="txtNombreHerramienta" class="form-label fw-bold">Herramienta en Préstamo</label>
+                        <input type="text" class="form-control text-success" id="txtNombreHerramienta" autocomplete="off" placeholder="Ejemplo: El Herramienta se entregó en perfecto estado ">
                     </div>
 
                     <div class="col-sm-6">
@@ -589,11 +589,11 @@
             if (json != null) {/*Porque el metodo abrir modal puede abrirse con crear nuevo o con editar,
              * por eso esta linea*/
                 $("#mensajeError2").hide();
-                $("#txtId2").val(json.IdPrestamo);/*Traerá el codigo pero no lo mostrará al Prestamo*/
-                $("#txtHerramientaId").val(json.oId_Herramienta.IdHerramienta).attr({ "disabled": "disabled" });
-                $("#txtHerramientaTitulo").val(json.oId_Herramienta.Titulo).attr({ "disabled": "disabled" });
+                $("#txtId2").val(json.idPrestamo);/*Traerá el codigo pero no lo mostrará al Prestamo*/
+                $("#txtHerramientaId").val(json.id_Herramienta.idHerramienta).attr({ "disabled": "disabled" });
+                $("#txtNombreHerramienta").val(json.id_Herramienta.nombre).attr({ "disabled": "disabled" });
 
-                $("#txtHerramientaId").val(json.oId_Herramienta.IdHerramientaHerramienta).attr({ "disabled": "disabled" });
+              
                 ///$("#cmbHerramienta2").val(json.oId_Herramienta.IdHerramienta).trigger('change');
                 //$("#cmbHerramienta2").attr({ "disabled": "disabled" });
                 //$("#cmbHerramienta2").attr({ "disabled": "disabled" });
@@ -610,19 +610,19 @@
                 // y si no es true de el valor de 0*/
                 //$("#cmbActivo2").show();
                 //$("#lblActivo2").show();
-                $("#txtFechaPrestamo2").val(json.FechaPrestamo).attr({ "disabled": "disabled" });;//El dato despues de json. se refiere al identificador dado en Capa Entidad EN_Prestamo, tal cual se deben de escribirs
-                $("#div-fechaDevolucion2").val(json.FechaDevolucion).removeClass("hidden-elements");
+                $("#txtFechaPrestamo2").val(json.fechaPrestamo).attr({ "disabled": "disabled" });;//El dato despues de json. se refiere al identificador dado en Capa Entidad EN_Prestamo, tal cual se deben de escribirs
+                $("#div-fechaDevolucion2").val(json.fechaDevolucion).removeClass("hidden-elements");
 
 
                 if (json.FechaDevolucion != "") {/*Si ya hay un valor agregado para fecha devolucion en la tabla */
 
 
                     $("#exampleModalLabel2").text("Detalles del Préstamo Finalizado");
-                    $("#txtFechaDevolucion2").val("").attr({ "disabled": "disabled" });
-                    $("#txtFechaDevolucion2").val(json.FechaDevolucion);
-                    $("#btnFinalizarPrestamo").attr({ "disabled": "disabled" });
+                /*    $("#txtFechaDevolucion2").val("").attr({ "disabled": "disabled" });*/
+                    $("#txtFechaDevolucion2").val(json.fechaDevolucion);
+                  /*  $("#btnFinalizarPrestamo").attr({ "disabled": "disabled" });*/
                     $("#btnFinalizarPrestamo").addClass("hidden-elements");
-                    $("#txtObservaciones2").attr({ "disabled": "disabled" });
+                  /*  $("#txtObservaciones2").attr({ "disabled": "disabled" });*/
 
                     //La clase hidden-elements viene de mis estilos, estilos css creados por mi
                     //$("#div-fechaDevolucion").val("").addClass("hidden-elements");
@@ -871,7 +871,7 @@
 
 
             var Prestamoconcluido = {
-                IdPrestamo: $("#txtId2").val(), /*Los dos puntos de la condicion es "si es diferente es:"
+                idPrestamo: $("#txtId2").val(), /*Los dos puntos de la condicion es "si es diferente es:"
                  el signo de interrogacion es un entonces
                  leyendo la sentencia de abajo seria, si el valor es igual a 1, entonces es true (verdadero)
                  pero si es diferentes es falso*/
@@ -879,27 +879,25 @@
                     IdUsuario: $("#cmbUsuario2 option:selected").val(),
                     NombreCompletoUsuario: $("#cmbUsuario option:selected").text()
                 },
-                oId_Herramienta: {
-                    IdHerramienta: $("#txtHerramientaId").val(),
-                    Titulo: $("#txtHerramientaTitulo").val()//Se hicieron dos, el id es hidden para no tener problemas
+                id_Herramienta: {
+                    idHerramienta: $("#txtHerramientaId").val(),
+                    nombre: $("#txtNombreHerramienta").val()//Se hicieron dos, el id es hidden para no tener problemas
                 },
-                oId_Herramienta: {
-                    IdHerramientaHerramienta: $("#txtHerramientaId").val()
-                    //Titulo: $("#cmbHerramienta option:selected").text()
-                },
+             
                 //oId_Herramienta.IdHerramientaHerramienta
-                TotalHerramienta: $("#txtTotalHerramientas2").val(),
+                cantidad: $("#txtTotalHerramientas2").val(),
                 /*El punto val sirve para obtener un valor y para establecer un valor*/
-                FechaPrestamo: $("#txtFechaPrestamo2").val(),
-                FechaDevolucion: $("#txtFechaDevolucion2").val(),
-                DiasDePrestamo: $("#txtDiasPrestamo2").val(),
+                fechaPrestamo: $("#txtFechaPrestamo2").val(),
+                fechaDevolucion: $("#txtFechaDevolucion2").val(),
+                diasPrestamo: $("#txtDiasPrestamo2").val(),
 
 
-                Observaciones: $("#txtObservaciones2").val(),
-                Activo: $("#cmbActivo2").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0)
+                notas: $("#txtObservaciones2").val(),
+                activo: $("#cmbActivo2").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0)
                 // * o un no (No = 0*/
 
             }
+            console.log("Prestamo concluido")
             console.log(Prestamoconcluido)
             jQuery.ajax({
                     url: '@Url.Action("FinalizarPrestamo", "SIGUP")',

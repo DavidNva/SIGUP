@@ -191,9 +191,11 @@ namespace CapaDatos
         {
             bool resultado = false;
 
-            DateTime fechaPrestamo = Convert.ToDateTime(obj.fechaPrestamo);
+            //DateTime fechaPrestamo = Convert.ToDateTime(obj.fechaPrestamo);
 
-            DateTime fechaDevolucion = Convert.ToDateTime(obj.fechaDevolucion);
+            string fechaDevolucion = obj.fechaDevolucion;
+            DateTime FechaDevolucion = DateTime.ParseExact(fechaDevolucion, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            //DateTime fechaDevolucion = Convert.ToDateTime(obj.fechaDevolucion);
 
 
             Mensaje = string.Empty;
@@ -203,19 +205,10 @@ namespace CapaDatos
                 {
                     SqlCommand cmd = new SqlCommand("sp_FinalizarPrestamo", oConexion);
                     cmd.Parameters.AddWithValue("IdPrestamo", obj.idPrestamo);
-                    //cmd.Parameters.AddWithValue("Id_Lector", obj.oId_Lector.IdLector);
-                    //cmd.Parameters.AddWithValue("TotalLibro", obj.TotalLibro);
-                    //cmd.Parameters.AddWithValue("Activo", obj.Activo);
-                    //cmd.Parameters.AddWithValue("FechaPrestamo", obj.FechaPrestamo);
-                    //cmd.Parameters.AddWithValue("FechaDevolucion", obj.FechaDevolucion);
-
-                    //cmd.Parameters.AddWithValue("FechaPrestamo", fechaPrestamo.ToString("MM-dd-yyyy"));
-                    cmd.Parameters.AddWithValue("FechaDevolucion", fechaDevolucion.ToString("MM-dd-yyyy"));
-
-                    //cmd.Parameters.AddWithValue("DiasDePrestamo", obj.DiasDePrestamo);
+                    cmd.Parameters.AddWithValue("FechaDevolucion", FechaDevolucion);
                     cmd.Parameters.AddWithValue("Observaciones", obj.notas);
                    
-                    cmd.Parameters.AddWithValue("IdLibro", obj.id_Herramienta.idHerramienta);
+                    cmd.Parameters.AddWithValue("IdHerramienta", obj.id_Herramienta.idHerramienta);
 
                     //Dos parametros de salida, un entero de resultaado y un string de mensaje
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;

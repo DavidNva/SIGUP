@@ -176,22 +176,6 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             }
         }
 
-        //[HttpPost]
-        //public JsonResult guardarHerramienta(EN_Herramienta herramienta)
-        //{
-        //    object resultado;
-        //    string mensaje = string.Empty;
-
-        //    if (herramienta.idValidacionHerramienta == "0")
-        //    {
-        //        resultado = new RN_Herramienta().añadirHerramienta(herramienta, out mensaje);
-        //    }
-        //    else
-        //    {
-        //        resultado = new RN_Herramienta().editarHerramienta(herramienta, out mensaje);
-        //    }
-        //    return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
-        //}
         [HttpPost]
         public JsonResult GuardarHerramienta(EN_Herramienta objeto) /*De este json se puede controlar que mas ver, igualar elementos, etc*/
         {
