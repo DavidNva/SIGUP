@@ -344,7 +344,7 @@ begin
 		begin
 		    set @Resultado = 0
 			--set @Mensaje = 'Error: La cantidad ingresada es mayor al stock disponible de esa herramienta, intente con una cantidad menor.'
-			set @Mensaje = CONCAT('Error: La cantidad ingresada (', @CantidadTotal, ') es mayor al stock disponible (', @cantidadInicial, ') de esa herramienta, intente con una cantidad menor.')
+			set @Mensaje = CONCAT('Error: La cantidad ingresada (', @CantidadTotal, ') es mayor al stock disponible (', @cantidadInicial, ') de esa herramienta, intente con una cantidad menor. O actualice la página para ver de nuevo el stock.')
 		end
 		else
 		begin

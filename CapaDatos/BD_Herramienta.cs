@@ -175,7 +175,8 @@ namespace CapaDatos
                 using (SqlConnection oConexion = new SqlConnection(BD_Conexion.cn))
                 {
 
-                    string query = "select IdHerramienta, Nombre, Activo from Herramienta where Activo = 1";
+                    string query = "select IdHerramienta,  CONCAT( Nombre,' / ',cantidad) AS Nombre, Activo from Herramienta";
+                    //string query2 = "select IdHerramienta, Nombre, Activo from Herramienta where Activo = 1 and cantidad > 0";
                     SqlCommand cmd = new SqlCommand(query, oConexion);
                     cmd.CommandType = CommandType.Text;/*En este caso es de tipo Text (no usamos para este ejemplo, procedimientos almacenados*/
 

@@ -266,18 +266,6 @@ namespace CapaDatos
         }
 
 
-        public bool EliminarPrestamo()
-        {
-            try
-            {
-
-                return true;
-            }
-            catch (Exception)
-            {
-
-                return false;
-            }
-        }
+      
     }
 }

@@ -39,6 +39,8 @@
                     <th>Fecha Prestamo</th>
                     <th>Fecha Devolucion</th>
                     <th>Dias de Prestamo</th>
+                    <th>Unidad </th>
+                    <th>Cantidad PU</th>
                     <th>Observaciones</th>
                     <th></th>
                     <th></th>
@@ -71,13 +73,9 @@
                     pero si es diferente a 0 significa que ya existe y vamos a editar*@
                 <div class="row g-2">
 
-                    @*<div class="col-sm-8">
-                            <label class="form-label">Herramienta</label>
-                            <select id="cmbHerramienta" class="form-select">
-                            </select>
-                        </div>*@
+
                     <div class="col-sm-8" id="div-Herramienta">
-                        <label class="form-label">Herramienta</label>
+                        <label class="form-label">Herramienta / Disponibles</label>
                         <select id="cmbHerramienta2" class="form-select">
                         </select>
                     </div>
@@ -121,7 +119,7 @@
                         <input type="text" class="form-control" id="txtAreaDeUso" autocomplete="off" placeholder="Ejempo: Salon A, Campo, Exterior, etc.">
                     </div>
                     <div class="col-sm-6">
-                        <label for="txtFechaPrestamo" class="form-label">Fecha Prestamo</label>
+                        <label for="txtFechaPrestamo" class="form-label">Fecha Préstamo</label>
                         <input type="text" class="form-control" id="txtFechaPrestamo" autocomplete="off">
                     </div>
                     @*<div class="col-sm-6" id="div-fechaDevolucion">
@@ -133,13 +131,6 @@
                         <input type="number" class="form-control" id="txtDiasPrestamo" maxlength="2" autocomplete="off" placeholder="Ingresa los días de prestamo para el Herramienta">
                     </div>
 
-                    @*<div class="col-sm-6">
-                            <label for="cmbActivo" class="form-label" id="lblActivo">Activo</label>
-                            <select id="cmbActivo" class="form-select">
-                                <option value="1">Si</option>
-                                <option value="0">No</option>
-                            </select>
-                        </div>*@
                     <div class="col-sm-12">
                         <label for="txtObservaciones" class="form-label">Observaciones</label>
                         <input type="text" class="form-control" id="txtObservaciones" autocomplete="off" placeholder="Ejemplo: El Herramienta se entregó en perfecto estado ">
@@ -185,12 +176,12 @@
                 <div class="row g-2">
 
                     <div class="col-sm-12">
-                        <label for="txtNombreHerramienta" class="form-label fw-bold">Herramienta en Préstamo</label>
+                        <label for="txtNombreHerramienta" id="lblNombreHerramienta" class="form-label fw-bold">Herramienta en Préstamo</label>
                         <input type="text" class="form-control text-success" id="txtNombreHerramienta" autocomplete="off" placeholder="Ejemplo: El Herramienta se entregó en perfecto estado ">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="txtFechaPrestamo2" class="form-label fw-bold">Fecha Prestamo</label>
+                        <label for="txtFechaPrestamo2" class="form-label fw-bold">Fecha Préstamo</label>
                         <input type="text" class="form-control text-success" id="txtFechaPrestamo2" autocomplete="off">
                     </div>
                     <div class="col-sm-6" id="div-fechaDevolucion2">
@@ -198,15 +189,8 @@
                         <input type="text" class="form-control text-primary" id="txtFechaDevolucion2" autocomplete="off">
                     </div>
 
-                    @*<div class="col-sm-6">
-                            <label for="cmbActivo2" class="form-label" id="lblActivo2">Activo</label>
-                            <select id="cmbActivo2" class="form-select">
-                                <option value="1">Si</option>
-                                <option value="0">No</option>
-                            </select>
-                        </div>*@
                     <div class="col-sm-12">
-                        <label for="txtObservaciones2" class="form-label fw-bold">Observaciones</label>
+                        <label for="txtObservaciones2" class="form-label fw-bold" id="lblObservaciones2">Observaciones</label>
                         <input type="text" class="form-control text-success" id="txtObservaciones2" autocomplete="off" placeholder="Ejemplo: El Herramienta se entregó en perfecto estado ">
                     </div>
 
@@ -221,7 +205,7 @@
                 </div>
             </div>
             <div class="modal-footer bg-white" id="footer-modal2">
-                <button type="button" class="btn btn-danger" id="btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-warning fw-bold" id="btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-success" onclick="GuardarFinalizarPrestamo()" id="btnFinalizarPrestamo"><b>Finalizar Préstamo</b></button>
             </div>
         </div>
@@ -289,9 +273,9 @@
                 { "data": "diasPrestamo", "visible": true },
 
                
-                //{ "data": "unidad", "visible": false },
+                { "data": "unidad", "visible": true },
                /* { "data": "cantidad", "visible": false },*/
-                //{ "data": "cantidadPorUnidad", "visible": false },
+                { "data": "cantidadPorUnidad", "visible": true },
                 //{ "data": "areaDeUso", "visible": false },
 
                /* { "data": "Tipo" },*/
@@ -299,10 +283,12 @@
                 {
                     "data": "idPrestamo", "render": function (data, type, row, meta) {
 
-                        var btnClass = row.FechaDevolucion ? "btn btn-success btn-finalizarPrestamo btn-sm" : "btn btn-danger btn-finalizarPrestamo btn-sm";
-                        var iconClass = row.FechaDevolucion ? "fas fa-eye" : "fas fa-sync";
-                        var btnTitle = row.FechaDevolucion ? "Ver préstamo" : "Finalizar préstamo";
-                        var btnBgClass = row.FechaDevolucion ? "" : "btn-primary";
+                        var btnClass = row.fechaDevolucion ? "btn btn-success btn-finalizarPrestamo btn-sm" : "btn btn-warning btn-finalizarPrestamo btn-sm";
+                        var iconClass = row.activo ? "fas fa-sync" :  "fas fa-eye";
+                        var btnTitle = row.fechaDevolucion ? "Ver préstamo" : "Finalizar préstamo";
+                        var btnBgClass = row.fechaDevolucion ? "" : "btn-primary";
+
+                        
                         return $("<button>").addClass(btnClass).addClass(btnBgClass).append(
                             $("<i>").addClass(iconClass)
                         ).attr({
@@ -476,6 +462,7 @@
             $("#txtDiasPrestamo, #txtObservaciones").toggle();
         });
         function abrirModal(json) /*json es el data del siguiente*/ {
+            $("#exampleModalLabel").text("Prestamo");
             $("#txtId").val(0);
             $("#txtTotalHerramientas").val(1);
             $("#txtCantidadPU").val(1);
@@ -552,7 +539,11 @@
                     $("#txtFechaDevolucion").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
                 }
 
+                if (json.id_Herramienta.idHerramienta != null) {/*Si hay datos entonces esta editando*/
 
+                    console.log("Edicion del prestamo")
+                    $("#exampleModalLabel").text("Editar Prestamo");
+                }
                 $("#txtFechaPrestamo").datepicker({ dateFormat: 'dd/mm/yy' })
                 $("#txtFechaDevolucion").datepicker({ dateFormat: 'dd/mm/yy' })
 
@@ -592,6 +583,7 @@
                 $("#txtId2").val(json.idPrestamo);/*Traerá el codigo pero no lo mostrará al Prestamo*/
                 $("#txtHerramientaId").val(json.id_Herramienta.idHerramienta).attr({ "disabled": "disabled" });
                 $("#txtNombreHerramienta").val(json.id_Herramienta.nombre).attr({ "disabled": "disabled" });
+                $("#txtObservaciones2").val(json.notas)
 
               
                 ///$("#cmbHerramienta2").val(json.oId_Herramienta.IdHerramienta).trigger('change');
@@ -613,16 +605,20 @@
                 $("#txtFechaPrestamo2").val(json.fechaPrestamo).attr({ "disabled": "disabled" });;//El dato despues de json. se refiere al identificador dado en Capa Entidad EN_Prestamo, tal cual se deben de escribirs
                 $("#div-fechaDevolucion2").val(json.fechaDevolucion).removeClass("hidden-elements");
 
+               /* if (json.activo != "")*/
+                if (json.activo == false) {/*Si ya hay un valor agregado para fecha devolucion en la tabla */
 
-                if (json.FechaDevolucion != "") {/*Si ya hay un valor agregado para fecha devolucion en la tabla */
-
-
+                console.log("Desde dev con datos")
                     $("#exampleModalLabel2").text("Detalles del Préstamo Finalizado");
-                /*    $("#txtFechaDevolucion2").val("").attr({ "disabled": "disabled" });*/
+                    $("#lblNombreHerramienta").text("Herramienta Prestada");
+                    $("#lblFechaDevolucion2").text("Fecha en que se Devolvió");
+                    $("#lblObservaciones2").text("Observaciones (Después del Préstamo)");
+                    $("#txtFechaDevolucion2").val("").attr({ "disabled": "disabled" });
                     $("#txtFechaDevolucion2").val(json.fechaDevolucion);
-                  /*  $("#btnFinalizarPrestamo").attr({ "disabled": "disabled" });*/
+                    $("#txtObservaciones2").val(json.notas)
+                    $("#btnFinalizarPrestamo").attr({ "disabled": "disabled" });
                     $("#btnFinalizarPrestamo").addClass("hidden-elements");
-                  /*  $("#txtObservaciones2").attr({ "disabled": "disabled" });*/
+                    $("#txtObservaciones2").attr({ "disabled": "disabled" });
 
                     //La clase hidden-elements viene de mis estilos, estilos css creados por mi
                     //$("#div-fechaDevolucion").val("").addClass("hidden-elements");
@@ -641,7 +637,12 @@
 
                 } else {//Si es = "", no han agregado nada para fecha devolucion, entonces:
                     $("#exampleModalLabel2").text("Finalizar Préstamo");
+                    $("#lblNombreHerramienta").text("Herramienta en Prestamo");
+                    $("#lblFechaDevolucion2").text("Fecha Devolución");
+                    $("#lblObservaciones2").text("Observaciones");
                     //$("#btn-cancelar").removeClass("col-12");
+                    console.log("Hola dev")
+                    $("#txtObservaciones2").val(json.notas)
                     $("#txtFechaDevolucion2").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
                     //$("#footer-modal2").removeClass("hidden-elements");**
                     //$("#footer-modal2").removeClass("bg-warning");
@@ -658,7 +659,7 @@
                 $("#txtFechaDevolucion2").datepicker({ dateFormat: 'dd/mm/yy' })
 
                 $("#txtDiasPrestamo2").val(json.DiasDePrestamo);
-                $("#txtObservaciones2").val(json.Observaciones);
+                $("#txtObservaciones2").val(json.notas);
 
             }
 
