@@ -386,8 +386,10 @@
                  el stringfy lo convierte a texto*/
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                success: function (data) {
+                success: function (data) {//Podemos poner cualquier nombre data, response, etc
                     $(".modal-body").LoadingOverlay("hide");
+
+                    /*debugger;*/
                     //Administrador NUEVO
                     if (Administrador.idValidacionAdmin == "0") { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
                         un Administrador nuevo, por lo que se ha dado dando clic con el boton de crear*/

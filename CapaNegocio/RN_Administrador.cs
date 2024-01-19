@@ -24,22 +24,26 @@ namespace CapaNegocio
             {
                 Mensaje = "El nombre del administrador no puede ser vacio";
             }
-            if (string.IsNullOrEmpty(obj.apellidos) || string.IsNullOrWhiteSpace(obj.apellidos))
+            else if (string.IsNullOrEmpty(obj.apellidos) || string.IsNullOrWhiteSpace(obj.apellidos))
             {
                 Mensaje = "El apellido del administrador no puede ser vacio";
             }
-            if (string.IsNullOrEmpty(obj.telefono) || string.IsNullOrWhiteSpace(obj.telefono))
+            else if (string.IsNullOrEmpty(obj.telefono) || string.IsNullOrWhiteSpace(obj.telefono))
             {
                 Mensaje = "El teléfono del administrador no puede ser vacio";
             }
-            if (string.IsNullOrEmpty(obj.correo) || string.IsNullOrWhiteSpace(obj.correo))
+            else if (string.IsNullOrEmpty(obj.correo) || string.IsNullOrWhiteSpace(obj.correo))
             {
                 Mensaje = "El correo del administrador no puede ser vacio";
             }
             if (string.IsNullOrEmpty(Mensaje))
             {/*Si no hay ningun mensaje, significa que no ha habido ningun error*/
+                string clave = "test123";
+                obj.clave = RN_Recursos.ConvertirSha256(clave);
 
                 return bd_administrador.Registrar(obj, out Mensaje);
+
+
             }
             else
             {

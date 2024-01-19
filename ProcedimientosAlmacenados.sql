@@ -522,7 +522,8 @@ begin
         set @Mensaje = 'Error: No se pudo elimnar el préstamo. Intentelo de nuevo'
 end
 
-
+select * from Administrador
+select * from usuario
 ---------------------------------------------ADMINISTRADOR ------------------------------------------
 go
 create procedure sp_RegistrarAdministrador(--Hay un indice unico para el nombre completo del usuario 
@@ -542,7 +543,7 @@ create procedure sp_RegistrarAdministrador(--Hay un indice unico para el nombre 
 as
 begin
     SET @Resultado = 0 --No permite repetir un mismo correo, ni al insertar ni al actualizar
-    IF NOT EXISTS (SELECT * FROM Administrador WHERE Correo = @Correo)
+    IF NOT EXISTS (SELECT * FROM Administrador WHERE Correo = @Correo and IdAdministrador != @IdAdministrador)
     begin 
         insert into Administrador(IdAdministrador,Nombres, Apellidos, Telefono, Correo, Clave, Activo)
         values (@IdAdministrador,@Nombres, @Apellidos,@Telefono, @Correo, @Clave, @Activo)
@@ -550,7 +551,7 @@ begin
         SET @Resultado = scope_identity()
     end 
     else 
-     SET @Mensaje = 'El correo del usuario ya existe'
+     SET @Mensaje = 'El correo o id del usuario ya existe'
 end
 
 GO

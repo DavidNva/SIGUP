@@ -52,7 +52,7 @@ namespace CapaDatos
 
         public string Registrar(EN_Administrador obj, out string Mensaje)//out indica parametro de salida
         {
-            string IdAutogenerado = "0"; /*Recibe el id autogenerado*/
+            string IdResultado = "0"; /*Recibe el id autogenerado*/
 
             Mensaje = string.Empty;
             try
@@ -74,17 +74,17 @@ namespace CapaDatos
 
                     oConexion.Open();
                     cmd.ExecuteNonQuery();
-                    IdAutogenerado = cmd.Parameters["Resultado"].Value.ToString();
+                    IdResultado = cmd.Parameters["Resultado"].Value.ToString();
                     Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
                 }
             }
             catch (Exception ex)
             {
-                IdAutogenerado = "0";
+                IdResultado = "0";
                 Mensaje = ex.Message;
 
             }
-            return IdAutogenerado;
+            return IdResultado;
 
         }
 

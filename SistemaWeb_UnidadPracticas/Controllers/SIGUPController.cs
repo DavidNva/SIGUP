@@ -469,7 +469,7 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             string mensaje = string.Empty;
 
             if (objeto.idValidacionAdmin == "0")/*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
-             una Administrador nueva, por lo que se ha dado dando clic con el boton de crear*/
+             una Administrador nuevo, por lo que se ha dado dando clic con el boton de crear*/
             {
                 resultado = new RN_Administrador().Registrar(objeto, out mensaje);/*El metodo registrar
                  de tipo int, devuelve el id registrado*/

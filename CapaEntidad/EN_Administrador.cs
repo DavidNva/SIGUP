@@ -14,7 +14,7 @@ namespace CapaEntidad
         public string apellidos { get; set; }
         public string telefono { get; set; }
         public string correo { get; set; }
-        public int clave { get; set; }
+        public string clave { get; set; }
         public bool reestablecer { get; set; }
         public bool activo { get; set; }
         public string fechaRegistro { get; set; }
