@@ -18,7 +18,10 @@ namespace CapaDatos
             {
                 using (SqlConnection sqlConnection = new SqlConnection(BD_Conexion.cn))
                 {
-                    string query = "select * from Administrador";
+                    string query = "select * from Administrador order by fechaRegistro desc ";
+                    //Descomentar la siguiente linea al final del proyecto y comentar la anterior
+                    //string query = "select * from Administrador where idAdministrador != '20100008' order by fechaRegistro ";
+
                     using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
                     {
                         sqlCommand.CommandType = CommandType.Text;

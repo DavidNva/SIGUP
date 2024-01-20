@@ -129,7 +129,7 @@ begin
 end
 GO
 
-create procedure sp_EliminarMarca(
+create  procedure sp_EliminarMarca(
 	@IdMarca int,
     @Mensaje varchar(500) output,
     @Resultado bit output
@@ -144,7 +144,7 @@ begin
         set @Resultado = 1 --true
     end 
     else 
-        set @Mensaje = 'La categoria se encuentra relacionada con un libro'
+        set @Mensaje = 'La marca se encuentra relacionada con una herramienta'
 end
 GO
 --inserciones prueba categorias
@@ -526,7 +526,7 @@ select * from Administrador
 select * from usuario
 ---------------------------------------------ADMINISTRADOR ------------------------------------------
 go
-create procedure sp_RegistrarAdministrador(--Hay un indice unico para el nombre completo del usuario 
+create  procedure sp_RegistrarAdministrador(--Hay un indice unico para el nombre completo del usuario 
     --@IDUsuario int,---El id es Identity
 	@IdAdministrador varchar(30),
     @Nombres varchar(100),--Tiene indice compuesto con Apellidos
@@ -543,7 +543,7 @@ create procedure sp_RegistrarAdministrador(--Hay un indice unico para el nombre 
 as
 begin
     SET @Resultado = 0 --No permite repetir un mismo correo, ni al insertar ni al actualizar
-    IF NOT EXISTS (SELECT * FROM Administrador WHERE Correo = @Correo and IdAdministrador != @IdAdministrador)
+    IF NOT EXISTS (SELECT * FROM Administrador WHERE Correo = @Correo or IdAdministrador = @IdAdministrador)
     begin 
         insert into Administrador(IdAdministrador,Nombres, Apellidos, Telefono, Correo, Clave, Activo)
         values (@IdAdministrador,@Nombres, @Apellidos,@Telefono, @Correo, @Clave, @Activo)
@@ -551,7 +551,7 @@ begin
         SET @Resultado = scope_identity()
     end 
     else 
-     SET @Mensaje = 'El correo o id del usuario ya existe'
+     SET @Mensaje = 'El correo o id del administrador ya existe'
 end
 
 GO

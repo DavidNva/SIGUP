@@ -203,6 +203,7 @@
 
         function abrirModal(json) /*json es el data del siguiente*/ {
             $("#txtId").val(0);
+            $("#txtIdAdministrador").attr({ "disabled": false });
             $("#txtIdAdministrador").val("");
             $("#txtNombres").val("");
             $("#txtApellidos").val("");
@@ -218,6 +219,7 @@
             if (json != null) {/*Porque el metodo abrir modal puede abrirse con crear nuevo o con editar,
              * por eso esta linea*/
                 $("#txtId").val(json.idAdministrador);
+                $("#txtIdAdministrador").attr({ "disabled": "disabled" });
                 $("#txtIdAdministrador").val(json.idAdministrador);/*Traerá el codigo pero no lo mostrará al Administrador*/
                 $("#txtNombres").val(json.nombres); /*El json o data, trae una propieadad llamada nombres*/
                 $("#txtApellidos").val(json.apellidos);
@@ -269,8 +271,8 @@
             //    console.log("La variable data es undefined o null");
             //}
             swal({
-                title: "¿Esta Seguro?",
-                text: "¿Desea eliminar el administrador seleccionado?",
+                title: "¿Está seguro de eliminar el Admin seleccionado?",
+                text: "Se eliminará completamente de la Base de Datos impidiendo ingresar al sistema con estas credenciales",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonClass: "btn-primary",

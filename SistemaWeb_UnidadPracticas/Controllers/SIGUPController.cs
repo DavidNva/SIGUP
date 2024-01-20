@@ -152,7 +152,7 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             }
             else
             {
-                return Json(new { resultado = respuesta, mensaje = "Se intentó realizar la petición en la capa datos y falló" });
+                return Json(new { resultado = respuesta, mensaje = mensaje });
             }
         }
 

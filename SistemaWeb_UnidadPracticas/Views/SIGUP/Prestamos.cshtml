@@ -711,8 +711,8 @@
             var json = $(this).data("informacion")
 
             swal({
-                title: "¿Esta Seguro?",
-                text: "¿Desea eliminar el Prestamo?",
+                title: "¿Está seguro de eliminar el Préstamo?",
+                text: "Se eliminará completamente del sistema y del historial",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonClass: "btn-primary",
@@ -825,6 +825,7 @@
                             //si despues de registrar editabamos ese registro entonces volvia a registrar en lugar de solo editar
                             //por lo que conviene mejor recargar la tabla con la siguiente line de codigo
                             //para asi tener el id correspondi
+                            swal("¡Prestamo realizado!", "La herramienta " + "'"+ Prestamo.id_Herramienta.nombre + "'" + " ha sido prestada a: " + Prestamo.id_Usuario.NombreCompletoUsuario, "success")
                             tabladata.ajax.reload();
                             $("#FormModal").modal("hide");
                         } else {
@@ -912,6 +913,7 @@
                         //ELIMINAR Prestamo
                         if (data.resultado) { /*si el resultado es verdadera)*/
                             //tabladata.row(Prestamoseleccionado).remove().draw();
+                            swal("¡Prestamo devuelto!", "La herramienta prestada ha sido devuelta", "success")
                             tabladata.ajax.reload();
                             $("#FormModalNew").modal("hide");
                         }else {
