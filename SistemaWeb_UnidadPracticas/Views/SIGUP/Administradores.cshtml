@@ -399,7 +399,8 @@
 
                         if (data.resultado != "0") {
                             Administrador.idAdministrador = data.resultado;
-                          /*  tabladata.row.add(Administrador).draw(false);*/
+                            /*  tabladata.row.add(Administrador).draw(false);*/
+                            swal("¡Administrador creado correctamente!", "Se ha enviado al correo ingresado la contraseña para este nuevo administrador", "success");
                             tabladata.ajax.reload();
                             $("#FormModal").modal("hide");
                         } else {

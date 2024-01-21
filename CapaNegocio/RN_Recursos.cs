@@ -14,7 +14,7 @@ namespace CapaNegocio
     {
         public static string GenerarClave()//Genera una clave aleaotorio de 6 digitos
         {
-            string clave = Guid.NewGuid().ToString("N").Substring(0, 6);
+            string clave = Guid.NewGuid().ToString("N").Substring(0, 6);//retorna un codigo unico c#
             return clave;
         }
         /*El siguiente metodo recibe un text y devuelve un text encriptado*/
@@ -43,21 +43,21 @@ namespace CapaNegocio
             {
                 MailMessage mail = new MailMessage();
                 mail.To.Add(correo);
-                mail.From = new MailAddress("correo1");
+                mail.From = new MailAddress("david.nava.garcia4@gmail.com");
                 mail.Subject = asunto;
                 mail.Body = mensaje;
-                mail.IsBodyHtml = true;
+                mail.IsBodyHtml = true;//Se trabajará en base al formato html
                 //Prueba de conexion
 
                 var smtp = new SmtpClient()
                 {
-                    Credentials = new NetworkCredential("correo", "clave"),
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true
+                    Credentials = new NetworkCredential("david.nava.garcia4@gmail.com", "qgbgompbahinyxbh"),
+                    Host = "smtp.gmail.com",//servidor que usa email para enviar los correos
+                    Port = 587,//puerto que utiliza email
+                    EnableSsl = true //Habilita el certificado de seguridad qgbg ompb ahin yxbh
                 };
 
-                smtp.Send(mail);
+                smtp.Send(mail);//Envia el correo
                 resultado = true;
             }
             catch (Exception ex)
