@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 
 namespace SistemaWeb_UnidadPracticas.Controllers
 {
+    [Authorize]
     public class SIGUPController : Controller
     {
         // GET: SIGUP

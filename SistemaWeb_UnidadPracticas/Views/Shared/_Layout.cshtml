@@ -18,14 +18,16 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     @*@if (Session["Usuario"] != null)
-                        {
-                            <li><a class="dropdown-item" href="#!"><i class="fas fa-mail-bulk"></i>  @User.Identity.Name</a></li>
-                        }
-                        else { }*@
+        {
+            <li><a class="dropdown-item" href="#!"><i class="fas fa-mail-bulk"></i>  @User.Identity.Name</a></li>
+        }
+        else { }*@
                     @*<li><a class="dropdown-item" href="#!"><b>@User.Identity.Name</b></a></li>*@
                     @*<li><a class="dropdown-item" href="@Url.Action("CerrarSesion", "Acceso")"><i class="fas fa-lock"></i>  Cerrar Sesión</a></li>*@
                     @*valor de la cookie de la sesion creada, la cookie creada fue por correo, con esta linea de codigo estamos mostrando el correo con el que se inicio sesión*@
                     @*<li><a class="dropdown-item" href="#!">Activity Log</a></li>*@
+
+                    <li><a class="dropdown-item" href="#!"><i class="fas fa-mail-bulk"></i> Correo del Usuario</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li><a class="dropdown-item" href="@Url.Action("CerrarSesion", "Acceso")"><i class="fas fa-lock"></i>  Cerrar Sesión</a></li>
                 </ul>

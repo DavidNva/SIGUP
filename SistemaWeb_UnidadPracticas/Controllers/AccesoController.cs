@@ -48,8 +48,8 @@ namespace SistemaWeb_UnidadPracticas.Controllers
                     return RedirectToAction("CambiarClave"); /*Como estamos en la misma carpeta, no necesitamos especificar una nueva carpeta*/
                 }
 
-                //FormsAuthentication.SetAuthCookie(oAdministrador.correo, false);/*Se crea una autentificacion del Administrador por su correo*/
-                //Session["Administrador"] = oAdministrador;
+                FormsAuthentication.SetAuthCookie(oAdministrador.correo, false);/*Se crea una autentificacion del Administrador por su correo*/
+                Session["Administrador"] = oAdministrador;
                 ViewBag.Error = null;
                 return RedirectToAction("Index", "SIGUP"); /*Referencia al dashboard principal*/
             }
@@ -99,6 +99,38 @@ namespace SistemaWeb_UnidadPracticas.Controllers
                 ViewBag.Error = mensaje;
                 return View();
             }
+        }
+
+        [HttpPost]
+        public ActionResult Reestablecer(string correo)
+        {
+            EN_Administrador oAdministrador = new EN_Administrador();
+            oAdministrador = new RN_Administrador().ListarAdministrador().Where(item => item.correo == correo).FirstOrDefault();
+            if (oAdministrador == null)
+            {
+                ViewBag.Error = "No se encontró un administrador relacionado a ese correo";
+                return View();
+            }
+            string mensaje = string.Empty;
+            bool respuesta = new RN_Administrador().ReestablecerClave(oAdministrador.idAdministrador, correo, out mensaje);
+            if (respuesta)
+            {
+                ViewBag.Error = null;
+                return RedirectToAction("Index", "Acceso");
+            }
+            else /*Si es false*/
+            {
+                ViewBag.Error = mensaje;
+                return View();
+            }
+
+        }
+
+        public ActionResult CerrarSesion()
+        {
+            Session["Administrador"] = null;
+            FormsAuthentication.SignOut();//Eliminamos la autentificacion del usuario, por lo que deberá volver a iniciar sesion
+            return RedirectToAction("Index", "Acceso");
         }
 
     }
