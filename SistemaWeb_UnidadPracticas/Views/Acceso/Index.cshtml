@@ -55,9 +55,9 @@
                                 </div>
                                 <div class="card-footer text-center py-3">
                                     <!--Esta condicion aplica cuando despues de crear su propia contraseña cambiando la que se le envio al correo
-                                        se regrese automaticamente al index login, donde estará este mensaje de que si todo fue bien, entonces
-                                        indicarle al usuario que se cambió la contraseña correctamente e indicar volver a acceder al sistema con 
-                                        las nuevas credenciales-->
+    se regrese automaticamente al index login, donde estará este mensaje de que si todo fue bien, entonces
+    indicarle al usuario que se cambió la contraseña correctamente e indicar volver a acceder al sistema con
+    las nuevas credenciales-->
                                     @if (TempData["respuesta"] != null && (bool)TempData["respuesta"])
                                     {
                                         <div class="form-floating mb-1 mt-1">
@@ -72,7 +72,29 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                             </div>
                                         </div>
+                                    }
+
+                                    <!--Esto segundo mensaje será cuando se reestablezca una contraseña para avisar al usuario que se 
+                                        le envio su nueva contraseña a su correo-->
+                                    @if (TempData["respuestareestablecer"] != null && (bool)TempData["respuestareestablecer"])
+                                    {
+                                        <div class="form-floating mb-1 mt-1">
+
+                                            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                                                <h5>
+                                                    ¡Se reestableció la contraseña correctamente!
+                                                </h5>
+                                                <h5>
+                                                    !Verifique su correo!
+                                                </h5>
+                                                <h5>
+                                                    ¡Se le ha enviado una nueva contraseña para configurarla nuevamente y acceder al sistema!
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                        </div>
                                     }<!--Esto es lo unico que se agregó mas (El mensaje)-->
+                                    @*<div class="small"><a href="register.html">Need an account? Sign up!</a></div>*@
 
                                 </div>
                             </div>

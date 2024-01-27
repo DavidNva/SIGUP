@@ -115,11 +115,14 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             bool respuesta = new RN_Administrador().ReestablecerClave(oAdministrador.idAdministrador, correo, out mensaje);
             if (respuesta)
             {
+                TempData["respuestareestablecer"] = true;//Envia true para indicar que se debe mostrar un mensaje al
+                                             //usuario de que la contraseña ha sido reestablecida correctamente y se le envió a su correo
                 ViewBag.Error = null;
                 return RedirectToAction("Index", "Acceso");
             }
             else /*Si es false*/
             {
+                TempData["respuestareestablecer"] = false;
                 ViewBag.Error = mensaje;
                 return View();
             }
