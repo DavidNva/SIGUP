@@ -172,7 +172,7 @@
                 <input id="txtId2" type="hidden" value="0" />@*Con el valor 0 se identifica si es un Prestamo nuevo a ingresar o es valor ya existe
                     pero si es diferente a 0 significa que ya existe y vamos a editar*@
                 <input type="hidden" class="form-control text-success" id="txtHerramientaId">
-               
+
                 <div class="row g-2">
 
                     <div class="col-sm-12">
@@ -207,6 +207,87 @@
             <div class="modal-footer bg-white" id="footer-modal2">
                 <button type="button" class="btn btn-warning fw-bold" id="btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-success" onclick="GuardarFinalizarPrestamo()" id="btnFinalizarPrestamo"><b>Finalizar Préstamo</b></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------Ver detalles del Prestamo ---------------------------------------------------->
+<!-- Modal, con el id FormModal vamos a llamarlo cuando deseamos que aparezca y cuando no
+    al momento de precionar el boton nuevo-->
+<div class="modal fade" id="ModalDetallesPrestamo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    @*Esto ultimo de data-bs-backdrop es para*@
+    @*no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title fw-bold" id="exampleModalLabel2">Detalle del Préstamo  -  <span class="text-white  text-end text-dark" id="txtFechaPrestamoDPrestamoArriba"></span></h5>
+                <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" id="contenedorDPrestamo">
+                <input id="txtIdDPrestamo" type="hidden" value="0" />
+                <input type="hidden" class="form-control text-success" id="txtHerramientaIdDPrestamoDPrestamo">
+
+                <div class="row g-2">
+
+                    <div class="">
+                        <div class="row">
+                            <div class="col-4 ">
+                                <span class="fw-bold">Num: </span>
+                                <span class="text-success" id="txtId_NumPrestamo"></span>
+                            </div>
+                            <div class="col-8 text-end">
+                                @*<span class="fw-bold">Fecha del Préstamo: </span>
+                                    <label class="text-success" id="txtFechaPrestamoDPrestamo"></label>*@
+                                <span class="card-title fw-bold">Fecha de Devolución: </span>
+                                <label class="text-success" id="txtFechaDevolucionDPrestamo"></label>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <span class="fw-bold">Usuario: </span>
+                            <label id="txtUsuarioDPrestamo" class="text-success"></label>
+                        </div>
+                        <ol class="m-0">
+                            <li class="">Area (Ubicación Herramienta): <label class="text-success" id="txtAreaDPrestamo"></label></li>
+                            <li class="">
+                                Herramienta:
+                                <label class="text-success" id="txtNombreHerramientasDPrestamo"> </label>
+                            </li>
+                            <li class="">Cantidad: <label class="text-success" id="txtTotalHerramientasDPrestamo"></label></li>
+                            <li class="">Unidad: <label class="text-success" id="txtUnidadDPrestamo"></label></li>
+                            <li class="">Cantidad P/U : <label class="text-success" id="txtCantidadPU_DPrestamo"></label></li>
+                        </ol>
+                        <div class="mt-1">
+                            <div class="">
+                                <span class="fw-bold">Días de Préstamo: </span>
+                                <span class="text-success" id="txtDiasPrestamoDPrestamo"></span>
+                            </div>
+                            <div class="">
+                                <span class="fw-bold">Area de Uso: </span>
+                                <span class="text-success" id="txtAreaDeUsoDPrestamo"></span>
+                            </div>
+                            <div class="mt-1 card-footer no-border ">
+                                <span class="card-title fw-bold">Observaciones: </span>
+                                <label class="text-success" id="txtObservacionesDPrestamo"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--mensaje de alerta-->
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeErrorDetallePrestamo" class="alert alert-danger" role="alert">
+                            Mensaje de error...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer bg-white" id="footer-modalDetallePrestamo">
+                <button type="button" class="btn btn-success fw-bold" id="btn-cancelar" data-bs-dismiss="modal">Cerrar</button>
+
             </div>
         </div>
     </div>
@@ -267,12 +348,12 @@
                 //    "visible": false
                 //},
                 /* { "data": "TotalHerramienta" },*/
-                
+
                 { "data": "fechaPrestamo" },
                 { "data": "fechaDevolucion" },
                 { "data": "diasPrestamo", "visible": true },
 
-               
+
                 { "data": "unidad", "visible": true },
                /* { "data": "cantidad", "visible": false },*/
                 { "data": "cantidadPorUnidad", "visible": true },
@@ -288,7 +369,7 @@
                         var btnTitle = row.fechaDevolucion ? "Ver préstamo" : "Finalizar préstamo";
                         var btnBgClass = row.fechaDevolucion ? "" : "btn-primary";
 
-                        
+
                         return $("<button>").addClass(btnClass).addClass(btnBgClass).append(
                             $("<i>").addClass(iconClass)
                         ).attr({
@@ -470,7 +551,7 @@
             $("#txtTotalHerramientas").attr({ "disabled": "disabled" });
             /*$("#lblTotalHerramientas").css("color", "transparent");*/
 
-            $("#txtFechaPrestamo").val("").attr({ "disabled": "disabled" }); 
+            $("#txtFechaPrestamo").val("").attr({ "disabled": "disabled" });
             /*Para que tome la fecha actual y no lo pueda cambiar. Esto como una forma de seguridad que no haga prestamos de fechas anteriores no correpondientes o logicas*/
 
             //La clase hidden-elements viene de mis estilos, estilos css creados por mi
@@ -569,7 +650,7 @@
             var json = $(this).data("informacion")
             console.log("Edicion prueba boton")
             console.log(json);
-            
+
             abrirModal(json)
 
         })
@@ -585,7 +666,7 @@
                 $("#txtNombreHerramienta").val(json.id_Herramienta.nombre).attr({ "disabled": "disabled" });
                 $("#txtObservaciones2").val(json.notas)
 
-              
+
                 ///$("#cmbHerramienta2").val(json.oId_Herramienta.IdHerramienta).trigger('change');
                 //$("#cmbHerramienta2").attr({ "disabled": "disabled" });
                 //$("#cmbHerramienta2").attr({ "disabled": "disabled" });
@@ -669,8 +750,7 @@
 
         /*Estamos llamando a la tabla especificamente al tbody, todo ira en relacion a esa tabla*/
         $("#tabla tbody").on("click", '.btn-finalizarPrestamo', function () {
-            /*This es la misma tabla, se llama
-             tr es el row o la fila seleccionado de la tabla */
+            /*This es la misma tabla, se llama tr es el row o la fila seleccionado de la tabla */
             filaSeleccionada = $(this).closest("tr");
             var data = tabladata.row(filaSeleccionada).data();
             //$("#div-div-Usuario").val("").addClass("hidden-elements");
@@ -678,10 +758,17 @@
             //abrirModal(data);
             var json = $(this).data("informacionprestamo")
             console.log(json);
+            if (json.activo) {//Si el prestmamo esta activo, es porque esta pendiente
+                console.log("Prestamo pendiente") 
+                abrirModal2(json)//Por lo que abrimos el modal  de finalizar prestamo
+            } else {//Si el prestamo esta activo = 0 , es porque esta devuelto  
+                console.log("Prestamo devuelto")
+                $("#FormModalNew").modal("hide");
+                abrirModalDetallePrestamo(json)//Por lo que abrimos el modal que solo da el detalle prestamo
+            }
 
 
-
-            abrirModal2(json)
+            /* abrirModal2(json)*/
             $("#txtFechaPrestamo2, #txtFechaDevolucion2").change(function () {
                 var fechaPrestamo = Date.parse($("#txtFechaPrestamo2").val());
                 var fechaDevolucion = Date.parse($("#txtFechaDevolucion2").val());
@@ -699,6 +786,35 @@
                 }
             });
         })
+
+
+        function abrirModalDetallePrestamo(json) /*json es el data del siguiente*/ {
+
+            $("#mensajeErrorDetallePrestamo").hide();
+            /*Llamamos al form modal detalle prestamo*/
+            if (json != null) {
+
+                $("#txtId_NumPrestamo").text(json.idPrestamo);
+                $("#txtFechaPrestamoDPrestamo").text(json.fechaPrestamo);
+                $("#txtFechaPrestamoDPrestamoArriba").text(json.fechaPrestamo);
+                $("#txtUsuarioDPrestamo").text(json.id_Usuario.NombreCompletoUsuario);
+                $("#txtAreaDPrestamo").text(json.id_Area.nombreArea);
+                $("#txtNombreHerramientasDPrestamo").text(json.id_Herramienta.nombre);
+                $("#txtTotalHerramientasDPrestamo").text(json.cantidad);
+                $("#txtUnidadDPrestamo").text(json.unidad);
+                $("#txtCantidadPU_DPrestamo").text(json.cantidadPorUnidad);
+                $("#txtDiasPrestamoDPrestamo").text(json.diasPrestamo);
+                $("#txtAreaDeUsoDPrestamo").text(json.areaDeUso);
+                $("#txtObservacionesDPrestamo").text(json.notas);
+                $("#txtFechaDevolucionDPrestamo").text(json.fechaDevolucion);
+            }
+
+            $("#ModalDetallesPrestamo").modal("show");
+
+
+        }
+
+
 
         //El boton aplica 3 acciones a la base de datos
         //1. Elimina el prestamo con su id y a su vez los detallePrestamos que tenga
@@ -885,7 +1001,7 @@
                     idHerramienta: $("#txtHerramientaId").val(),
                     nombre: $("#txtNombreHerramienta").val()//Se hicieron dos, el id es hidden para no tener problemas
                 },
-             
+
                 //oId_Herramienta.IdHerramientaHerramienta
                 cantidad: $("#txtTotalHerramientas2").val(),
                 /*El punto val sirve para obtener un valor y para establecer un valor*/
