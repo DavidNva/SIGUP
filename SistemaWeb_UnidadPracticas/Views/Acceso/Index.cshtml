@@ -11,94 +11,108 @@
     <title>Index</title>
     <link href="~/Content/Site.css" rel="stylesheet" />
 </head>
-<body class="bg-primary">
+<body style="background-color: #182E63;">
     <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
             <main>
-                <div class="container">
-                   
 
-                    <div class="row justify-content-center">
-                        <div class="col-lg-5">
-                            <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
-                                <div class="card-body">
-                                    <form action="@Url.Action("Index","Acceso")" method="post">
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" name="correo" id="correou" type="email" required/>
-                                            <label for="inputEmail">Email </label>
-                                        </div>
-                                        @*IMPORTANTE! Correo y clave son identificadores de los parametros del metodo index de acceso
-        controller para relacionarlos*@
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="claveu" name="clave" type="password" required />
-                                            <label for="inputPassword" >Contraseña</label>
-                                        </div>
+                <div class="container py-5 h-100">
+                    
 
-                                        @{ if (ViewBag.Error != null)
-                                            {
-                                                <div class="form-floating mb-3">
-                                                    <div class="alert alert-danger" role="alert">
-                                                        @ViewBag.Error
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+
+                        <div class="@*col-lg-5*@ col col-xl-8">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5" style="border-radius: 1rem;">
+                                <div class="row g-0">
+
+                                    <div class="col-md-6 col-lg-6 d-none d-md-block">
+                                        <img src="~/images/computadora.jpg"
+                                             alt="login form" class="img-fluid h-100" style="border-radius: 1rem 0 0 1rem;" />
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 d-flex align-items-center ">
+                                        <div class="card-body p-4 p-lg-3 text-black">
+                                        @*<div class=" text-black col-12">*@
+                                            <div class="card-header" ><h3 class="text-center font-weight-light my-2">Login</h3></div>
+                                            <div class="card-body">
+                                                <form action="@Url.Action("Index","Acceso")" method="post">
+                                                    <div class="form-floating mb-3">
+                                                        <input class="form-control" name="correo" id="correou" type="email" required />
+                                                        <label for="inputEmail">Email </label>
                                                     </div>
-                                                </div>
-                                            }
-                                        }
+                                                    @*IMPORTANTE! Correo y clave son identificadores de los parametros del metodo index de acceso
+                    controller para relacionarlos*@
+                                                    <div class="form-floating mb-3">
+                                                        <input class="form-control" id="claveu" name="clave" type="password" required />
+                                                        <label for="inputPassword">Contraseña</label>
+                                                    </div>
 
-                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                            <a class="small" href="@Url.Action("Reestablecer","Acceso")">¿Has olvidado tu contraseña?</a>
-                                            <button type="submit" class="btn btn-primary" href="index.html">Iniciar sesión</button>
-                                        </div>
+                                                    @{ if (ViewBag.Error != null)
+                                                        {
+                                                            <div class="form-floating mb-3">
+                                                                <div class="alert alert-danger" role="alert">
+                                                                    @ViewBag.Error
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
 
-                                      
-                                    </form>
-                                </div>
-                                <div class="card-footer text-center py-3">
-                                    <!--Esta condicion aplica cuando despues de crear su propia contraseña cambiando la que se le envio al correo
-    se regrese automaticamente al index login, donde estará este mensaje de que si todo fue bien, entonces
-    indicarle al usuario que se cambió la contraseña correctamente e indicar volver a acceder al sistema con
-    las nuevas credenciales-->
-                                    @if (TempData["respuesta"] != null && (bool)TempData["respuesta"])
-                                    {
-                                        <div class="form-floating mb-1 mt-1">
+                                                    <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                                        <a class="small" href="@Url.Action("Reestablecer","Acceso")">¿Has olvidado tu contraseña?</a>
+                                                        <button type="submit" class="btn btn-primary" href="index.html">Iniciar sesión</button>
+                                                    </div>
 
-                                            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                                                <h5>
-                                                    Se cambió la contraseña correctamente
-                                                </h5>
-                                                <h5>
-                                                    !Acceda al sistema con sus nuevas credenciales!
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                                                </form>
+                                            </div>
+                                            <div class="card-footer text-center py-3">
+                                                <!--Esta condicion aplica cuando despues de crear su propia contraseña cambiando la que se le envio al correo
+            se regrese automaticamente al index login, donde estará este mensaje de que si todo fue bien, entonces
+            indicarle al usuario que se cambió la contraseña correctamente e indicar volver a acceder al sistema con
+            las nuevas credenciales-->
+                                                @if (TempData["respuesta"] != null && (bool)TempData["respuesta"])
+                                                {
+                                                    <div class="form-floating mb-1 mt-1">
+
+                                                        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                                                            <h5>
+                                                                Se cambió la contraseña correctamente
+                                                            </h5>
+                                                            <h5>
+                                                                !Acceda al sistema con sus nuevas credenciales!
+                                                            </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                <!--Esto segundo mensaje será cuando se reestablezca una contraseña para avisar al usuario que se
+            le envio su nueva contraseña a su correo-->
+                                                @if (TempData["respuestareestablecer"] != null && (bool)TempData["respuestareestablecer"])
+                                                {
+                                                    <div class="form-floating mb-1 mt-1">
+
+                                                        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                                                            <h5>
+                                                                ¡Se reestableció la contraseña correctamente!
+                                                            </h5>
+                                                            <h5>
+                                                                !Verifique su correo!
+                                                            </h5>
+                                                            <h5>
+                                                                ¡Se le ha enviado una nueva contraseña para configurarla nuevamente y acceder al sistema!
+                                                            </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                        </div>
+                                                    </div>
+                                                }<!--Esto es lo unico que se agregó mas (El mensaje)-->
+                                                @*<div class="small"><a href="register.html">Need an account? Sign up!</a></div>*@
+
                                             </div>
                                         </div>
-                                    }
-
-                                    <!--Esto segundo mensaje será cuando se reestablezca una contraseña para avisar al usuario que se 
-                                        le envio su nueva contraseña a su correo-->
-                                    @if (TempData["respuestareestablecer"] != null && (bool)TempData["respuestareestablecer"])
-                                    {
-                                        <div class="form-floating mb-1 mt-1">
-
-                                            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                                                <h5>
-                                                    ¡Se reestableció la contraseña correctamente!
-                                                </h5>
-                                                <h5>
-                                                    !Verifique su correo!
-                                                </h5>
-                                                <h5>
-                                                    ¡Se le ha enviado una nueva contraseña para configurarla nuevamente y acceder al sistema!
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                            </div>
-                                        </div>
-                                    }<!--Esto es lo unico que se agregó mas (El mensaje)-->
-                                    @*<div class="small"><a href="register.html">Need an account? Sign up!</a></div>*@
-
+                                    </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </main>

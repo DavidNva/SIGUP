@@ -181,25 +181,7 @@
             }
 
         });
-        /* ahora el ajax paa listar las Categorias en el cmbCategoria*/
-          jQuery.ajax({
-            url: '@Url.Action("ListarTipoPersona", "Mantenedor")',
-            type: "GET",
-            data: null,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-
-                $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cmbTipoPersona");
-                $.each(data.data, function (index, item) {
-
-                    $("<option>").attr({ "value": item.IdTipoPersona }).text(item.Descripcion).appendTo("#cmbTipoPersona");
-                })
-            },
-            error: function (error) {
-                console.log(error)
-            }
-          });
+      
 
         function abrirModal(json) /*json es el data del siguiente*/ {
             $("#txtId").val(0);
