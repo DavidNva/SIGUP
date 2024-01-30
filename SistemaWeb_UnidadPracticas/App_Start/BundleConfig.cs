@@ -36,6 +36,7 @@ namespace SistemaWeb_UnidadPracticas
                        "~/Scripts/DataTables/dataTables.responsive.min.js",
                        "~/Scripts/loadingoverlay/loadingoverlay.min.js",
                        "~/Scripts/sweetalert.min.js",
+                        "~/Scripts/jquery.validate.js", /*Para aplicar validaciones, como de numeros, no insercion letras, simbolos, etc*/
                        "~/Scripts/jquery-ui.js" /*Para el calendario*/
                        ));
 

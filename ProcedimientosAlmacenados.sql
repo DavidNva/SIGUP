@@ -191,7 +191,7 @@ INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Alumno');
 INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Docente');
 INSERT INTO tipo_usuario(nombre_tipo) VALUES ('Visitante externo');
 
-use UDP_Control
+use UDP_CONTROL
 go
 --inserciones prueba categorias
 exec sp_RegistrarCategoria 'HERRAMIENTAS DE MEDICIÓN',1,'',1
@@ -371,7 +371,7 @@ begin
     end catch 
 end
 
-
+go
 /*Inserciones prueba para prestamos*/
 insert into Edificio (NombreEdificio)
 values
@@ -444,7 +444,7 @@ begin
         SET @Resultado = 1 --true
     end 
     else 
-        SET @Mensaje = 'Error: El préstamo no pudo ser actualizado' + ERROR_MESSAGE() 
+        SET @Mensaje = 'Error: El préstamo no pudo ser actualizado. ' + ERROR_MESSAGE() 
 end 
 
 go
@@ -555,7 +555,7 @@ begin
 end
 
 GO
-sp_RegistrarAdministrador 'info2024','djhon','David Jhon ','1345678765','davidjhon@gmail.com','test123',1,'',1
+sp_RegistrarAdministrador '20100008','David','NG ','1234567890','david.nava.garcia4@gmail.com','ecd71870d1963316a97e3ac3408c9835ad8cf0f3c1bc703527c30265534f75ae',1,'',1
 go
 create proc sp_EditarAdministrador(
     @IdAdministrador varchar(30),
@@ -602,5 +602,15 @@ begin
         set @Mensaje = 'Error: No se pudo eliminar el administrador. Intentelo de nuevo'
 end
 
-
+go
+create  proc sp_ReporteDashboard --Para el reporte de dashboard
+as 
+begin
+select
+    (select count(*) from usuario) [TotalUsuario],
+    (select count(*) from detalle_prestamo) [TotalPrestamo],
+    (select count(*) from herramienta)[TotalHerramienta],
+    (select isnull(sum(cantidad), 0) from herramienta)[TotalEjemplaresHerramientas]
+end
+go
 select * from Administrador

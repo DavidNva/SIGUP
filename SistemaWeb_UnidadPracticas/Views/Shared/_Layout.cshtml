@@ -7,7 +7,7 @@
     @Styles.Render("~/Content/css")
     @*@Scripts.Render("~/bundles/modernizr")*@
 </head>
-<body>
+<body> <!--class="sb-sidenav-toggled" Para que al ingresar el menú este desactivado-->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand ps-3 fw-bold" style="font-size:30px;" href="@Url.Action("Index", "SIGUP")"> SIGUP</a>
         <!-- Sidebar Toggle-->
@@ -18,10 +18,10 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     @*@if (Session["Usuario"] != null)
-        {
-            <li><a class="dropdown-item" href="#!"><i class="fas fa-mail-bulk"></i>  @User.Identity.Name</a></li>
-        }
-        else { }*@
+                        {
+                            <li><a class="dropdown-item" href="#!"><i class="fas fa-mail-bulk"></i>  @User.Identity.Name</a></li>
+                        }
+                        else { }*@
                     @*<li><a class="dropdown-item" href="#!"><b>@User.Identity.Name</b></a></li>*@
                     @*<li><a class="dropdown-item" href="@Url.Action("CerrarSesion", "Acceso")"><i class="fas fa-lock"></i>  Cerrar Sesión</a></li>*@
                     @*valor de la cookie de la sesion creada, la cookie creada fue por correo, con esta linea de codigo estamos mostrando el correo con el que se inicio sesión*@
@@ -54,6 +54,11 @@
                             Usuarios
                         </a>
 
+                        <a class="nav-link" href="@Url.Action("Estadisticas", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
+                            Estadísticas
+                        </a>
+
                         <div class="sb-sidenav-menu-heading">Administrador</div>
                         <a class="nav-link" href="@Url.Action("Prestamos", "SIGUP")">
                             <div class="sb-nav-link-icon"><i class="fas fa-landmark"></i></div>
@@ -70,32 +75,32 @@
                         </a>
 
                         @*<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAdmines" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
-                            Unidad Practicas
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseAdmines">
-                            <nav class="sb-sidenav-menu-nested nav">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
+                                Unidad Practicas
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseAdmines">
+                                <nav class="sb-sidenav-menu-nested nav">
 
-                                <a class="nav-link" href="@Url.Action("Sala", "Admin")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                    Salas
-                                </a>
-                                <a class="nav-link" href="@Url.Action("Autor", "Admin")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-user-edit"></i></div>
-                                    Autores
-                                </a>
-                                <a class="nav-link" href="@Url.Action("Editorial", "Admin")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-laptop-house"></i></div>
-                                    Marcas
-                                </a>
+                                    <a class="nav-link" href="@Url.Action("Sala", "Admin")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                        Salas
+                                    </a>
+                                    <a class="nav-link" href="@Url.Action("Autor", "Admin")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-user-edit"></i></div>
+                                        Autores
+                                    </a>
+                                    <a class="nav-link" href="@Url.Action("Editorial", "Admin")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-laptop-house"></i></div>
+                                        Marcas
+                                    </a>
 
-                                <a class="nav-link" href="@Url.Action("CategoriaHerramienta", "SIGUP")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                    Categorias
-                                </a>
-                            </nav>
-                        </div>*@
+                                    <a class="nav-link" href="@Url.Action("CategoriaHerramienta", "SIGUP")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                        Categorias
+                                    </a>
+                                </nav>
+                            </div>*@
                     </div>
                 </div>
                 <div class="sb-sidenav-footer py-2">

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -34,6 +35,11 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         }
 
         public ActionResult Usuarios()
+        {
+            return View();
+        }
+
+        public ActionResult Estadisticas()
         {
             return View();
         }
@@ -498,6 +504,70 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
+
+
+
+
+        /*--------------REPORTE Y DASHBOARD---------------------*/
+        #region REPORTE Y DASHBOARD
+        /*La consulta de busqueda por fecha o id transaccion*/
+        //[HttpGet]
+        //public JsonResult ListaReporte(string fechaInicio, string fechaFin, string codigo)
+        //{
+        //    List<EN_Reporte> oLista = new List<EN_Reporte>();
+        //    oLista = new RN_Reporte().Prestamos(fechaInicio, fechaFin, codigo);
+
+        //    return Json(new { data = oLista }, JsonRequestBehavior.AllowGet); /*Obtenemos el objeto del reporte*/
+        //}
+
+        [HttpGet]
+        public JsonResult VistaDashBoard()
+        {
+            EN_Dashboard objeto = new RN_Reporte().VerDashBoard();
+
+            return Json(new { resultado = objeto }, JsonRequestBehavior.AllowGet); /*Obtenemos el objeto del reporte*/
+        }
+
+
+        //[HttpPost]
+        //public FileResult ExportarPrestamo(string fechaInicio, string fechaFin, string codigo)
+        //{
+        //    List<EN_Reporte> oLista = new List<EN_Reporte>();
+        //    oLista = new RN_Reporte().Prestamos(fechaInicio, fechaFin, codigo);
+
+        //    DataTable dt = new DataTable();
+        //    dt.Locale = new System.Globalization.CultureInfo("es-MX"); /*Configuracion con mexico*/
+        //    dt.Columns.Add("Fecha Prestamo", typeof(string));
+        //    dt.Columns.Add("Lector", typeof(string));
+        //    dt.Columns.Add("Libro", typeof(string));
+        //    dt.Columns.Add("Cantidad", typeof(int));
+        //    dt.Columns.Add("Estado", typeof(bool));
+        //    dt.Columns.Add("Codigo      -", typeof(string));
+
+        //    foreach (EN_Reporte rp in oLista)
+        //    {
+        //        dt.Rows.Add(new object[]{
+        //            rp.FechaPrestamo,
+        //            rp.Lector,
+        //            rp.Libro,
+        //            rp.CantidadEjemplares,
+        //            rp.Estado,
+        //            rp.Codigo
+        //        });
+        //    }
+        //    dt.TableName = "Datos";
+
+        //    using (XLWorkbook wb = new XLWorkbook())
+        //    {
+        //        wb.Worksheets.Add(dt);
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            wb.SaveAs(stream);
+        //            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ReportePrestamos" + DateTime.Now.ToString() + ".xlsx");
+        //        }
+        //    }
+        //}
         #endregion
     }
 }

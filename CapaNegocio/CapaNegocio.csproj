@@ -49,6 +49,7 @@
     <Compile Include="RN_MarcaHerramienta.cs" />
     <Compile Include="RN_Prestamo.cs" />
     <Compile Include="RN_Recursos.cs" />
+    <Compile Include="RN_Reporte.cs" />
     <Compile Include="RN_TipoUsuario.cs" />
     <Compile Include="RN_Usuarios.cs" />
   </ItemGroup>

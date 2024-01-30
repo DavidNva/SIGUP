@@ -47,6 +47,7 @@
     <Compile Include="EN_Carrera.cs" />
     <Compile Include="EN_CategoriaHerramienta.cs" />
     <Compile Include="EN_ControlUsuario.cs" />
+    <Compile Include="EN_Dashboard.cs" />
     <Compile Include="EN_DetallePrestamo.cs" />
     <Compile Include="EN_Edificio.cs" />
     <Compile Include="EN_Herramienta.cs" />

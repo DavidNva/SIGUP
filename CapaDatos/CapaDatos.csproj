@@ -54,6 +54,7 @@
     <Compile Include="BD_Herramienta.cs" />
     <Compile Include="BD_MarcaHerramienta.cs" />
     <Compile Include="BD_Prestamo.cs" />
+    <Compile Include="BD_Reporte.cs" />
     <Compile Include="BD_TipoUsuario.cs" />
     <Compile Include="BD_Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
