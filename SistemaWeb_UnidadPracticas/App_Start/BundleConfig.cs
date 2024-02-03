@@ -37,7 +37,8 @@ namespace SistemaWeb_UnidadPracticas
                        "~/Scripts/loadingoverlay/loadingoverlay.min.js",
                        "~/Scripts/sweetalert.min.js",
                         "~/Scripts/jquery.validate.js", /*Para aplicar validaciones, como de numeros, no insercion letras, simbolos, etc*/
-                       "~/Scripts/jquery-ui.js" /*Para el calendario*/
+                       "~/Scripts/jquery-ui.js", /*Para el calendario*/
+                        "~/Scripts/select2.min.js"
                        ));
 
 
@@ -64,12 +65,13 @@ namespace SistemaWeb_UnidadPracticas
                 "~/Content/DataTables/css/jquery.dataTables.min.css",
                 "~/Content/DataTables/css/responsive.dataTables.min.css",
                 "~/Content/sweetalert.css",
-                 "~/Content/jquery-ui.css" /*Para el calendario*/
-                 //,
-                 //"~/Content/DataTables/css/jquery.dataTables.min.css",
-                 //"~/Content/DataTables/css/responsive.dataTables.min.css",
-                 //"~/Content/sweetalert.css",
-                 //"~/Content/jquery-ui.css" /*Para el calendario*/
+                 "~/Content/jquery-ui.css", /*Para el calendario*/
+                 "~/Content/css/select2.min.css"
+                //,
+                //"~/Content/DataTables/css/jquery.dataTables.min.css",
+                //"~/Content/DataTables/css/responsive.dataTables.min.css",
+                //"~/Content/sweetalert.css",
+                //"~/Content/jquery-ui.css" /*Para el calendario*/
                 ));
         }
     }

@@ -369,7 +369,6 @@
                         var btnTitle = row.fechaDevolucion ? "Ver préstamo" : "Finalizar préstamo";
                         var btnBgClass = row.fechaDevolucion ? "" : "btn-primary";
 
-
                         return $("<button>").addClass(btnClass).addClass(btnBgClass).append(
                             $("<i>").addClass(iconClass)
                         ).attr({
@@ -420,7 +419,7 @@
                     console.log(item.idUsuario)
                     console.log(item.NombreCompletoUsuario)
                 })
-               /* $("#cmbUsuario").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });*/
+                $("#cmbUsuario").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });
                    /* .css("z-index", "1600");*/
 
             },
@@ -452,7 +451,7 @@
                     //console.log(item.nombre)
                     //console.log(item.nombre)
                 })
-                /*$("#cmbHerramienta").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });*/
+                $("#cmbHerramienta2").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });
                    /* .css("z-index", "1600");*/
                /* ListarHerramienta();*/
             },
@@ -477,7 +476,7 @@
                     //console.log(item.idArea)
                     //console.log(item.nombreArea)
                 })
-               /* $("#cmbUsuario").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });*/
+                $("#cmbArea").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });
                    /* .css("z-index", "1600");*/
 
             },
