@@ -38,7 +38,7 @@
                         <h5 class="modal-title" id="exampleModalLabel">Herramientas</h5>
                         <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body modal-bodyHerramientas">
+                    <div class="modal-body modal-bodyHerramientas" id="contenedor">
                         @*El g-2 significa que va a agrupar las columnas de 2 en 2*@
 
                         <input id="txtIdValidacionH" type="hidden" value="0" />@*Con el valor 0 se identifica si es un Administrador nuevo a ingresar o es valor ya existe
@@ -874,6 +874,7 @@
                     $('#cmbMarcaHerramienta').append(crearOptionForSelect(id, nombre));
                 }
             }
+            $("#cmbMarcaHerramienta").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });
         }
 
         function cargarSelectCategorias(arreglo) {
@@ -890,6 +891,7 @@
                     $('#cmbCategoriaHerramienta').append(crearOptionForSelect(id, nombre));
                 }
             }
+            $("#cmbCategoriaHerramienta").select2({ placeholder: "Seleccionar", width: "100%", dropdownParent: $('#contenedor') });
         }
 
         function cargarMarcas() {
