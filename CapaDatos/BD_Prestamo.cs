@@ -229,7 +229,7 @@ namespace CapaDatos
             }
             return resultado;
         }
-
+       
         public bool Eliminar(int id, string idHerramienta, out string Mensaje)//out indica parametro de salida
         {
             bool resultado = false;
@@ -264,8 +264,6 @@ namespace CapaDatos
             }
             return resultado;
         }
-
-
-      
+         
     }
 }

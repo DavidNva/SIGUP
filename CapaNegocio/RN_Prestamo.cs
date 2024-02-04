@@ -202,13 +202,10 @@ namespace CapaNegocio
                 return false;
             }
         }
-        //public bool Eliminar(int id, out string Mensaje)
-        //{
-        //    return objCapaDato.Eliminar(id, out Mensaje);
-        //}
+
         public bool Eliminar(int id, string idHerramienta, out string Mensaje)
         {
             return objCapaDato.Eliminar(id, idHerramienta, out Mensaje);
-        }
+        } 
     }
 }

@@ -21,8 +21,6 @@ namespace CapaNegocio
             return herramientaDatos.ListarHerramientaParaPrestamo();
         }
 
-
-
         public string Registrar(EN_Herramienta obj, out string Mensaje)
         {
             Mensaje = string.Empty;
@@ -66,7 +64,7 @@ namespace CapaNegocio
                 return "0";/*No se ha creado un Administrador*/
             }
         }
-
+        
         public bool editarHerramienta(EN_Herramienta obj, out string Mensaje)
         {
             Mensaje = string.Empty;
@@ -110,10 +108,10 @@ namespace CapaNegocio
                 return false;
             }
         }
-
+        
         public bool Eliminar(string id, out string Mensaje)
         {
             return herramientaDatos.Eliminar(id, out Mensaje);
-        }
+        } 
     }
 }

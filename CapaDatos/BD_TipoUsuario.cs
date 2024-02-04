@@ -10,7 +10,7 @@ using CapaEntidad;
 namespace CapaDatos
 {
     public class BD_TipoUsuario
-    {
+    { 
         public List<EN_TipoUsuario> ListarTiposUsuarios()
         {
             List<EN_TipoUsuario> tiposUsuarios = new List<EN_TipoUsuario>();

@@ -47,7 +47,7 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         public ActionResult Administradores()
         {
             return View();
-        }
+        } 
 
         public ActionResult Prestamos()
         {
@@ -459,18 +459,16 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         /*--------------Administrador---------------------*/
         #region Administradores
         [HttpGet] /*Una URL que devuelve datos, un httpost se le pasan los valores y despues devuelve los datos  */
-        public JsonResult ListarAdministradores() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
+        public JsonResult ListarAdministradores() 
         {
             List<EN_Administrador> oLista = new List<EN_Administrador>();
-            oLista = new RN_Administrador().ListarAdministrador();/*Esta declarado en RN_Usuarios, capa negocio*/
+            oLista = new RN_Administrador().ListarAdministrador();
 
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
-            /*El json da los datos, jala los datos de esa lista, en data*/
-
         }
 
         [HttpPost]
-        public JsonResult GuardarAdministrador(EN_Administrador objeto) /*De este json se puede controlar que mas ver, igualar elementos, etc*/
+        public JsonResult GuardarAdministrador(EN_Administrador objeto) 
         {
             object resultado;/*Va a permitir almacenar cualquier tipo de resultado (en este caso int o booelan, dependiendi si es creacion o edicion)*/
             string mensaje = string.Empty;
@@ -479,18 +477,13 @@ namespace SistemaWeb_UnidadPracticas.Controllers
              una Administrador nuevo, por lo que se ha dado dando clic con el boton de crear*/
             {
                 resultado = new RN_Administrador().Registrar(objeto, out mensaje);/*El metodo registrar
-                 de tipo int, devuelve el id registrado*/
+                 de tipo string, devuelve el id resultado*/
             }
             else
-            {/*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando
-                 a una Administrador, por lo que indica que se ha dado clic en el boton de editar, eso lo comprobamos
-                 con los alert comentados*/
-                //resultado = new RN_Administrador().Editar(objeto, out mensaje);}
-                //resultado = null;
+            {/*Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando a una Administrador*/
                 resultado = new RN_Administrador().Editar(objeto, out mensaje);
             }
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
-
         }
 
         [HttpPost]
@@ -505,9 +498,6 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         }
 
         #endregion
-
-
-
 
         /*--------------REPORTE Y DASHBOARD---------------------*/
         #region REPORTE Y DASHBOARD

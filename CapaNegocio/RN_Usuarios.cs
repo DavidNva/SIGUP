@@ -35,5 +35,6 @@ namespace CapaNegocio
         {
             return bd_usuario.ListarUsuarioParaPrestamo();
         }
+
     }
 }

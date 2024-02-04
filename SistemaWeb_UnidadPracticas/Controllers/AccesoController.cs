@@ -135,6 +135,6 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             FormsAuthentication.SignOut();//Eliminamos la autentificacion del usuario, por lo que deberá volver a iniciar sesion
             return RedirectToAction("Index", "Acceso");
         }
-
+         
     }
 }

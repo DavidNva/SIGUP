@@ -13,7 +13,7 @@ using System.IO;
 namespace CapaDatos
 {
     public class BD_Area
-    {
+    { 
         public List<EN_Area> ListarAreaParaPrestamo()
         {
             List<EN_Area> lista = new List<EN_Area>();

@@ -47,7 +47,7 @@ namespace CapaNegocio
 
             if (string.IsNullOrEmpty(Mensaje))
             {/*Si no hay ningun mensaje, significa que no ha habido ningun error*/
-                //string clave = "12";
+                
                 string clave = RN_Recursos.GenerarClave();
 
                 string asunto = "Creacion de Cuenta"; /*En los signos de excalamcion de la linea ed abajo, se trae la variable clave*/
@@ -63,16 +63,14 @@ namespace CapaNegocio
                 }
                 else
                 {
-                    Mensaje = "No se puede enviar el correo. Compruebe su conexión a internet";
+                    Mensaje = "No se puede enviar el correo. Verifique su email o compruebe su conexión a internet";
                     return "0";
                 }
-
             }
             else
             {
                 return "0";/*No se ha creado un Administrador*/
             }
-           
         }
 
         public bool Editar(EN_Administrador obj, out string Mensaje)
@@ -138,8 +136,7 @@ namespace CapaNegocio
                 string mensajeCorreo = "<h3>Su cuenta fue reestablecida correctamente</h3> <br> <p>Su nueva contraseña para acceder ahora es: !clave!</p>";
                 mensajeCorreo = mensajeCorreo.Replace("!clave!", nuevaClave);/*Aqui solo trae la clave creada*/
                 bool respuesta = RN_Recursos.EnviarCorreo(correo, asunto, mensajeCorreo);
-                if (respuesta)
-                {
+                if (respuesta) {
                     return true;
                 }
                 else
@@ -147,7 +144,6 @@ namespace CapaNegocio
                     Mensaje = "No se pudo enviar el correo. Revise su conexión a internet o verifique su correo este escrito correctamente";
                     return false;
                 }
-
             }
             else
             {

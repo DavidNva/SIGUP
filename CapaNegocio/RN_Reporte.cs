@@ -21,5 +21,6 @@ namespace CapaNegocio
         {
             return objCapaDato.VerDashBoard();/*Retorna el metodo listar de la instancia de la capa Datos*/
         }
+
     }
 }

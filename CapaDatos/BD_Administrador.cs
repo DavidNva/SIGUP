@@ -18,38 +18,28 @@ namespace CapaDatos
             {
                 using (SqlConnection oConexion = new SqlConnection(BD_Conexion.cn))
                 {
-                    //StringBuilder sb = new StringBuilder();
-                    //sb.AppendLine("select u.IDAdministrador,u.Nombres,u.Apellidos,u.Ciudad, u.Calle, u.Telefono, u.Correo,u.Clave,");
-                    //sb.AppendLine("tp.IdTipoPersona,tp.Descripcion [Tipo], u.Reestablecer,u.Activo");
-                    //sb.AppendLine("from Administrador u ");
-                    //sb.AppendLine("inner join TipoPersona tp on tp.IdTipoPersona = u.Tipo");
-                    
                     string query = "select * from Administrador order by fechaRegistro desc ";
                     SqlCommand cmd = new SqlCommand(query, oConexion);
-                    cmd.CommandType = CommandType.Text;/*En este caso es de tipo Text (no usamos para este ejemplo, procedimientos almacenados*/
+                    cmd.CommandType = CommandType.Text;
 
                     oConexion.Open();
-                    using (SqlDataReader dr = cmd.ExecuteReader())/*Lee todos los resultados que aparecen en la ejecucion del select anter ior*/
+                    using (SqlDataReader dr = cmd.ExecuteReader())/*Lee todos los resultados que aparecen en la ejecucion del select anterior*/
                     {
-                        while (dr.Read())/*Mientras reader esta leyendo, ira agregando a la lista dicha lectura*/
+                        while (dr.Read())/*Mientras reader esta leyendo, irá agregando a la lista dicha lectura*/
                         {
                             lista.Add(/*Agrega un nuevo Administrador a la lista*/
                                 new EN_Administrador()
                                 {
-                                   
                                     idAdministrador = dr["IdAdministrador"].ToString(),
                                     nombres = dr["Nombres"].ToString(),
                                     apellidos = dr["Apellidos"].ToString(),
-                                   
                                     telefono = dr["Telefono"].ToString(),
                                     correo = dr["Correo"].ToString(),
                                     clave = dr["Clave"].ToString(),
-                                    //Tipo = Convert.ToInt32(dr["Tipo"]),
-                                   
-                                    reestablecer = Convert.ToBoolean(dr["Reestablecer"]),/*Admite 1 y 0*/
+                                    reestablecer = Convert.ToBoolean(dr["Reestablecer"]),
                                     activo = Convert.ToBoolean(dr["Activo"])
                                 }
-                                );
+                            );
                         }
                     }
                 }
@@ -61,48 +51,6 @@ namespace CapaDatos
 
             return lista;
         }
-
-        //public List<EN_Administrador> ListarAdministradorAntes()
-        //{
-        //    List<EN_Administrador> Administrador = new List<EN_Administrador>();
-        //    try
-        //    {
-        //        using (SqlConnection sqlConnection = new SqlConnection(BD_Conexion.cn))
-        //        {
-        //            string query = "select * from Administrador order by fechaRegistro desc ";
-        //            //Descomentar la siguiente linea al final del proyecto y comentar la anterior
-        //            //string query = "select * from Administrador where idAdministrador != '20100008' order by fechaRegistro ";
-
-        //            using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
-        //            {
-        //                sqlCommand.CommandType = CommandType.Text;
-        //                sqlConnection.Open();
-        //                using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-        //                {
-        //                    while (sqlDataReader.Read())
-        //                    {
-        //                        EN_Administrador usuario = new EN_Administrador
-        //                        {
-        //                            idAdministrador = sqlDataReader["IdAdministrador"].ToString(),
-        //                            //Convert.ToInt32(sqlDataReader["IdAdministrador"]),
-        //                            nombres = sqlDataReader["Nombres"].ToString(),
-        //                            apellidos = sqlDataReader["Apellidos"].ToString(),
-        //                            telefono = sqlDataReader["Telefono"].ToString(),
-        //                            correo = sqlDataReader["Correo"].ToString(),
-        //                            activo = Convert.ToBoolean( sqlDataReader["Activo"].ToString())
-        //                        };
-        //                        Administrador.Add(usuario);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        return Administrador;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return null;
-        //    }
-        //}
 
         public string Registrar(EN_Administrador obj, out string Mensaje)//out indica parametro de salida
         {
@@ -181,7 +129,6 @@ namespace CapaDatos
         public bool Eliminar(string id, out string Mensaje)//out indica parametro de salida
         {
             bool resultado = false;
-
             Mensaje = string.Empty;
             try
             {
@@ -195,9 +142,7 @@ namespace CapaDatos
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     oConexion.Open();
-
                     cmd.ExecuteNonQuery();
-
                     resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
                     Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
 
@@ -244,8 +189,8 @@ namespace CapaDatos
             return resultado;
         }
 
-        public bool ReestablecerClave(string idAdministrador, string clave, out string Mensaje)//out indica parametro de salida
-        {//El usuario deberá nuevamente actualizar su contraseña
+        public bool ReestablecerClave(string idAdministrador, string clave, out string Mensaje)
+        {//El administrador deberá nuevamente actualizar su contraseña
             bool resultado = false;
 
             Mensaje = string.Empty;
@@ -275,7 +220,6 @@ namespace CapaDatos
             }
             return resultado;
         }
-
 
     }
 }

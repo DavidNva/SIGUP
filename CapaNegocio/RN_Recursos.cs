@@ -17,6 +17,7 @@ namespace CapaNegocio
             string clave = Guid.NewGuid().ToString("N").Substring(0, 6);//retorna un codigo unico c#
             return clave;
         }
+
         /*El siguiente metodo recibe un text y devuelve un text encriptado*/
         /*Encriptacion de TEXT en SHA256*/
         public static string ConvertirSha256(string texto)
@@ -35,6 +36,7 @@ namespace CapaNegocio
             }
             return Sb.ToString();
         }
+
         public static bool EnviarCorreo(string correo, string asunto, string mensaje)
         {
             bool resultado = false;
@@ -88,5 +90,6 @@ namespace CapaNegocio
             return textoBase64; /*Si esta variable esta vacio, es porque no tiene valor, la conversioon fallo
                                  pero si fue exitosa, traerá un valor*/
         }
+
     }
 }

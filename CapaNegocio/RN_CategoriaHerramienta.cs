@@ -11,7 +11,7 @@ namespace CapaNegocio
     public class RN_CategoriaHerramienta
     {
         private BD_CategoriaHerramienta objCapaDato = new BD_CategoriaHerramienta(); /*Instancia una clase de la capa datos */
-
+         
         public List<EN_CategoriaHerramienta> Listar() /*Usa una clase de la capa entidad*/
         {
             return objCapaDato.Listar();/*Retorna el metodo listar de la instancia de la capa Datos*/
