@@ -1,0 +1,332 @@
+﻿
+@{
+    ViewBag.Title = "Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-danger mt-3" id="errorAlert" role="alert" style="display: none">
+    
+</div>
+
+
+<h1 class="mt-4">Usuarios</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Administra los usuarios de este software así como también los usuarios que piden prestamos</li>
+</ol>
+
+<button class="btn btn-success" style="margin:20px 0;" onclick="abrirModal(null)"> Añadir usuario </button>
+
+@* Modal para usuarios nuevos *@
+<div class="modal fade" id="formModal_Usuarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="tituloModal">Usuario nuevo</h5>
+                <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @* Mensaje de alerta *@
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert" style="display: none">
+                            ...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-4">
+
+                    <div class="col-sm-4 w-100" id="contentIdUsuario">
+                        <label for="txtIdUsuario" class="form-label">Número de control</label>
+                        <input id="txtIdUsuario" class="form-control" type="text" value="" placeholder="Ingresa el número de control" />
+                    </div>
+
+                    <div class="col-sm-4 w-100">
+                        <label for="txtNombreUsuario" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="txtNombreUsuario" autocomplete="off" placeholder="Nombre del usuario">
+                    </div>
+
+                    <div class="col-sm-4 w-100">
+                        <label for="txtApellidosUsuario" class="form-label">Apellidos:</label>
+                        <input type="text" class="form-control" id="txtApellidosUsuario" autocomplete="off" placeholder="Apellidos para el usuario">
+                    </div>
+
+                    <div class="col-sm-4 w-100">
+                        <label for="cmbTipoUsuario" class="form-label">Selecciona un rol para el usuario</label>
+                        <select id="cmbTipoUsuario" class="form-select">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-eliminarHerramienta" data-bs-dismiss="modal" id="btnCerrar">Cerrar</button>
+                <button type="button" class="btn btn-primary btn-editarCategoria" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="mt-4">Usuarios registrados en el sistema</h1>
+<table id="tablaUsuarios" class="display cell-border" style="width:100%">
+    <thead class="text-lg-center">
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Rol que desempeña</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody class="text-lg-center">
+        @*ajax va permitir por ejemplo, hacer la ejecuciion del metodo listarUsuario llamada en el HomeControler*@
+
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        var tituloModal = $('#tituloModal');
+        var alertaErrorCode = $('#errorAlert');
+        var errorFormulario = $('#mensajeError');
+        var tablaUsuarios = $('#tablaUsuarios');
+        var tablaData;
+        var btnCerrar = $('#btnCerrar');
+        var btnGuardar = $('#btnGuardar');
+        var contentIdUsuario = $('#contentIdUsuario');
+        var filaSeleccionada;
+
+        //Seleccion de cajas de texto
+        var txtIdUsuario;
+        var txtNombreUsuario;
+        var txtApellidoUsuario;
+        var cmbIdTipo;
+
+
+        $(document).ready(function (evento) {
+
+            txtIdUsuario = $('#txtIdUsuario');
+            txtNombreUsuario = $('#txtNombreUsuario');
+            txtApellidoUsuario = $('#txtApellidosUsuario');
+            cmbIdTipo = $('#cmbTipoUsuario');
+
+            //Cargar datos
+            tablaData = tablaUsuarios.DataTable({
+                responsive: 'true',
+                ordering: 'false',
+                "ajax": {
+                    url: '@Url.Action("ListarUsuarios", "SIGUP")',
+                    type: 'GET',
+                    dataType: 'json'
+                },
+                "columns": [
+                    {"data": "idUsuario"},
+                    {"data": "Nombre"},
+                    {"data": "Apellidos"},
+                    {
+                        "data": "tipoUsuario", "render": function (datos) {
+                            return datos.nombre;
+                        }
+                    },
+                    {
+                        "data": "idUsuario", "render": function (data, type, row, meta) {
+
+                            return $("<button>").addClass("btn btn-primary btn-editar btn-sm").append(
+                                $("<i>").addClass("fas fa-pen")
+                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
+                                +
+                                $("<button>").addClass("btn btn-danger btn-eliminar btn-sm ms-2").append(
+                                    $("<i>").addClass("fas fa-trash")
+                                ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML;
+
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "90px"
+                    }
+                ]
+            })
+
+        });
+
+        function abrirModal(json) {
+            cargarTipoUsuarios();
+            txtIdUsuario.val('');
+            txtNombreUsuario.val('');
+            txtApellidoUsuario.val('');
+            //Quitamos cualquier evento antes generado
+            btnGuardar.off('click');
+
+            if (json != null) {
+                console.log(json.tipoUsuario.idTipo);
+                contentIdUsuario.hide();
+                tituloModal.text('Editando registro');
+                $('#txtIdUsuario').val(json.idUsuario);
+                $('#txtNombreUsuario').val(json.Nombre);
+                $('#txtApellidosUsuario').val(json.Apellidos);
+                $('#cmbTipoUsuario').val(json.tipoUsuario.idTipo);
+                btnGuardar.on('click', function () {
+                    guardar('modificar');
+                });
+            } else {
+                contentIdUsuario.show();
+                tituloModal.text('Agregando registro');
+                btnGuardar.on('click', function () {
+                    guardar('agregar');
+                });
+            }
+            $('#formModal_Usuarios').modal('show');
+        }
+        function crearOption(id, nombre) {
+            var option = $('<option></option>');
+            option.val(id);
+            option.text(nombre);
+            return option;
+        }
+
+        function cargarSelectTipoUsuarios(arreglo) {
+            $('#cmbTipoUsuario').empty();
+            for (var clave in arreglo) {
+                if (arreglo.hasOwnProperty(clave)) {
+
+                    var objetoDatos = arreglo[clave];
+                    var id = objetoDatos['idTipo'];
+                    var nombreTipo = objetoDatos['nombre']
+
+                    $('#cmbTipoUsuario').append(crearOption(id, nombreTipo));
+                }
+            }
+        }
+
+        function cargarTipoUsuarios() {
+            $.ajax({
+                url: '@Url.Action("ListarTipoUsuario", "SIGUP")',
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.success) {
+                        cargarSelectTipoUsuarios(response.data);
+                    } else {
+                        alertaErrorCode.show();
+                        alertaErrorCode.text("Error al listar tipos de usuario: " + response.message);
+                    }
+                },
+                error: function (error) {
+                    alertaErrorCode.show();
+                    alertaErrorCode.text("Ocurrió un error en la petición ajax, comunicate con los desarrolladores");
+                }
+            });
+        }
+
+        function guardar(accion) {
+
+            if (txtIdUsuario.val() == "" || txtNombreUsuario.val() == "" || txtApellidoUsuario.val() == "") {
+                errorFormulario.show().text("Parece que no has llenado todos los datos, son obligatorios para poder continuar");
+            } else {
+                var usuarioNuevo = {
+                    idUsuario: txtIdUsuario.val(),
+                    Nombre: txtNombreUsuario.val(),
+                    Apellidos: txtApellidoUsuario.val(),
+                    tipoUsuario: {
+                        idTipo: cmbIdTipo.val()
+                    }
+                }
+
+                switch (accion) {
+                    case 'agregar':
+                        $.ajax({
+                            url: '@Url.Action("AgregarUsuario", "SIGUP")',
+                            type: 'POST',
+                            data: JSON.stringify({ usuario: usuarioNuevo }),
+                            contentType: 'application/json',
+                            success: function (response) {
+                                if (response.success) {
+                                    btnCerrar.trigger('click');
+                                    tablaData.ajax.reload();
+                                } else {
+                                    alertaErrorCode.show().text(response.message);
+                                    btnCerrar.trigger('click');
+                                }
+                            },
+                            error: function (error) {
+                                alertaErrorCode.show().text("Error en la consulta AJAX verifica que parametros están en el código fuente");
+                            }
+                        });
+                        break;
+
+                    case 'modificar':
+                        alertaErrorCode.show().text('Has hecho click en modificar');
+                        $.ajax({
+                            url: '@Url.Action("EditarUsuario", "SIGUP")',
+                            type: 'POST',
+                            data: JSON.stringify({ usuario: usuarioNuevo }),
+                            contentType: 'application/json',
+                            success: function (response) {
+                                if (response.success) {
+                                    btnCerrar.trigger('click');
+                                    tablaData.ajax.reload();
+                                } else {
+                                    alertaErrorCode.show().text(response.message);
+                                    btnCerrar.trigger('click');
+                                }
+                            },
+                            error: function (error) {
+                                alertaErrorCode.show().text("Error en la consulta AJAX verifica que parametros están en el código fuente");
+                            }
+                        });
+                        break;
+
+                    default:
+                        alertaErrorCode.show().text('Se ha intentado hacer un evento de guardar, sin embargo no se ha íngresado una acción, comunica este error a los desarrolladores');
+                }
+
+            }
+        }
+
+        //Eventos onclick de los botones de la tabla
+        $('#tablaUsuarios tbody').on('click', '.btn-editar', function (evento) {
+            filaSeleccionada = $(this).closest('tr');
+            var data = tablaData.row(filaSeleccionada).data();
+            var json = $(this).data("informacion");
+            abrirModal(json);
+        });
+
+        $('#tablaUsuarios tbody').on('click', '.btn-eliminar', function (evento) {
+
+            var json = $(this).data("informacion");
+
+            swal({
+                title: "¿Desea eliminar este registro?",
+                text: "Se eliminará permanentemente del sistema",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+                function () {
+                    $.ajax({
+                        url: '@Url.Action("EliminarUsuario", "SIGUP")',
+                        type: 'POST',
+                        data: JSON.stringify({ idUsuario: json.idUsuario }),
+                        contentType: 'application/json',
+                        success: function (response) {
+                            if (response.success) {
+                                tablaData.ajax.reload();
+                            } else {
+                                alertaErrorCode.show().text(response.message);
+                                btnCerrar.trigger('click');
+                            }
+                        },
+                        error: function (error) {
+                            alertaErrorCode.show().text("Error en la consulta AJAX verifica que parametros están en el código fuente");
+                        }
+                    });
+                }
+            );
+
+
+        });
+    </script>
+}

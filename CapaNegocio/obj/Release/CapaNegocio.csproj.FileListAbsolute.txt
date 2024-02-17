@@ -1,0 +1,11 @@
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\bin\Release\CapaNegocio.dll
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\bin\Release\CapaNegocio.pdb
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\bin\Release\CapaDatos.dll
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\bin\Release\CapaEntidad.dll
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\bin\Release\CapaDatos.pdb
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\bin\Release\CapaEntidad.pdb
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\obj\Release\CapaNegocio.csproj.AssemblyReference.cache
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\obj\Release\CapaNegocio.csproj.CoreCompileInputs.cache
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\obj\Release\CapaNegocio.csproj.CopyComplete
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\obj\Release\CapaNegocio.dll
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaNegocio\obj\Release\CapaNegocio.pdb

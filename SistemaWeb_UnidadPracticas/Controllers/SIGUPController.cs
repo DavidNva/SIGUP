@@ -53,6 +53,10 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         {
             return View();
         }
+        public ActionResult HistorialPrestamos()
+        {
+            return View();
+        }
 
 
         /*--------------CATEGORIA---------------------*/
@@ -502,14 +506,14 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         /*--------------REPORTE Y DASHBOARD---------------------*/
         #region REPORTE Y DASHBOARD
         /*La consulta de busqueda por fecha o id transaccion*/
-        //[HttpGet]
-        //public JsonResult ListaReporte(string fechaInicio, string fechaFin, string codigo)
-        //{
-        //    List<EN_Reporte> oLista = new List<EN_Reporte>();
-        //    oLista = new RN_Reporte().Prestamos(fechaInicio, fechaFin, codigo);
+        [HttpGet]
+        public JsonResult ListaReporte(string fechaInicio, string fechaFin, string codigo, string estado)
+        {
+            List<EN_Reporte> oLista = new List<EN_Reporte>();
+            oLista = new RN_Reporte().Prestamos(fechaInicio, fechaFin, codigo, estado);
 
-        //    return Json(new { data = oLista }, JsonRequestBehavior.AllowGet); /*Obtenemos el objeto del reporte*/
-        //}
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet); /*Obtenemos el objeto del reporte*/
+        }
 
         [HttpGet]
         public JsonResult VistaDashBoard()

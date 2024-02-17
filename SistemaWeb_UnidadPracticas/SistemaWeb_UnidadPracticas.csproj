@@ -546,6 +546,7 @@
     <Content Include="Views\Acceso\CambiarClave.cshtml" />
     <Content Include="Views\Acceso\Reestablecer.cshtml" />
     <Content Include="Views\SIGUP\Estadisticas.cshtml" />
+    <Content Include="Views\SIGUP\HistorialPrestamos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

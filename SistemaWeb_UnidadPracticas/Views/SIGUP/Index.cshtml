@@ -130,7 +130,7 @@
                             <th>Fecha del Préstamo</th>
                             <th>Usuario</th>
                             <th>Herramienta</th>
-                            @*<th>Cantidad</th>*@
+                            <th>Stock</th>
                             <th>Estado del Préstamo</th>
                             @*<th>Total</th>*@
                             <th>Código</th>
@@ -175,29 +175,30 @@
 
                 /* Para dar uso al metodo de buscar y lo muestre en una tabla resultante*/
 
-                @*var Url = '@Url.Action("ListaReporte", "Home")' +
+                var Url = '@Url.Action("ListaReporte", "SIGUP")' +
                     "?fechaInicio=" + $("#txtFechaInicio").val() +
                     "&fechaFin=" + $("#txtFechaFin").val() +
                     "&codigo=" + $("#txtCodigo").val()
 
 
-                    tabladata = $("#tabla").DataTable({
-                        responsive: true,
-                        /*Para que sea resposiva*/
-                        ordering: false,
-                        "ajax": {
+                tabladata = $("#tabla").DataTable({
+                    responsive: true,
+                    /*Para que sea resposiva*/
+                    ordering: false,
+                    "ajax": {
                         /*Como pinta la tabla, ajax solo trae todos los valores*/
-                            url: Url,
-                            type: "GET",
-                            dataType: "json"
-                        },
-                        "columns": [
+                        url: Url,
+                        type: "GET",
+                        dataType: "json"
+                    },
+                    "columns": [
                         /*Todas las columnas que vamos a usar*/
+                        
                             { "data": "FechaPrestamo", "width": "90px" },
-                            { "data": "Lector" },
-                            { "data": "Libro" },
+                            { "data": "Usuario" },
+                            { "data": "Herramienta" },
                             /*El nombre del segundo identificador debe ser igual al de la tabla, la columna*/
-                            /*{ "data": "CantidadEjemplares" },*/
+                            { "data": "Cantidad" },
                             {
                                 "data": "Estado", "render": function (valor) {
                                 /*El render permite obtener el valor de la columna activo*/
@@ -224,11 +225,11 @@
                             "url": "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
                         }
 
-                  });*@
+                  });
             })
 
            $("#btnBuscar").on("click", function (){
-                var nueva_url = '@Url.Action("ListaReporte", "Home")' +
+                var nueva_url = '@Url.Action("ListaReporte", "SIGUP")' +
                     "?fechaInicio=" + $("#txtFechaInicio").val() +
                     "&fechaFin=" + $("#txtFechaFin").val() +
                     "&codigo=" + $("#txtCodigo").val()

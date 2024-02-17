@@ -53,6 +53,7 @@
     <Compile Include="EN_Herramienta.cs" />
     <Compile Include="EN_MarcaHerramienta.cs" />
     <Compile Include="EN_Prestamo.cs" />
+    <Compile Include="EN_Reporte.cs" />
     <Compile Include="EN_TipoUsuario.cs" />
     <Compile Include="EN_Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

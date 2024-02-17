@@ -1,0 +1,6 @@
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaEntidad\bin\Release\CapaEntidad.dll
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaEntidad\bin\Release\CapaEntidad.pdb
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaEntidad\obj\Release\CapaEntidad.csproj.AssemblyReference.cache
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaEntidad\obj\Release\CapaEntidad.csproj.CoreCompileInputs.cache
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaEntidad\obj\Release\CapaEntidad.dll
+C:\Users\david\OneDrive\Documents\Proyectos Programacion\SIGUP\SIGUP\CapaEntidad\obj\Release\CapaEntidad.pdb

@@ -1,0 +1,247 @@
+﻿
+@{
+    ViewBag.Title = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1 class="mt-4">Principal</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Dashboard Prestamos</li>
+</ol>
+
+
+
+<div class="row">
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Usuarios</h6>
+                        <h6 id="totalUsuario">0</h6>
+                    </div>
+                    <div class="col-sm-3">
+                        <i class="fas fa-user fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning text-white mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Préstamos</h6>
+                        <h6 id="totalPrestamo">0</h6>
+                    </div>
+                    <div class="col-sm-3">
+                        <i class="fas fa-landmark fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-danger text-white mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Herramientas</h6>
+                        <h6 id="totalHerramienta">0</h6>
+
+                    </div>
+                    <div class="col-sm-3">
+                        <i class="fas fa-tools fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Ejemplares</h6>
+                        <h6 id="totalEjemplaresHerramienta">0</h6>
+                    </div>
+                    <div class="col-sm-3">
+                        <i class="fas fa-edit fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-tags me-1"></i> @*Titulo de la tabla*@
+        Historial de Préstamos
+    </div>
+
+    <div class="card-body">
+        <form action="@Url.Action("ExportarPrestamo","SIGUP")" method="post">
+            <div class="row align-items-end">
+                <div class="col-sm-3 col-md-2">
+                    <div class="mb-2">
+                        <label class="form-label" for="txtFechaInicio">Fecha de Inicio:</label>
+                        <input class="form-control" type="text" id="txtFechaInicio" name="fechainicio" />
+                    </div>
+                </div>
+                <div class="col-sm-3 col-md-2">
+                    <div class="mb-2">
+                        <label class="form-label" for="txtFechaFin">Fecha Fin:</label>
+                        <input class="form-control" type="text" id="txtFechaFin" name="fechafin" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label" for="txtCodigo">Código Herramienta:</label>
+                        <input class="form-control" type="text" id="txtCodigo" name="codigo" autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-primary " id="btnBuscar" type="button"><i class="fas fa-search"></i> Buscar</button>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-success" type="submit"><i class="fas fa-file-excel"></i> Exportar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="tabla" class="display cell-border" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fecha del Préstamo</th>
+                            <th>Usuario</th>
+                            <th>Herramienta</th>
+                            @*<th>Cantidad</th>*@
+                            <th>Estado del Préstamo</th>
+                            @*<th>Total</th>*@
+                            <th>Código</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>.
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+        <script>
+            var tabladata;
+
+            $(document).ready(function () {/* asi como entra a la pagina de dashboard se automatiza la tabla con las fechas de hoy ya que son las que estan en los input*/
+
+                $("#txtFechaInicio").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
+                $("#txtFechaFin").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
+
+
+                /*Para mostrar totales en las tarjetas del dashboard*/
+                jQuery.ajax({
+                    url: '@Url.Action("VistaDashBoard", "SIGUP")',
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {/*Ese data esta almacenando la respuesta del metodo vistadashboard hecho en homeController*/
+                        var objeto = data.resultado;
+
+                        $("#totalUsuario").text(objeto.TotalUsuario),
+                        $("#totalPrestamo").text(objeto.TotalPrestamo),
+                        $("#totalHerramienta").text(objeto.TotalHerramienta),
+                            $("#totalEjemplaresHerramienta").text(objeto.TotalEjemplaresHerramienta)
+
+                    }
+                });
+
+                /* Para dar uso al metodo de buscar y lo muestre en una tabla resultante*/
+
+                @*var Url = '@Url.Action("ListaReporte", "Home")' +
+                    "?fechaInicio=" + $("#txtFechaInicio").val() +
+                    "&fechaFin=" + $("#txtFechaFin").val() +
+                    "&codigo=" + $("#txtCodigo").val()
+
+
+                    tabladata = $("#tabla").DataTable({
+                        responsive: true,
+                        /*Para que sea resposiva*/
+                        ordering: false,
+                        "ajax": {
+                        /*Como pinta la tabla, ajax solo trae todos los valores*/
+                            url: Url,
+                            type: "GET",
+                            dataType: "json"
+                        },
+                        "columns": [
+                        /*Todas las columnas que vamos a usar*/
+                            { "data": "FechaPrestamo", "width": "90px" },
+                            { "data": "Lector" },
+                            { "data": "Libro" },
+                            /*El nombre del segundo identificador debe ser igual al de la tabla, la columna*/
+                            /*{ "data": "CantidadEjemplares" },*/
+                            {
+                                "data": "Estado", "render": function (valor) {
+                                /*El render permite obtener el valor de la columna activo*/
+                                    //if (valor) {/*Si el valor es verdadero*/
+                                    //    return '<span class="badge bg-success">Si</span>'
+                                    //} else {
+                                    //    return '<span class="badge bg-danger">No</span>'
+                                    //}
+                                    if (valor) {/*Si el valor es verdadero*/
+                                        return '<span class="badge bg-danger">Pendiente</span>'
+                                        //Si Significa que esta pendiente = 1 = Activo
+                                    } else {
+                                        return '<span class="badge bg-success">Devuelto</span>'
+                                        //No, Significa que el prestamo devuelto = 0 = Inactivo
+                                    }
+                                },
+                                "width": "90px"
+                            },
+                            { "data": "Codigo" }
+
+                        ],
+                        /*Propiedad o atributos van dentro de las comillas ""*/
+                        "language": {
+                            "url": "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                        }
+
+                  });*@
+            })
+
+           $("#btnBuscar").on("click", function (){
+                var nueva_url = '@Url.Action("ListaReporte", "Home")' +
+                    "?fechaInicio=" + $("#txtFechaInicio").val() +
+                    "&fechaFin=" + $("#txtFechaFin").val() +
+                    "&codigo=" + $("#txtCodigo").val()
+
+                //console.log(nueva_url);
+                tabladata.ajax.url(nueva_url).load();
+            })
+
+
+
+
+
+        </script>
+    }
+
+

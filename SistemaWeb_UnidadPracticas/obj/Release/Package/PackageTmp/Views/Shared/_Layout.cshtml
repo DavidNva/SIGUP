@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - SIGUP</title>
+    @Styles.Render("~/Content/css")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+</head>
+<body> <!--class="sb-sidenav-toggled" Para que al ingresar el menú este desactivado-->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand ps-3 fw-bold" style="font-size:30px;" href="@Url.Action("Index", "SIGUP")"> SIGUP</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar--> @*ms-auto ms-md-0 me-3 me-lg-4*@
+        <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    @*@if (Session["Usuario"] != null)
+                        {
+                            <li><a class="dropdown-item" href="#!"><i class="fas fa-mail-bulk"></i>  @User.Identity.Name</a></li>
+                        }
+                        else { }*@
+                    @*<li><a class="dropdown-item" href="#!"><b>@User.Identity.Name</b></a></li>*@
+                    @*<li><a class="dropdown-item" href="@Url.Action("CerrarSesion", "Acceso")"><i class="fas fa-lock"></i>  Cerrar Sesión</a></li>*@
+                    @*valor de la cookie de la sesion creada, la cookie creada fue por correo, con esta linea de codigo estamos mostrando el correo con el que se inicio sesión*@
+                    @*<li><a class="dropdown-item" href="#!">Activity Log</a></li>*@
+
+                    <li><a class="dropdown-item" href="#!"><i class="fas fa-mail-bulk"></i> Correo del Usuario</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" href="@Url.Action("CerrarSesion", "Acceso")"><i class="fas fa-lock"></i>  Cerrar Sesión</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark bg-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Resumen</div>
+                        <a class="nav-link" href="@Url.Action("Index", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        @*primero es el nombre de la accion, el segundo es el nombre del controlador*@
+                        <a class="nav-link" href="@Url.Action("HistorialPrestamos", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-landmark"></i></div>
+                            Historial de Préstamos
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Usuarios", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                            Usuarios
+                        </a>
+
+                        <a class="nav-link" href="@Url.Action("Estadisticas", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
+                            Estadísticas
+                        </a>
+
+                        <div class="sb-sidenav-menu-heading">Administrador</div>
+                        <a class="nav-link" href="@Url.Action("Prestamos", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-landmark"></i></div>
+                            Préstamos
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Herramientas", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
+                            Herramientas
+                        </a>
+
+                        <a class="nav-link" href="@Url.Action("Administradores", "SIGUP")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                            Administradores
+                        </a>
+
+                        @*<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAdmines" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
+                                Unidad Practicas
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseAdmines">
+                                <nav class="sb-sidenav-menu-nested nav">
+
+                                    <a class="nav-link" href="@Url.Action("Sala", "Admin")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                        Salas
+                                    </a>
+                                    <a class="nav-link" href="@Url.Action("Autor", "Admin")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-user-edit"></i></div>
+                                        Autores
+                                    </a>
+                                    <a class="nav-link" href="@Url.Action("Editorial", "Admin")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-laptop-house"></i></div>
+                                        Marcas
+                                    </a>
+
+                                    <a class="nav-link" href="@Url.Action("CategoriaHerramienta", "SIGUP")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                        Categorias
+                                    </a>
+                                </nav>
+                            </div>*@
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer py-2">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Acerca de <i class="fas fa-info-circle"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="@Url.Action("InfoBiblioteca", "Home")"><i class="fas fa-book-reader"></i> Biblioteca</a></li>
+                        @*<li><a class="dropdown-item" href="#!">Activity Log</a></li>*@
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Desarrolladores", "Home")"><i class="fas fa-laptop-code"></i> Desarrolladores</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Contacto", "Home")"><i class="fas fa-phone"></i> Contacto</a></li>
+                    </ul>
+                    @*<a class="nav-link" href="@Url.Action("AcerceDe","Home")">
+                          <div class="small">CuboRubikCode  <i class="fas fa-info-circle"></i></div>
+                        </a>*@
+
+                    @*CuboRubikCode*@
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <!--Todo este contenido es el que debe de cambias, dentro del class container-fluid px-4-->
+            <main>
+                <div class="container-fluid px-4">
+                    @RenderBody()
+                </div>
+            </main>
+            <footer class="py-3 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">
+                            @*Copyright &copy; David Nava Garcia 2023*@
+                            <a>Copyright &copy; @DateTime.Now.Year - JADE</a>
+                        </div>
+                        <div>
+                            <a href="#">Políticas de Privacidad</a>
+                            &middot;
+                            <a href="#">Términos y Condiciones</a>
+                            &middot;
+                            <a href="#">Contacto</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/complementos") <!--Añade el bundle para el nuevo archivo de JavaScript copiado-->
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false) @*esto va a permitir ubicar todos los scrips que deseamos dentro de la pagina o master page*@
+    @*por eso por ejemplo, para usuarios se referencia desde la vista usuarios a este layout*@
+</body>
+</html>

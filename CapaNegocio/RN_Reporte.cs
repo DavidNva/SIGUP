@@ -12,10 +12,10 @@ namespace CapaNegocio
     {
         private BD_Reporte objCapaDato = new BD_Reporte();
 
-        //public List<EN_Reporte> Prestamos(string fechaInicio, string fechaFin, string codigo)
-        //{
-        //    return objCapaDato.Prestamos(fechaInicio, fechaFin, codigo);
-        //}
+        public List<EN_Reporte> Prestamos(string fechaInicio, string fechaFin, string codigo, string estado)
+        {
+            return objCapaDato.Prestamos(fechaInicio, fechaFin, codigo, estado);
+        }
 
         public EN_Dashboard VerDashBoard() /*Usa una clase de la capa entidad*/
         {

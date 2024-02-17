@@ -1,0 +1,298 @@
+﻿
+@{
+    ViewBag.Title = "Administradores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="#">Administrador</a></li>
+    <li class="breadcrumb-item active">Administradores</li>
+</ol>
+<div class="card">
+    <div class="card-header">
+
+        <i class="fas fa-users me-1"></i>Lista de Administradores
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12  d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-success" onclick="abrirModal()">Crear Nuevo</button>
+
+                <form action="@Url.Action("DescargarPDF_Administradores","SIGUP")" class="mt-0 ml-2">
+                    <button class="btn btn-danger" type="submit"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                </form>
+            </div>
+        </div>
+        <hr />
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>IdAdministrador</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Telefono</th>
+                    <th>Correo</th>
+                    <th>Activo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<!-- Modal, con el id FormModalAdmin vamos a llamarlo cuando deseamos que aparezca y cuando no al momento de precionar el boton nuevo-->
+<div class="modal fade" id="FormModalAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    @*Esto ultimo de data-bs-backdrop es para no poder quitar es modal a menos que demos clic en cerrar o en la x, si hacemos clic en otro lado no se puede quitar*@
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Administrador</h5>
+                <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="txtId" type="hidden" value="0" />@*Con el valor 0 se identifica si es un Administrador nuevo a ingresar o es valor ya existe
+                    pero si es diferente a 0 significa que ya existe y vamos a editar*@
+                <div class="row g-2">
+                    <div class="col-sm-12">
+                        <label for="txtIdAdministrador" class="form-label">Id Administrador</label>
+                        <input type="text" class="form-control" id="txtIdAdministrador" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtNombres" class="form-label">Nombre (s)</label>
+                        <input type="text" class="form-control" id="txtNombres" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtApellidos" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="txtApellidos" autocomplete="off">
+                    </div>
+
+
+                    <div class="col-sm-12">
+                        <label for="txtCorreo" class="form-label">Correo</label>
+                        <input type="email" class="form-control" id="txtCorreo" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtTelefono" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="txtTelefono" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="cmbActivo" class="form-label">Activo</label>
+                        <select id="cmbActivo" class="form-select">
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <!--mensaje de alerta-->
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            Mensaje de error...
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div><!-- Modal y tabla de administradores -->
+
+@section scripts{
+    <script> 
+        var tabladata;
+        var filaSeleccionada;
+        //el hastash significa que se refiere a un id, entonces llama o igual la variable a una tabla declarada
+        tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {/*Como pinta la tabla, ajax solo trae todos los valores*/
+                url: '@Url.Action("ListarAdministradores","SIGUP")',
+                type: "GET",
+                dataType: "json"
+            },
+            "columns": [/*Todas las columnas que vamos a usar*/
+
+                { "data": "idAdministrador" },
+                { "data": "nombres" },
+                { "data": "apellidos" },
+                { "data": "telefono" },
+                { "data": "correo" },
+                {
+                    "data": "activo", "render": function (valor) {/*El render permite obtener el valor de la columna activo*/
+                        if (valor) {/*Si el valor es verdadero*/
+                            return '<span class="badge bg-success">Si</span>'
+                        } else {
+                            return '<span class="badge bg-danger">No</span>'
+                        }
+                    }
+
+                },
+                {
+                    "data": "idAdministrador", "render": function (data, type, row, meta) {
+
+                        return $("<button>").addClass("btn btn-primary btn-editar btn-sm").append(
+                            $("<i>").addClass("fas fa-pen")
+                        ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
+                            +
+                            $("<button>").addClass("btn btn-danger btn-eliminar btn-sm ms-2").append(
+                                $("<i>").addClass("fas fa-trash")
+                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML;
+
+                    },//Se utilizará ese data-informacion para obtener el id cuando se edite o elimine una fila
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                }
+            ],/*Propiedad o atributos van dentro de las comillas ""*/
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json" //la tabla a español
+            }
+        });
+
+        function abrirModal(json) /*json es el data del siguiente*/ {
+            $("#txtId").val(0);
+            $("#txtIdAdministrador").attr({ "disabled": false });
+            $("#txtIdAdministrador").val("");
+            $("#txtNombres").val("");
+            $("#txtApellidos").val("");
+            $("#txtTelefono").val("");
+            $("#txtCorreo").val("");
+            $("#cmbActivo").val(1);
+
+            $("#mensajeError").hide();
+            /*Llamamos al form modal*/
+            if (json != null) {//Porque el metodo abrir modal puede abrirse con crear nuevo o con editar
+                $("#txtId").val(json.idAdministrador);/*Traerá el codigo pero no lo mostrará al Administrador*/
+                $("#txtIdAdministrador").attr({ "disabled": "disabled" });
+                $("#txtIdAdministrador").val(json.idAdministrador);
+                $("#txtNombres").val(json.nombres);
+                $("#txtApellidos").val(json.apellidos);
+                $("#txtTelefono").val(json.telefono);
+                $("#txtCorreo").val(json.correo);
+                $("#cmbActivo").val(json.activo == true ? 1 : 0);/*Si es igual a true de el valor de uno y si no es true de el valor de 0*/
+            }
+
+            $("#FormModalAdmin").modal("show");
+        }
+
+        /*--------------- Al dar clic en el boton de editar-------------------------------*/
+        /*Estamos llamando a la tabla especificamente al tbody, todo ira en relacion a esa tabla*/
+        $("#tabla tbody").on("click", '.btn-editar', function () {
+            /*This es la misma tabla, se llama tr es el row o la fila seleccionado de la tabla */
+            filaSeleccionada = $(this).closest("tr");
+            var data = tabladata.row(filaSeleccionada).data();
+            var json = $(this).data("informacion")
+
+            abrirModal(json)
+        })//clic boton editar admin
+
+        $("#tabla tbody").on("click", '.btn-eliminar', function () {
+            var json = $(this).data("informacion")
+            swal({
+                title: "¿Está seguro de eliminar el Admin seleccionado?",
+                text: "Se eliminará completamente de la Base de Datos impidiendo ingresar al sistema con estas credenciales",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+            function () {
+                jQuery.ajax({
+                    url: '@Url.Action("EliminarAdministrador", "SIGUP")',
+                    type: "POST",
+                    data: JSON.stringify({ id: json.idAdministrador }),//el stringfy lo convierte a texto
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (data.resultado) {
+                            tabladata.ajax.reload();
+                        }else {
+                            swal("No se pudo eliminar", data.mensaje, "error")
+                        }/*Primer parametro mensaje, luego el mensaje del data, y el tercero indica que es de tipo error*/
+                    },
+                    error: function (error) {
+                        console.log(error)
+                        swal("Error: ", error, "error")
+
+                    }
+
+                });
+            });
+        })//clic boton eliminar administrador
+
+        //Crear o Editar Administradores
+        function Guardar() {
+            var Administrador = {
+                idValidacionAdmin: $("#txtId").val(),//Al ser un id tipo string manejamos otra propiedad como id validacion para usar ese como referencia
+                //para saber si se está agregando nuevo admin o editando
+                idAdministrador: $("#txtIdAdministrador").val(),
+                nombres: $("#txtNombres").val(),
+                apellidos: $("#txtApellidos").val(),/*El punto val sirve para obtener un valor y para establecer un valor*/
+                telefono: $("#txtTelefono").val(),
+                correo: $("#txtCorreo").val(),
+                activo: $("#cmbActivo").val() == 1 ? true : false, /*Para saber si se esta seleccionado un Si (Si = 0) * o un no (No = 1*/
+                reestablecer: true
+            }
+
+            jQuery.ajax({/*Llama al metodo de guardar Administrador, que dependiendo de la accion va a crear nuevo
+             o a editar, tomando en cuenta que se basa en que si el id = 0 o no*/
+                url: '@Url.Action("GuardarAdministrador", "SIGUP")',
+                type: "POST",
+                data: JSON.stringify({ objeto: Administrador}),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {//Podemos poner cualquier nombre data, response, etc
+                    $(".modal-body").LoadingOverlay("hide");
+                    //Administrador NUEVO
+                    if (Administrador.idValidacionAdmin == "0") { /*Es decir, si el id es 0 en inicio (el valor es 0 inicialmente) significa que es
+                        un Administrador nuevo, por lo que se ha dado dando clic con el boton de crear*/
+                        if (data.resultado != "0") {
+                            Administrador.idAdministrador = data.resultado;
+                            /*  tabladata.row.add(Administrador).draw(false);*/
+                            swal("¡Administrador creado correctamente!", "Se ha enviado al correo ingresado la contraseña para este nuevo administrador", "success");
+                            tabladata.ajax.reload();
+                            $("#FormModalAdmin").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                    //Administrador Editar
+                    else {//Pero si el id es diferente de 0, es decir ya existe, entonces se esta editando a un Administrador*/
+                        if (data.resultado) {
+                            tabladata.ajax.reload();
+                            filaSeleccionada = null;
+                            $("#FormModalAdmin").modal("hide");
+
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                },
+                error: function (error) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    $("#mensajeError").text("Error Ajax");
+                    $("#mensajeError").show();
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    });
+                }
+            });
+        }
+    </script>
+}
