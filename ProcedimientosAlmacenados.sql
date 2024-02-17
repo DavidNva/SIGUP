@@ -615,17 +615,18 @@ end
 go
 select * from Administrador
 go
-create  proc sp_ReportePrestamos(
+create proc sp_ReportePrestamos(
     @fechaInicio varchar(40),
     @fechaFin varchar(40),
-    @codigo varchar(50),
-	@estado varchar(1)
+    @codigoUsuario varchar(50),
+	@estado varchar(1),
+	@herramienta varchar(60)
 )
 as
 begin
     set dateformat dmy; /*Indicamos el formato que queremos si o si*/
     --el formato 103, muestra solo la fecha
-    select CONVERT(char(10), p.FechaPrestamo,103) [FechaPrestamo] , CONCAT(u.Nombre,' ', u.Apellidos)[Usuario],
+    select CONVERT(char(10), p.FechaPrestamo,103) [FechaPrestamo] , CONCAT(u.Nombre,' ', u.Apellidos)[Usuario], u.IdUsuario,
     h.Nombre[Herramienta], h.cantidad[Stock], p.Activo,h.IdHerramienta[Codigo]
     from Herramienta h
     --inner join Libro l on l.IDLibro = ej.ID_Libro
@@ -633,8 +634,9 @@ begin
     inner join Prestamo p on p.IdPrestamo = dp.IdPrestamo
     inner join Usuario u on u.IdUsuario = p.IdUsuario
     where CONVERT(date, p.FechaPrestamo) BETWEEN @fechaInicio and @fechaFin 
-    and h.IdHerramienta = iif(@codigo = '',h.IdHerramienta, @codigo)
+    and u.IdUsuario = iif(@codigoUsuario = '', u.IdUsuario, @codigoUsuario)
 	and p.activo = iif(@estado = '',p.activo, @estado)
+	and h.nombre = iif(@herramienta= '',h.nombre,@herramienta)
     /*Si el usuario no esta indicando ningun id Herramienta, le decimos que use ese mismo id transaccion del where, pero
     si lo esta indicando, lo use con el @idHerramienta*/
 end

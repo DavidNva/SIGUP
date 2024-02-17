@@ -46,7 +46,7 @@ namespace CapaDatos
             return objeto;
         }
 
-        public List<EN_Reporte> Prestamos(string fechaInicio, string fechaFin, string codigo, string estado)
+        public List<EN_Reporte> Prestamos(string fechaInicio, string fechaFin, string codigoUsuario, string estado, string herramienta)
         {
             List<EN_Reporte> lista = new List<EN_Reporte>();
             try
@@ -72,8 +72,9 @@ namespace CapaDatos
                     cmd.CommandType = CommandType.StoredProcedure;/*En este caso es de tipo Text (no usamos para este ejemplo, procedimientos almacenados*/
                     cmd.Parameters.AddWithValue("fechaInicio", fechaInicio);
                     cmd.Parameters.AddWithValue("fechaFin", fechaFin);
-                    cmd.Parameters.AddWithValue("codigo", codigo);
+                    cmd.Parameters.AddWithValue("codigoUsuario", codigoUsuario);
                     cmd.Parameters.AddWithValue("estado", estado);
+                    cmd.Parameters.AddWithValue("herramienta", herramienta);
                     oConexion.Open();
                     using (SqlDataReader dr = cmd.ExecuteReader())/*Lee todos los resultados que aparecen en la ejecucion del select anter ior*/
                     {
@@ -85,6 +86,7 @@ namespace CapaDatos
                                     /*Lo que esta dentro de los corchetes es el nombre de la columna de la tabla generada con el procedimiento almacenado*/
                                     FechaPrestamo = dr["FechaPrestamo"].ToString(),
                                     Usuario = dr["Usuario"].ToString(),
+                                    IdUsuario = dr["IdUsuario"].ToString(),
                                     Herramienta = dr["Herramienta"].ToString(),
                                     //Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-MX")),
                                     Cantidad = Convert.ToInt32(dr["Stock"]),//Checar este .tostring();

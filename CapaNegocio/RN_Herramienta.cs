@@ -112,6 +112,11 @@ namespace CapaNegocio
         public bool Eliminar(string id, out string Mensaje)
         {
             return herramientaDatos.Eliminar(id, out Mensaje);
-        } 
+        }
+
+        public List<EN_Herramienta> ListarHerramientaParaHistorialPrestamo()
+        {
+            return herramientaDatos.ListarHerramientaParaHistorialPrestamo();
+        }
     }
 }

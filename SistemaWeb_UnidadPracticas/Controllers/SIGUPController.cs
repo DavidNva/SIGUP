@@ -373,6 +373,15 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         }
 
         [HttpGet] /*Una URL que devuelve datos, un httpost se le pasan los valores y despues devuelve los datos  */
+        public JsonResult ListarHerramientaParaHistorialPrestamo() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
+        {
+            List<EN_Herramienta> oLista = new List<EN_Herramienta>();
+            oLista = new RN_Herramienta().ListarHerramientaParaHistorialPrestamo();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+            /*El json da los datos, jala los datos de esa lista, en data*/
+        }
+
+        [HttpGet] /*Una URL que devuelve datos, un httpost se le pasan los valores y despues devuelve los datos  */
         public JsonResult ListarAreaParaPrestamo() /*D este json se puede controlar que mas ver, igualar elementos, etc*/
         {
             List<EN_Area> oLista = new List<EN_Area>();
@@ -507,10 +516,10 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         #region REPORTE Y DASHBOARD
         /*La consulta de busqueda por fecha o id transaccion*/
         [HttpGet]
-        public JsonResult ListaReporte(string fechaInicio, string fechaFin, string codigo, string estado)
+        public JsonResult ListaReporte(string fechaInicio, string fechaFin, string codigoUsuario, string estado, string herramienta)
         {
             List<EN_Reporte> oLista = new List<EN_Reporte>();
-            oLista = new RN_Reporte().Prestamos(fechaInicio, fechaFin, codigo, estado);
+            oLista = new RN_Reporte().Prestamos(fechaInicio, fechaFin, codigoUsuario, estado, herramienta);
 
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet); /*Obtenemos el objeto del reporte*/
         }

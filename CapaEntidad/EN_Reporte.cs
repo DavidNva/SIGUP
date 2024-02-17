@@ -11,6 +11,7 @@ namespace CapaEntidad
         public string FechaPrestamo { get; set; }
 
         public string Usuario { get; set; }
+        public string IdUsuario { get; set; }//Numeros de control, nominas, etc
 
         public string Herramienta { get; set; }
 
