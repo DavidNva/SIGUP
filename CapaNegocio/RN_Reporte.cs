@@ -22,5 +22,9 @@ namespace CapaNegocio
             return objCapaDato.VerDashBoard();/*Retorna el metodo listar de la instancia de la capa Datos*/
         }
 
+        public byte[] GenerarPDF(string fechaInicio, string fechaFin, string codigoUsuario, string estado, string herramienta)
+        {
+            return objCapaDato.GenerarPDF(fechaInicio, fechaFin, codigoUsuario, estado, herramienta);
+        }
     }
 }

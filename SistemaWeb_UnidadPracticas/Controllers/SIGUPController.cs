@@ -112,13 +112,7 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult DescargarPDF_Categoria()
-        {
-            // Llama al método de la capa de negocios para generar el PDF
-            byte[] pdf = new RN_CategoriaHerramienta().GenerarPDF();
-            // Devolver el PDF como una descarga al usuario
-            return File(pdf, "application/pdf", "Categorias_" + DateTime.Now.ToString() + ".pdf");
-        }
+       
         #endregion
 
         /*--------------MARCA HERRAMIENTA---------------------*/
@@ -578,6 +572,25 @@ namespace SistemaWeb_UnidadPracticas.Controllers
         //        }
         //    }
         //}
+        #endregion
+
+        #region Metodos descargar PDF
+        public ActionResult DescargarPDF_Categoria()
+        {
+            // Llama al método de la capa de negocios para generar el PDF
+            byte[] pdf = new RN_CategoriaHerramienta().GenerarPDF();
+            // Devolver el PDF como una descarga al usuario
+            return File(pdf, "application/pdf", "Categorias_" + DateTime.Now.ToString() + ".pdf");
+        }
+
+        public ActionResult DescargarPDF_HistorialPrestamos(string fechaInicio, string fechaFin, string codigoUsuario, string estado, string herramienta)
+        {
+            // Llama al método de la capa de negocios para generar el PDF
+            byte[] pdf = new RN_Reporte().GenerarPDF(fechaInicio, fechaFin, codigoUsuario, estado, herramienta);
+            // Devolver el PDF como una descarga al usuario
+            return File(pdf, "application/pdf", "HistorialPrestamos_" + DateTime.Now.ToString() + ".pdf");
+        }
+
         #endregion
     }
 }

@@ -4,40 +4,40 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="mt-4"><i class="fas fa-clock text-success"></i> Historial de Prestamos</h1>
+<h1 class="mt-4"><i class="fas fa-clock text-success"></i> Historial de Préstamos</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">Selecciona opciones para ver el Historial de Préstamos</li>
+    <li class="breadcrumb-item active">Selecciona opciones de búsqueda para ver el Historial de Préstamos</li>
 </ol>
-<form action="@Url.Action("ExportarPrestamo","SIGUP")" method="post">
+<form action="@Url.Action("DescargarPDF_HistorialPrestamos","SIGUP")" class="mt-0 ml-2">
     <div class="row align-items-end" id="contenedor">
         <div class="col-sm-3 col-md-2">
             <div class="mb-2">
                 <label class="form-label" for="txtFechaInicio">Fecha de Inicio:</label>
-                <input class="form-control" type="text" id="txtFechaInicio" name="fechainicio" />
+                <input class="form-control" type="text" id="txtFechaInicio" name="fechaInicio" />
             </div>
         </div>
         <div class="col-sm-3 col-md-2">
             <div class="mb-2">
-                <label class="form-label" for="txtFechaFin">Fecha Fin:</label>
+                <label class="form-label" for="txtFechaFin" >Fecha Fin:</label>
                 <input class="form-control" type="text" id="txtFechaFin" name="fechafin" />
             </div>
         </div>
         <div class="col-sm-2">
             <div class="mb-2">
-                <label class="form-label" for="txtCodigo">Número de Control:</label>
-                <input class="form-control" type="text" id="txtCodigo" name="codigo" autocomplete="off" placeholder="# Control o Nomina" />
+                <label class="form-label" for="txtCodigo" >Número de Control:</label>
+                <input class="form-control" type="text" id="txtCodigo" name="codigoUsuario" autocomplete="off" placeholder="# Control o Nomina" />
             </div>
         </div>
         @*<div class="col-sm-2">
-            <div class="mb-2">
-                <label class="form-label" for="txtCodigo">Estado:</label>
-                <input class="form-control" type="text" id="txtEstado" name="estado" autocomplete="off" />
-            </div>
-        </div>*@
+                <div class="mb-2">
+                    <label class="form-label" for="txtCodigo">Estado:</label>
+                    <input class="form-control" type="text" id="txtEstado" name="estado" autocomplete="off" />
+                </div>
+            </div>*@
         <div class="col-sm-2">
             <div class="mb-2">
                 <label for="txtEstado" class="form-label"> Estado </label>
-                <select id="txtEstado" class="form-select">
+                <select id="txtEstado" class="form-select" name="estado">
                     <option value="">Seleccionar</option>
                     <option value="1">Pendientes</option>
                     <option value="0">Devueltos</option>
@@ -48,20 +48,20 @@
         <div class="col-sm-2">
             <div class="mb-2">
                 <label for="txtHerramienta" class="form-label"> Herramienta </label>
-                <select id="txtHerramienta" class="form-select">
+                <select id="txtHerramienta" class="form-select" name="herramienta"> 
                     <option value="">Seleccionar Herramienta</option>
                     @*<option value="CASCO">CASCO</option>
-                    <option value="TELEVISION2">TELEVISION2</option>*@
+                        <option value="TELEVISION2">TELEVISION2</option>*@
 
                 </select>
             </div>
         </div>
         @*<div class="col-sm-2">
-            <div class="mb-2">
-                <label class="form-label" for="txtHerramienta">Herramienta:</label>
-                <input class="form-control" type="text" id="txtHerramienta" name="herramienta" autocomplete="off" />
-            </div>
-        </div>*@
+                <div class="mb-2">
+                    <label class="form-label" for="txtHerramienta">Herramienta:</label>
+                    <input class="form-control" type="text" id="txtHerramienta" name="herramienta" autocomplete="off" />
+                </div>
+            </div>*@
 
         <div class="col-sm-2">
             <div class="d-grid mb-2">
@@ -70,97 +70,100 @@
         </div>
         <div class="col-sm-2">
             <div class="d-grid mb-2">
-                <button class="btn btn-success" type="submit"><i class="fas fa-file-excel"></i> Exportar</button>
+                <button class="btn btn-danger" type="submit"><i class="fas fa-file-pdf"></i>Descargar PDF</button>
             </div>
         </div>
     </div>
 </form>
-    <div class="card mb-4">
-        <div class="card-header">
-            <i class="fas fa-tags me-1"></i> @*Titulo de la tabla*@
-            Historial de Préstamos
-        </div>
-
-        <div class="card-body">
-            <form action="@Url.Action("ExportarPrestamo","SIGUP")" method="post">
-                <!--<div class="row align-items-end">
-                    <div class="col-sm-3 col-md-2">
-                        <div class="mb-2">
-                            <label class="form-label" for="txtFechaInicio">Fecha de Inicio:</label>
-                            <input class="form-control" type="text" id="txtFechaInicio" name="fechainicio" />
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-md-2">
-                        <div class="mb-2">
-                            <label class="form-label" for="txtFechaFin">Fecha Fin:</label>
-                            <input class="form-control" type="text" id="txtFechaFin" name="fechafin" />
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="mb-2">
-                            <label class="form-label" for="txtCodigo">Código Herramienta:</label>
-                            <input class="form-control" type="text" id="txtCodigo" name="codigo" autocomplete="off" />
-                        </div>
-                    </div>-->
-                @*<div class="col-sm-2">
-                        <div class="mb-2">
-                            <label class="form-label" for="txtCodigo">Estado:</label>
-                            <input class="form-control" type="text" id="txtEstado" name="estado" autocomplete="off" />
-                        </div>
-                    </div>*@
-                <!--<div class="col-sm-2">
-                        <div class="mb-2">
-                            <label for="txtEstado" class="form-label"> Estado </label>
-                            <select id="txtEstado" class="form-select">
-                                <option value="1">Pendientes</option>
-                                <option value="0">Devueltos</option>
-                            </select>
-                        </div>
-                    </div>
-
-
-                    <div class="col-sm-2">
-                        <div class="d-grid mb-2">
-                            <button class="btn btn-primary " id="btnBuscar" type="button"><i class="fas fa-search"></i> Buscar</button>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="d-grid mb-2">
-                            <button class="btn btn-success" type="submit"><i class="fas fa-file-excel"></i> Exportar</button>
-                        </div>
-                    </div>
-                </div>-->
-            </form>
-            @*<hr />*@
-            <div class="row">
-                <div class="col-sm-12">
-                    <table id="tabla" class="display cell-border" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Fecha del Préstamo</th>
-                                <th>Usuario</th>
-                                <th>IDUsuario</th>
-                                <th>Herramienta</th>
-                                <th>Stock</th>
-                                <th>Estado del Préstamo</th>
-                                @*<th>Total</th>*@
-                                <th>Código</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>.
-            </div>
-
-        </div>
+@*<form action="@Url.Action("DescargarPDF_Categoria","SIGUP")" class="mt-0 ml-2">
+    <button class="btn btn-danger" type="submit"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+</form>*@
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-tags me-1"></i> @*Titulo de la tabla*@
+        Historial de Préstamos
     </div>
 
+    <div class="card-body">
+        <form action="@Url.Action("ExportarPrestamo","SIGUP")" method="post">
+            <!--<div class="row align-items-end">
+                <div class="col-sm-3 col-md-2">
+                    <div class="mb-2">
+                        <label class="form-label" for="txtFechaInicio">Fecha de Inicio:</label>
+                        <input class="form-control" type="text" id="txtFechaInicio" name="fechainicio" />
+                    </div>
+                </div>
+                <div class="col-sm-3 col-md-2">
+                    <div class="mb-2">
+                        <label class="form-label" for="txtFechaFin">Fecha Fin:</label>
+                        <input class="form-control" type="text" id="txtFechaFin" name="fechafin" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label" for="txtCodigo">Código Herramienta:</label>
+                        <input class="form-control" type="text" id="txtCodigo" name="codigo" autocomplete="off" />
+                    </div>
+                </div>-->
+            @*<div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label" for="txtCodigo">Estado:</label>
+                        <input class="form-control" type="text" id="txtEstado" name="estado" autocomplete="off" />
+                    </div>
+                </div>*@
+            <!--<div class="col-sm-2">
+                    <div class="mb-2">
+                        <label for="txtEstado" class="form-label"> Estado </label>
+                        <select id="txtEstado" class="form-select">
+                            <option value="1">Pendientes</option>
+                            <option value="0">Devueltos</option>
+                        </select>
+                    </div>
+                </div>
 
-    @section scripts{
-        <script>
+
+                <div class="col-sm-2">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-primary " id="btnBuscar" type="button"><i class="fas fa-search"></i> Buscar</button>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-success" type="submit"><i class="fas fa-file-excel"></i> Exportar</button>
+                    </div>
+                </div>
+            </div>-->
+        </form>
+        @*<hr />*@
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="tabla" class="display cell-border" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fecha del Préstamo</th>
+                            <th>Usuario</th>
+                            <th>IDUsuario</th>
+                            <th>Herramienta</th>
+                            <th>Stock</th>
+                            <th>Estado del Préstamo</th>
+                            @*<th>Total</th>*@
+                            <th>Código</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>.
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
             window.onload = function () {
-                
+
                 if (window.innerWidth <= 767) {
                     // Si el ancho de la pantalla es igual o menor a 767px (tamaño de teléfono), quitar la clase 'sb-sidenav-toggled'
                     document.getElementById('body-layout').classList.remove('sb-sidenav-toggled');
@@ -169,7 +172,7 @@
                     document.getElementById('body-layout').classList.add('sb-sidenav-toggled');
                 }
             };
-          
+
             var tabladata;
 
             $(document).ready(function () {/* asi como entra a la pagina de dashboard se automatiza la tabla con las fechas de hoy ya que son las que estan en los input*/
@@ -305,7 +308,7 @@
                   }
              });//Lista de herramientas para prestamo
 
-        </script>
-    }
+    </script>
+}
 
 
