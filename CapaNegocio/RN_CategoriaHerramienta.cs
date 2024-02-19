@@ -68,9 +68,9 @@ namespace CapaNegocio
             return objCapaDato.Eliminar(id, out Mensaje);
         }
 
-        //public byte[] GenerarPDF()
-        //{
-        //    return objCapaDato.GenerarPDF();
-        //}
+        public byte[] GenerarPDF()
+        {
+            return objCapaDato.GenerarPDF();
+        }
     }
 }
