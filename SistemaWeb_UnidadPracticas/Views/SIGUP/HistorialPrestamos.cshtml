@@ -38,7 +38,7 @@
             <div class="mb-2">
                 <label for="txtEstado" class="form-label"> Estado </label>
                 <select id="txtEstado" class="form-select" name="estado">
-                    <option value="">Seleccionar</option>
+                    <option value="">Seleccionar (Todos) </option>
                     <option value="1">Pendientes</option>
                     <option value="0">Devueltos</option>
                 </select>
@@ -141,13 +141,16 @@
                     <thead>
                         <tr>
                             <th>Fecha del Préstamo</th>
+
                             <th>Usuario</th>
                             <th>IDUsuario</th>
                             <th>Herramienta</th>
-                            <th>Stock</th>
+                            <th>Detalles</th>
+                            <th>Dias Solicitados</th>
+                            <th>Fecha de Devolución</th>
                             <th>Estado del Préstamo</th>
                             @*<th>Total</th>*@
-                            <th>Código</th>
+                            <th>Observaciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -229,6 +232,7 @@
                      /*   console.log(data),*/
 
                             { "data": "FechaPrestamo", "width": "90px" },
+                            
                             { "data": "Usuario" },
                        /* { "data": "IdUsuario" },*/
                         { "data": "IdUsuario", "visible": false },
@@ -240,7 +244,9 @@
                             //},
                             { "data": "Herramienta" },
                             /*El nombre del segundo identificador debe ser igual al de la tabla, la columna*/
-                            { "data": "Cantidad" },
+                        { "data": "Detalles" },
+                        { "data": "DiasSolicitados", "width": "70px" },
+                        { "data": "FechaDevolucion", "width": "90px" },
                             {
                                 "data": "Estado", "render": function (valor) {
                                 /*El render permite obtener el valor de la columna activo*/
@@ -259,7 +265,7 @@
                                 },
                                 "width": "90px"
                             },
-                            { "data": "Codigo" }
+                            { "data": "Observaciones" }
 
                        ],
                         /*Propiedad o atributos van dentro de las comillas ""*/

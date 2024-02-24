@@ -88,14 +88,17 @@ namespace CapaDatos
                                 {
                                     /*Lo que esta dentro de los corchetes es el nombre de la columna de la tabla generada con el procedimiento almacenado*/
                                     FechaPrestamo = dr["FechaPrestamo"].ToString(),
+                                    DiasSolicitados = dr["DiasSolicitados"].ToString(),
                                     Usuario = dr["Usuario"].ToString(),
                                     IdUsuario = dr["IdUsuario"].ToString(),
                                     Herramienta = dr["Herramienta"].ToString(),
                                     //Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-MX")),
-                                    Cantidad = Convert.ToInt32(dr["Stock"]),//Checar este .tostring();
+                                    //Cantidad = Convert.ToInt32(dr["Stock"]),//Checar este .tostring();
+                                    Detalles = dr["Detalles"].ToString(),
+                                    FechaDevolucion = dr["FechaDevolucion"].ToString(),
                                     Estado = Convert.ToBoolean(dr["Activo"]),//Devuelto = 1 o no devuelto = 0
                                     //Total = Convert.ToDecimal(dr["Total"], new CultureInfo("es-MX")),
-                                    Codigo = dr["Codigo"].ToString()
+                                    Observaciones = dr["Observaciones"].ToString()
                                 }
                                 );
                         }

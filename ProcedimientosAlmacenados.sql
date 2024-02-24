@@ -626,8 +626,8 @@ as
 begin
     set dateformat dmy; /*Indicamos el formato que queremos si o si*/
     --el formato 103, muestra solo la fecha
-    select CONVERT(char(10), p.FechaPrestamo,103) [FechaPrestamo] , CONCAT(u.Nombre,' ', u.Apellidos)[Usuario], u.IdUsuario,
-    h.Nombre[Herramienta], h.cantidad[Stock], p.Activo,h.IdHerramienta[Codigo]
+   select CONVERT(char(10), p.FechaPrestamo,103) [FechaPrestamo], p.DiasDePrestamo[DiasSolicitados], CONCAT(u.Nombre,' ', u.Apellidos)[Usuario], u.IdUsuario,
+    h.Nombre[Herramienta], CONCAT(p.Unidad + ' / Cantidad PU: ', p.CantidadPU)[Detalles], h.cantidad[Stock], CONVERT(char(10), p.fechaDevolucion,103) [FechaDevolucion],p.Activo,p.Notas[Observaciones]
     from Herramienta h
     --inner join Libro l on l.IDLibro = ej.ID_Libro
     inner join Detalle_Prestamo dp on dp.IdHerramienta = h.IdHerramienta
