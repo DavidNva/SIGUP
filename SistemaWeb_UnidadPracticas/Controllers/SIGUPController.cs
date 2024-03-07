@@ -583,6 +583,22 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return File(pdf, "application/pdf", "Categorias_" + DateTime.Now.ToString() + ".pdf");
         }
 
+        public ActionResult DescargarPDF_Marca()
+        {
+            // Llama al método de la capa de negocios para generar el PDF
+            byte[] pdf = new RN_MarcaHerramienta().GenerarPDF();
+            // Devolver el PDF como una descarga al usuario
+            return File(pdf, "application/pdf", "Marcas_" + DateTime.Now.ToString() + ".pdf");
+        }
+
+        public ActionResult DescargarPDF_Herramienta()
+        {
+            // Llama al método de la capa de negocios para generar el PDF
+            byte[] pdf = new RN_Herramienta().GenerarPDF();
+            // Devolver el PDF como una descarga al usuario
+            return File(pdf, "application/pdf", "Herramientas_" + DateTime.Now.ToString() + ".pdf");
+        }
+
         public ActionResult DescargarPDF_HistorialPrestamos(string fechaInicio, string fechaFin, string codigoUsuario, string estado, string herramienta)
         {
             // Llama al método de la capa de negocios para generar el PDF
@@ -591,6 +607,13 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return File(pdf, "application/pdf", "HistorialPrestamos_" + DateTime.Now.ToString() + ".pdf");
         }
 
+        public ActionResult DescargarPDF_Administrador()
+        {
+            // Llama al método de la capa de negocios para generar el PDF
+            byte[] pdf = new RN_Administrador().GenerarPDF();
+            // Devolver el PDF como una descarga al usuario
+            return File(pdf, "application/pdf", "Administradores_" + DateTime.Now.ToString() + ".pdf");
+        }
         #endregion
     }
 }

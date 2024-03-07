@@ -118,5 +118,10 @@ namespace CapaNegocio
         {
             return herramientaDatos.ListarHerramientaParaHistorialPrestamo();
         }
+
+        public byte[] GenerarPDF()
+        {
+            return herramientaDatos.GenerarPDF();
+        }
     }
 }

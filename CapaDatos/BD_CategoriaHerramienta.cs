@@ -305,12 +305,12 @@ namespace CapaDatos
                                 if (cat.activo)
                                 {
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                    .Padding(2).Text("Sí").FontSize(10);
+                                    .Padding(2).Text("Sí").FontSize(10).FontColor("#157347");
                                 }
                                 else
                                 {
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                    .Padding(2).Text("No").FontSize(10);
+                                    .Padding(2).Text("No").FontSize(10).FontColor("#BB2D3B");
                                 }
                                 totalCategorias++;
                             }

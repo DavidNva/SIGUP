@@ -66,6 +66,10 @@ namespace CapaNegocio
         {
             mensaje = string.Empty;
             return marcaHerramienta.eliminar_marca(id, out mensaje);
-        } 
+        }
+        public byte[] GenerarPDF()
+        {
+            return marcaHerramienta.GenerarPDF();
+        }
     }
 }

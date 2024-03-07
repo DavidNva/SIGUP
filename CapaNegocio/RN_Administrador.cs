@@ -151,5 +151,11 @@ namespace CapaNegocio
                 return false;
             }
         }
+
+
+        public byte[] GenerarPDF()
+        {
+            return bd_administrador.GenerarPDF();
+        }
     }
 }
