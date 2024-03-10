@@ -206,6 +206,11 @@ namespace CapaNegocio
         public bool Eliminar(int id, string idHerramienta, out string Mensaje)
         {
             return objCapaDato.Eliminar(id, idHerramienta, out Mensaje);
-        } 
+        }
+
+        public byte[] GenerarPDF()
+        {
+            return objCapaDato.GenerarPDF();
+        }
     }
 }

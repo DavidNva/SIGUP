@@ -599,6 +599,14 @@ namespace SistemaWeb_UnidadPracticas.Controllers
             return File(pdf, "application/pdf", "Herramientas_" + DateTime.Now.ToString() + ".pdf");
         }
 
+        public ActionResult DescargarPDF_Prestamos()
+        {
+            // Llama al método de la capa de negocios para generar el PDF
+            byte[] pdf = new RN_Prestamo().GenerarPDF();
+            // Devolver el PDF como una descarga al usuario
+            return File(pdf, "application/pdf", "Prestamos_" + DateTime.Now.ToString() + ".pdf");
+        }
+
         public ActionResult DescargarPDF_HistorialPrestamos(string fechaInicio, string fechaFin, string codigoUsuario, string estado, string herramienta)
         {
             // Llama al método de la capa de negocios para generar el PDF

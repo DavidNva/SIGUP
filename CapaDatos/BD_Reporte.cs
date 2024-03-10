@@ -165,7 +165,7 @@ namespace CapaDatos
 
                             col.Item().Background("#1B396A").Border(1)
                             .BorderColor("#1B396A").AlignCenter()
-                            .Text("Préstamos").FontColor("#fff");
+                            .Text("Historial de Préstamos").FontColor("#fff");
 
                             col.Item().Border(1).BorderColor("#1B396A").
                             AlignCenter().Text(DateTime.Now.ToString("dd-MM-yyyy"));
@@ -206,53 +206,98 @@ namespace CapaDatos
                         {//Seccion de la tabla
                             tabla.ColumnsDefinition(columns =>
                             {
+
+                                columns.ConstantColumn(55);
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
                                 //columns.RelativeColumn(3);
-                                columns.ConstantColumn(100);
+                                columns.ConstantColumn(60);
+                                columns.ConstantColumn(60);
                                 //columns.RelativeColumn();
+
+                                columns.ConstantColumn(35);
                                 columns.RelativeColumn();
+                                
+                               
                                 columns.RelativeColumn();
+                                
                                 //columns.RelativeColumn();
-                                columns.ConstantColumn(100);
+
                             });
 
                             tabla.Header(header =>
                             {
                                 header.Cell().Background("#1B396A")
-                                 .Padding(2).Text("Fecha").FontColor("#fff");
+                                .Padding(2).Text("Préstamo").FontColor("#fff");
+
+                                header.Cell().Background("#1B396A")
+                               .Padding(2).Text("Herramienta").FontColor("#fff");
+
 
                                 header.Cell().Background("#1B396A")
                                 .Padding(2).Text("Usuario").FontColor("#fff");
 
                                 header.Cell().Background("#1B396A")
-                                .Padding(2).Text("Herramientas").FontColor("#fff");
+                                 .Padding(2).Text("Fecha Préstamo").FontColor("#fff");
 
                                 header.Cell().Background("#1B396A")
-                                .Padding(2).Text("Estado").FontColor("#fff");
+                               .Padding(2).Text("Fecha de Entrega").FontColor("#fff");
+                                header.Cell().Background("#1B396A")
+                              .Padding(2).Text("Días Solic.").FontColor("#fff");
+
+                                header.Cell().Background("#1B396A")
+                               .Padding(2).Text("Detalles").FontColor("#fff");
+
+                               
+
+                                
+
+                                header.Cell().Background("#1B396A")
+                               .Padding(2).Text("Observac.").FontColor("#fff");
+
+                                
                             });
 
                             foreach (EN_Reporte historialPrestamos in oLista)
                             //foreach (var item in Enumerable.Range(1, 45))
                             {
-
+                                if (historialPrestamos.Estado)
+                                {
+                                    tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                                    .Padding(2).Text("Pendiente").FontSize(10).FontColor("#BB2D3B").Bold(); ;
+                                }//.Background("#1B396A").Border(1) .BorderColor("#1B396A").
+                                else
+                                {//91B22C verde institucional /// verde-success-boostrap 157347
+                                    tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                                    .Padding(2).Text("Devuelto").FontSize(10).FontColor("#157347").Bold(); ;
+                                }
                                 tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                .Padding(2).Text(historialPrestamos.FechaPrestamo.ToString()).FontSize(10);
+                                .Padding(2).Text(historialPrestamos.Herramienta).FontSize(10);
+
 
                                 tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
                                 .Padding(2).Text(historialPrestamos.Usuario).FontSize(10);
 
                                 tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                .Padding(2).Text(historialPrestamos.Herramienta).FontSize(10);
+                                .Padding(2).Text(historialPrestamos.FechaPrestamo.ToString()).FontSize(10);
 
-                                if (historialPrestamos.Estado)
-                                {
-                                    tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                    .Padding(2).Text("Pendientes").FontSize(10).FontColor("#BB2D3B").Bold(); ;
-                                }//.Background("#1B396A").Border(1) .BorderColor("#1B396A").
-                                else
-                                {//91B22C verde institucional /// verde-success-boostrap 157347
-                                    tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                    .Padding(2).Text("Devueltos").FontSize(10).FontColor("#157347").Bold(); ;
-                                }
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                            .Padding(2).Text(historialPrestamos.FechaDevolucion).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                             .Padding(2).Text(historialPrestamos.DiasSolicitados).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                              .Padding(2).Text(historialPrestamos.Detalles).FontSize(10);
+
+                               
+
+                              
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                              .Padding(2).Text(historialPrestamos.Observaciones).FontSize(10);
+
+                               
                                 totalPrestamos++;
                             }
 
